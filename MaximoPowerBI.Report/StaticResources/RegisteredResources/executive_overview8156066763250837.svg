@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#F4F5F7"/>
+  <rect x="24.5" y="200.5" width="759" height="247" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="808.5" y="200.5" width="447" height="247" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="24.5" y="460.5" width="1231" height="235" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <defs>
+    <clipPath id="kpi0"><rect x="25" y="85" width="230" height="102" rx="6"/></clipPath>
+    <clipPath id="kpi1"><rect x="275" y="85" width="230" height="102" rx="6"/></clipPath>
+    <clipPath id="kpi2"><rect x="525" y="85" width="230" height="102" rx="6"/></clipPath>
+    <clipPath id="kpi3"><rect x="775" y="85" width="230" height="102" rx="6"/></clipPath>
+    <clipPath id="kpi4"><rect x="1025" y="85" width="230" height="102" rx="6"/></clipPath>
+  </defs>
+  <rect x="24.5" y="84.5" width="231" height="103" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="25" y="85" width="3" height="102" fill="#4477AA" clip-path="url(#kpi0)"/>
+  <rect x="274.5" y="84.5" width="231" height="103" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="275" y="85" width="3" height="102" fill="#4477AA" clip-path="url(#kpi1)"/>
+  <rect x="524.5" y="84.5" width="231" height="103" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="525" y="85" width="3" height="102" fill="#4477AA" clip-path="url(#kpi2)"/>
+  <rect x="774.5" y="84.5" width="231" height="103" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="775" y="85" width="3" height="102" fill="#4477AA" clip-path="url(#kpi3)"/>
+  <rect x="1024.5" y="84.5" width="231" height="103" rx="6" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+  <rect x="1025" y="85" width="3" height="102" fill="#4477AA" clip-path="url(#kpi4)"/>
+  <rect x="0" y="0" width="1280" height="72" fill="#1B3A57"/>
+  <text x="40" y="44" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="600" fill="#FFFFFF">Maximo Maintenance Analytics</text>
+</svg>

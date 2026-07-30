@@ -60,6 +60,17 @@
           "type": "BaseTheme"
         }
       ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "executive_overview8156066763250837.svg",
+          "path": "executive_overview8156066763250837.svg",
+          "type": "Image"
+        }
+      ]
     }
   ],
   "settings": {

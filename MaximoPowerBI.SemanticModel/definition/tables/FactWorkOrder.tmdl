@@ -1,0 +1,433 @@
+table FactWorkOrder
+	lineageTag: c82784aa-83d0-4c96-8655-5b7cbc942a71
+
+	column WONUM
+		dataType: string
+		lineageTag: 566bf75d-eb6f-4dff-a36e-12299448dfde
+		summarizeBy: none
+		sourceColumn: WONUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column DESCRIPTION
+		dataType: string
+		lineageTag: 3464578b-7565-46ab-8946-bf51311f957d
+		summarizeBy: none
+		sourceColumn: DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: 519d7500-d866-4ada-8e79-cda90bc52b2f
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WORKTYPE
+		dataType: string
+		lineageTag: 136cc3a7-7e5d-4abf-ad6e-4429cd9ca1c8
+		summarizeBy: none
+		sourceColumn: WORKTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: de35d109-a753-4acc-b72b-245b7d271232
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: 6770d40c-67ef-4564-9239-630521eaf850
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOCATION
+		dataType: string
+		lineageTag: d6b255ca-f0ee-4d5c-a4ae-4a2bc1d32031
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column PMNUM
+		dataType: string
+		lineageTag: da5c6b6d-174a-4ae4-bac7-90e53d982502
+		summarizeBy: none
+		sourceColumn: PMNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column WOPRIORITY
+		dataType: int64
+		formatString: 0
+		lineageTag: 081c7557-a7e0-484b-ad10-9a2223ada468
+		summarizeBy: sum
+		sourceColumn: WOPRIORITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column ESTLABHRS
+		dataType: double
+		lineageTag: 1dda937e-0ded-4b2a-8c8d-a5be708a3d7e
+		summarizeBy: sum
+		sourceColumn: ESTLABHRS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTLABHRS
+		dataType: double
+		lineageTag: 0429dc56-a51d-4e84-89a1-e57f597277a8
+		summarizeBy: sum
+		sourceColumn: ACTLABHRS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTLABCOST
+		dataType: double
+		lineageTag: 86881a27-2101-46d6-8b6e-c6a3fd760481
+		summarizeBy: sum
+		sourceColumn: ACTLABCOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTMATCOST
+		dataType: double
+		lineageTag: f04c587b-d683-4c37-a3a3-46efd65180d8
+		summarizeBy: sum
+		sourceColumn: ACTMATCOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTTOOLCOST
+		dataType: double
+		lineageTag: cf630dbc-25a6-4914-84c7-bb0896c2f7cc
+		summarizeBy: sum
+		sourceColumn: ACTTOOLCOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTSERVCOST
+		dataType: double
+		lineageTag: 4376d6c8-a3fc-47ae-a7a6-624414b3e783
+		summarizeBy: sum
+		sourceColumn: ACTSERVCOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PROBLEMCODE
+		dataType: string
+		lineageTag: 5e7b4c0d-6e81-4d7f-864f-6106ae1bc378
+		summarizeBy: none
+		sourceColumn: PROBLEMCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUPERVISOR
+		dataType: string
+		lineageTag: 9316a4e1-e528-46e6-8e6b-d431bd9e78de
+		summarizeBy: none
+		sourceColumn: SUPERVISOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column CREWID
+		dataType: string
+		lineageTag: d1b3664d-dd9a-4e4e-b5b8-041ffba57faa
+		summarizeBy: none
+		sourceColumn: CREWID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ac3b7acc-2e31-4227-a354-17295c11cd29
+		summarizeBy: none
+		sourceColumn: ReportDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TargCompDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 52e069c3-5b3a-49e7-a9c2-54d53a5306d5
+		summarizeBy: none
+		sourceColumn: TargCompDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ActStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0a642032-6ca6-4b54-845d-841294b98a62
+		summarizeBy: none
+		sourceColumn: ActStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ActFinishDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 394fdef5-1179-4f36-8b31-5937572e670f
+		summarizeBy: none
+		sourceColumn: ActFinishDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SchedStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b9266472-7f88-420f-bdb7-9124ab14ffba
+		summarizeBy: none
+		sourceColumn: SchedStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsCancelled
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c127181-8dc8-4410-9673-6c015ea51da8
+		summarizeBy: sum
+		sourceColumn: IsCancelled
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsOpen
+		dataType: int64
+		formatString: 0
+		lineageTag: b08b9111-b2af-4fd8-9505-7076e1375387
+		summarizeBy: sum
+		sourceColumn: IsOpen
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCompleted
+		dataType: int64
+		formatString: 0
+		lineageTag: 55439fbe-a1e9-43af-b25e-312774b33489
+		summarizeBy: sum
+		sourceColumn: IsCompleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReactive
+		dataType: int64
+		formatString: 0
+		lineageTag: f9fe089b-2bdf-4efd-8fae-61e04b77f889
+		summarizeBy: sum
+		sourceColumn: IsReactive
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPM
+		dataType: int64
+		formatString: 0
+		lineageTag: b5769990-66a5-438a-bd50-ea35afaad8eb
+		summarizeBy: sum
+		sourceColumn: IsPM
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPMCompleted
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e6ee062-d84a-4e57-a337-953bf4821c0c
+		summarizeBy: sum
+		sourceColumn: IsPMCompleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPMOnTime
+		dataType: int64
+		formatString: 0
+		lineageTag: 3617b4a9-452e-406a-9167-71962f28a014
+		summarizeBy: sum
+		sourceColumn: IsPMOnTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsScheduled
+		dataType: int64
+		formatString: 0
+		lineageTag: 48cbd069-3cd0-44d4-b639-089f7e54b879
+		summarizeBy: sum
+		sourceColumn: IsScheduled
+
+		annotation SummarizationSetBy = Automatic
+
+	column SchedStartVarianceDays
+		dataType: int64
+		formatString: 0
+		lineageTag: 8cc402e7-47a0-4340-bc0c-1c76c87d4df3
+		summarizeBy: sum
+		sourceColumn: SchedStartVarianceDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualTotalCost
+		dataType: double
+		lineageTag: 3aec6c52-50c8-44ee-8406-64373a7b430a
+		summarizeBy: sum
+		sourceColumn: ActualTotalCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DaysToComplete
+		dataType: int64
+		formatString: 0
+		lineageTag: d6f06f28-bf90-4f88-b83c-23a962d97ac4
+		summarizeBy: sum
+		sourceColumn: DaysToComplete
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactWorkOrder = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactWorkOrder
+				   The primary fact. All KPI business rules are materialised here as columns.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("WORKORDER.csv"),
+				
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"WONUM", type text},
+				            {"DESCRIPTION", type text},
+				            {"SITEID", type text},
+				            {"WORKTYPE", type text},
+				            {"STATUS", type text},
+				            {"ASSETNUM", type text},
+				            {"LOCATION", type text},
+				            {"PMNUM", type text},
+				            {"WOPRIORITY", Int64.Type},
+				            {"REPORTDATE", type datetime},
+				            {"TARGSTARTDATE", type datetime},
+				            {"TARGCOMPDATE", type datetime},
+				            {"SCHEDSTART", type datetime},
+				            {"ACTSTART", type datetime},
+				            {"ACTFINISH", type datetime},
+				            {"ESTLABHRS", type number},
+				            {"ACTLABHRS", type number},
+				            {"ACTLABCOST", type number},
+				            {"ACTMATCOST", type number},
+				            {"ACTTOOLCOST", type number},
+				            {"ACTSERVCOST", type number},
+				            {"PROBLEMCODE", type text},
+				            {"SUPERVISOR", type text},
+				            {"CREWID", type text}
+				        },
+				        pCulture
+				    ),
+				
+				    Kept = Table.SelectColumns(Typed,
+				        {"WONUM", "DESCRIPTION", "SITEID", "WORKTYPE", "STATUS", "ASSETNUM",
+				         "LOCATION", "PMNUM", "WOPRIORITY", "REPORTDATE", "TARGSTARTDATE",
+				         "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH", "ESTLABHRS",
+				         "ACTLABHRS", "ACTLABCOST", "ACTMATCOST", "ACTTOOLCOST", "ACTSERVCOST",
+				         "PROBLEMCODE", "SUPERVISOR", "CREWID"}),
+				
+				    // unknown member so location-only work orders survive the asset join
+				    FixAsset = Table.TransformColumns(Kept,
+				        {{"ASSETNUM", each if _ = null or _ = "" then "(none)" else _, type text}}),
+				
+				    // ---- DATE-ONLY columns. Every compliance comparison uses these, never the
+				    // ---- raw datetimes. See the header note on the 22.1-point error.
+				    DateCols = Table.AddColumn(FixAsset, "ReportDate",
+				                    each Date.From([REPORTDATE]), type date),
+				    DateCols2 = Table.AddColumn(DateCols, "TargCompDate",
+				                    each if [TARGCOMPDATE] = null then null else Date.From([TARGCOMPDATE]), type date),
+				    DateCols3 = Table.AddColumn(DateCols2, "ActStartDate",
+				                    each if [ACTSTART] = null then null else Date.From([ACTSTART]), type date),
+				    DateCols4 = Table.AddColumn(DateCols3, "ActFinishDate",
+				                    each if [ACTFINISH] = null then null else Date.From([ACTFINISH]), type date),
+				    DateCols5 = Table.AddColumn(DateCols4, "SchedStartDate",
+				                    each if [SCHEDSTART] = null then null else Date.From([SCHEDSTART]), type date),
+				
+				    // ---- state flags
+				    F1 = Table.AddColumn(DateCols5, "IsCancelled",
+				            each if [STATUS] = "CAN" then 1 else 0, Int64.Type),
+				    F2 = Table.AddColumn(F1, "IsOpen",
+				            each if List.Contains({"WAPPR", "APPR", "INPRG"}, [STATUS]) then 1 else 0, Int64.Type),
+				    F3 = Table.AddColumn(F2, "IsCompleted",
+				            each if List.Contains({"COMP", "CLOSE"}, [STATUS]) then 1 else 0, Int64.Type),
+				    F4 = Table.AddColumn(F3, "IsReactive",
+				            each if List.Contains({"CM", "EM"}, [WORKTYPE]) then 1 else 0, Int64.Type),
+				    F5 = Table.AddColumn(F4, "IsPM",
+				            each if [WORKTYPE] = "PM" then 1 else 0, Int64.Type),
+				
+				    // ---- PM compliance rules. Nested explicitly rather than using `and`, so a
+				    // ---- null date can never reach a comparison.
+				    F6 = Table.AddColumn(F5, "IsPMCompleted",
+				            each if [IsPM] = 1 and [IsCompleted] = 1 then
+				                     (if [ActFinishDate] = null then 0 else 1)
+				                 else 0, Int64.Type),
+				    F7 = Table.AddColumn(F6, "IsPMOnTime",
+				            each if [IsPMCompleted] = 1 then
+				                     (if [TargCompDate] = null then 0
+				                      else if [ActFinishDate] <= [TargCompDate] then 1 else 0)
+				                 else 0, Int64.Type),
+				
+				    // ---- schedule compliance inputs
+				    F8 = Table.AddColumn(F7, "IsScheduled",
+				            each if [SchedStartDate] = null or [ActStartDate] = null then 0 else 1,
+				            Int64.Type),
+				    F9 = Table.AddColumn(F8, "SchedStartVarianceDays",
+				            each if [IsScheduled] = 1
+				                 then Duration.Days([ActStartDate] - [SchedStartDate])
+				                 else null, Int64.Type),
+				
+				    // ---- cost roll-up. ACTTOOLCOST and ACTSERVCOST have no transaction table,
+				    // ---- so this work-order level total is the only complete cost figure.
+				    Cost = Table.AddColumn(F9, "ActualTotalCost",
+				            each [ACTLABCOST] + [ACTMATCOST] + [ACTTOOLCOST] + [ACTSERVCOST],
+				            type number),
+				
+				    // ---- days to complete, for cycle-time analysis
+				    Cycle = Table.AddColumn(Cost, "DaysToComplete",
+				            each if [ActFinishDate] = null then null
+				                 else Duration.Days([ActFinishDate] - [ReportDate]), Int64.Type),
+				
+				    Final = Table.RemoveColumns(Cycle,
+				        {"REPORTDATE", "TARGSTARTDATE", "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

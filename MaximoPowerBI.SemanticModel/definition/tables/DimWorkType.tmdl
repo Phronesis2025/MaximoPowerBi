@@ -1,0 +1,69 @@
+table DimWorkType
+	lineageTag: 5c10f21c-b053-4587-95cc-8d8f03071aac
+
+	column WORKTYPE
+		dataType: string
+		lineageTag: 556ebd88-82df-4a86-bb11-891cfafb9265
+		summarizeBy: none
+		sourceColumn: WORKTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkTypeName
+		dataType: string
+		lineageTag: cd2c42c7-6d8c-41f2-913b-3583a211ee16
+		summarizeBy: none
+		sourceColumn: WorkTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkTypeGroup
+		dataType: string
+		lineageTag: 089c53b3-6859-4291-93ef-edb1bd960247
+		summarizeBy: none
+		sourceColumn: WorkTypeGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: 99c61c05-2129-4531-a593-9c67d6bb05b7
+		summarizeBy: sum
+		sourceColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimWorkType = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimWorkType
+				   A hand-built dimension. The planned/reactive split lives here as DATA, so
+				   changing the classification never means editing a measure.
+				   ============================================================================ */
+				let
+				    Source = #table(
+				        type table [
+				            WORKTYPE = text,
+				            WorkTypeName = text,
+				            WorkTypeGroup = text,
+				            SortOrder = Int64.Type
+				        ],
+				        {
+				            {"PM",   "Preventive",  "Planned",  1},
+				            {"PDM",  "Predictive",  "Planned",  2},
+				            {"INSP", "Inspection",  "Planned",  3},
+				            {"PROJ", "Project",     "Planned",  4},
+				            {"SAF",  "Safety",      "Planned",  5},
+				            {"CM",   "Corrective",  "Reactive", 6},
+				            {"EM",   "Emergency",   "Reactive", 7}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

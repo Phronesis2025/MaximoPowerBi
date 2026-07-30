@@ -1,0 +1,102 @@
+table DimLabor
+	lineageTag: 2723ee8c-4fde-422a-8890-7e9e3f088f30
+
+	column LABORCODE
+		dataType: string
+		lineageTag: 48e119d8-fd16-4fb8-b555-3751d8b6207b
+		summarizeBy: none
+		sourceColumn: LABORCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column DISPLAYNAME
+		dataType: string
+		lineageTag: fc2980f2-2a19-4b3c-b3a2-dcb06fdb6f1c
+		summarizeBy: none
+		sourceColumn: DISPLAYNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRAFT
+		dataType: string
+		lineageTag: 5e868382-427c-47e0-b71e-8d82646a3219
+		summarizeBy: none
+		sourceColumn: CRAFT
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: 277150fa-33d4-4be7-8c2b-2927afeea22a
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: d6e5f126-7046-4c3e-9bb6-fca33e147fe3
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column HIREDATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 34c28161-5943-4830-a27d-862f74c9c080
+		summarizeBy: none
+		sourceColumn: HIREDATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PAYRATE
+		dataType: double
+		lineageTag: 4a4a2100-abfc-469b-b5b9-2ffea0d035ea
+		summarizeBy: sum
+		sourceColumn: PAYRATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsWrenchCraft
+		dataType: int64
+		formatString: 0
+		lineageTag: 5063f976-96a0-437e-b83a-6a029b3994e0
+		summarizeBy: sum
+		sourceColumn: IsWrenchCraft
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimLabor = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimLabor
+				   IsWrenchCraft excludes planners and supervisors - they do not burn down the
+				   work-order backlog, so they must not inflate the capacity denominator.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("LABOR.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"LABORCODE", type text}, {"PERSONID", type text}, {"DISPLAYNAME", type text},
+				         {"CRAFT", type text}, {"SITEID", type text}, {"STATUS", type text},
+				         {"HIREDATE", type date}, {"PAYRATE", type number}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"LABORCODE", "DISPLAYNAME", "CRAFT", "SITEID", "STATUS", "HIREDATE", "PAYRATE"}),
+				    Wrench = Table.AddColumn(Kept, "IsWrenchCraft",
+				        each if [STATUS] = "ACTIVE" and not List.Contains({"SUPV", "PLAN"}, [CRAFT])
+				        then 1 else 0, Int64.Type)
+				in
+				    Wrench
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

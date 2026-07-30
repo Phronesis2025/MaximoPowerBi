@@ -1,0 +1,36 @@
+expression pSourceFolder = "C:\dev\MaximoPowerBi\data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 51dd8681-21e6-4776-8450-9a6d024e62dc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression pCulture = "en-US" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 077a14b1-da1a-47d8-9f55-1a7839604562
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression fnLoadCsv =
+		/* ============================================================================
+		   QUERY: fnLoadCsv                (function)
+		   ============================================================================ */
+		let
+		    fnLoadCsv = (fileName as text) as table =>
+		        let
+		            Source = Csv.Document(
+		                File.Contents(pSourceFolder & "\" & fileName),
+		                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+		            ),
+		            Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true])
+		        in
+		            Promoted
+		in
+		    fnLoadCsv
+	lineageTag: 8193499b-4aae-4942-990f-b728fdcefcce
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+

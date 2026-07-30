@@ -1,0 +1,96 @@
+table DimLocation
+	lineageTag: 2f2972ac-b05e-4aed-a598-b3bf56ad2433
+
+	column LOCATION
+		dataType: string
+		lineageTag: 6d66f4b2-3f12-4477-8c21-53860408688c
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column DESCRIPTION
+		dataType: string
+		lineageTag: a81936b5-013e-4f29-808c-aa7a6c630e38
+		summarizeBy: none
+		sourceColumn: DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: 80b347c3-5f42-4725-bbce-a6bbad593491
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TYPE
+		dataType: string
+		lineageTag: ac4199dd-67c4-4090-b35b-b8a5d038c516
+		summarizeBy: none
+		sourceColumn: TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: 23af1f62-f1cf-4ea2-8f9e-a29a27ce837b
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column PARENT
+		dataType: string
+		lineageTag: 69501a8b-447e-4754-a6b5-3ee9ab36b7c4
+		summarizeBy: none
+		sourceColumn: PARENT
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLACCOUNT
+		dataType: string
+		lineageTag: 99deb917-a3af-4c41-ade4-af3d29187d5a
+		summarizeBy: none
+		sourceColumn: GLACCOUNT
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsOperating
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d0f07fd-c80a-45d6-a786-70d994fff306
+		summarizeBy: sum
+		sourceColumn: IsOperating
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimLocation = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimLocation
+				   ALL location types are kept, not just OPERATING, because FactMaterial
+				   references storeroom locations. IsOperating flags the difference.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("LOCATIONS.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"LOCATION", type text}, {"DESCRIPTION", type text}, {"SITEID", type text},
+				         {"TYPE", type text}, {"STATUS", type text}, {"PARENT", type text},
+				         {"GLACCOUNT", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"LOCATION", "DESCRIPTION", "SITEID", "TYPE", "STATUS", "PARENT", "GLACCOUNT"}),
+				    Flag = Table.AddColumn(Kept, "IsOperating",
+				        each if [TYPE] = "OPERATING" then 1 else 0, Int64.Type)
+				in
+				    Flag
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

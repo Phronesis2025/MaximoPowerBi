@@ -1,0 +1,95 @@
+table FactDowntime
+	lineageTag: a1bf65f8-84a6-4a4e-903d-a2e42c5f4049
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: 2131ad82-856a-447e-97b3-59f2d347ee36
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column WONUM
+		dataType: string
+		lineageTag: e57d04f4-a874-4191-a1cf-d52db66e2013
+		summarizeBy: none
+		sourceColumn: WONUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: c6decb91-270c-43b1-815a-b88706e6b8fe
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DOWNTIME
+		dataType: double
+		lineageTag: ddbc6ac3-adfc-41c3-9b51-8870d6643c8e
+		summarizeBy: sum
+		sourceColumn: DOWNTIME
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TYPE
+		dataType: string
+		lineageTag: 5dda02d9-7590-4076-a8d6-f9676dd054ed
+		summarizeBy: none
+		sourceColumn: TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column PROBLEMCODE
+		dataType: string
+		lineageTag: 726fc283-cd58-40af-bc55-844a43d39e81
+		summarizeBy: none
+		sourceColumn: PROBLEMCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column DowntimeStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 716c67f8-b71c-4aa7-87e8-9eac3d82a9f7
+		summarizeBy: none
+		sourceColumn: DowntimeStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition FactDowntime = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactDowntime
+				   DOWNTIME is ELAPSED wall-clock hours. Do not substitute ACTLABHRS - three
+				   technicians for four hours is 12 labour hours but 4 hours of downtime, and
+				   using labour hours inflates MTTR by roughly the crew size.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("DOWNTIMEREPORT.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"ASSETNUM", type text}, {"WONUM", type text}, {"SITEID", type text},
+				         {"DOWNTIMESTART", type datetime}, {"DOWNTIMEEND", type datetime},
+				         {"DOWNTIME", type number}, {"TYPE", type text}, {"PROBLEMCODE", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"ASSETNUM", "WONUM", "SITEID", "DOWNTIMESTART", "DOWNTIMEEND",
+				         "DOWNTIME", "TYPE", "PROBLEMCODE"}),
+				    DateCol = Table.AddColumn(Kept, "DowntimeStartDate",
+				        each Date.From([DOWNTIMESTART]), type date),
+				    Final = Table.RemoveColumns(DateCol, {"DOWNTIMESTART", "DOWNTIMEEND"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

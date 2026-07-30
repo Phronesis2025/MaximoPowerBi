@@ -1,0 +1,45 @@
+table ScheduleTolerance
+	lineageTag: fe5b4e82-c18a-4c4f-b1fa-88adbf8ef8a4
+
+	column Days
+		dataType: int64
+		formatString: 0
+		lineageTag: a5b50422-c5ff-4a34-898a-d0fdb5249a47
+		summarizeBy: sum
+		sourceColumn: Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToleranceLabel
+		dataType: string
+		lineageTag: 1ae2a722-4c44-41aa-b0f7-b99507e61b3f
+		summarizeBy: none
+		sourceColumn: ToleranceLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ScheduleTolerance = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: ScheduleTolerance     (disconnected what-if table)
+				   Feeds the Schedule Compliance % measure. Leave it UNRELATED to everything.
+				   ============================================================================ */
+				let
+				    Source = #table(
+				        type table [Days = Int64.Type, ToleranceLabel = text],
+				        {
+				            {0, "Same day"},
+				            {1, "Within 1 day"},
+				            {2, "Within 2 days"},
+				            {3, "Within 3 days"},
+				            {7, "Within 1 week"}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

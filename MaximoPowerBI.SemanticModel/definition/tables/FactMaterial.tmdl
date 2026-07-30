@@ -1,0 +1,142 @@
+table FactMaterial
+	lineageTag: 382e9eac-69b1-4318-8985-258eba4a3105
+
+	column MATUSETRANSID
+		dataType: int64
+		formatString: 0
+		lineageTag: 48e519b5-50a1-49fa-b344-ee7b6734dbc3
+		summarizeBy: count
+		sourceColumn: MATUSETRANSID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WONUM
+		dataType: string
+		lineageTag: a3d20e88-58a5-46f4-ae8c-ed4c315d403f
+		summarizeBy: none
+		sourceColumn: WONUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: 4b1c2e9c-7079-4c55-bbac-3313d7b39d3c
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ITEMNUM
+		dataType: string
+		lineageTag: d9c082cf-b862-44e0-b486-6614f5a0d723
+		summarizeBy: none
+		sourceColumn: ITEMNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOCATION
+		dataType: string
+		lineageTag: b0e3eb3c-f445-4591-acf9-764b5cc048de
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUANTITY
+		dataType: double
+		lineageTag: 4f323f6a-7de8-4e8f-b776-bbac95fc8fb5
+		summarizeBy: sum
+		sourceColumn: QUANTITY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UNITCOST
+		dataType: double
+		lineageTag: 4287e8d2-7716-4026-841d-f87cc0664a30
+		summarizeBy: sum
+		sourceColumn: UNITCOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LINECOST
+		dataType: double
+		lineageTag: ca6347c8-4f50-4ee2-9563-49733d40909f
+		summarizeBy: sum
+		sourceColumn: LINECOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ISSUETYPE
+		dataType: string
+		lineageTag: ff31d4d6-b58e-4e59-ac35-9dd246a547ad
+		summarizeBy: none
+		sourceColumn: ISSUETYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f2c65422-e550-426e-889e-5a29b384a0fa
+		summarizeBy: none
+		sourceColumn: TransDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WORKTYPE
+		dataType: string
+		lineageTag: 7e6e7c59-9d66-4d8e-aca2-367bea7bb70f
+		summarizeBy: none
+		sourceColumn: WORKTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: 184fa5bd-3664-4f49-9cd1-17e546e73abb
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactMaterial = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactMaterial
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("MATUSETRANS.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"MATUSETRANSID", Int64.Type}, {"WONUM", type text}, {"SITEID", type text},
+				         {"ITEMNUM", type text}, {"LOCATION", type text}, {"QUANTITY", type number},
+				         {"UNITCOST", type number}, {"LINECOST", type number},
+				         {"TRANSDATE", type datetime}, {"ISSUETYPE", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"MATUSETRANSID", "WONUM", "SITEID", "ITEMNUM", "LOCATION", "QUANTITY",
+				         "UNITCOST", "LINECOST", "TRANSDATE", "ISSUETYPE"}),
+				    TransDate = Table.AddColumn(Kept, "TransDate",
+				        each Date.From([TRANSDATE]), type date),
+				    Joined = Table.NestedJoin(TransDate, {"WONUM"}, FactWorkOrder, {"WONUM"},
+				        "wo", JoinKind.LeftOuter),
+				    Expanded = Table.ExpandTableColumn(Joined, "wo",
+				        {"WORKTYPE", "ASSETNUM"}, {"WORKTYPE", "ASSETNUM"}),
+				    Final = Table.RemoveColumns(Expanded, {"TRANSDATE"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

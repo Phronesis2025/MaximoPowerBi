@@ -1,0 +1,175 @@
+table DimDate
+	lineageTag: ecbbb46a-47b5-48e4-89af-0c54eeab526a
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fe997ed8-40f7-47e9-acff-6a7786542134
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column YEAR
+		dataType: int64
+		formatString: 0
+		lineageTag: 16d3bc22-1fea-4adb-afad-362ed80b4f37
+		summarizeBy: sum
+		sourceColumn: YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUARTER
+		dataType: string
+		lineageTag: f6d80f77-71d1-47a3-990d-9f006b405d83
+		summarizeBy: none
+		sourceColumn: QUARTER
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHNUM
+		dataType: int64
+		formatString: 0
+		lineageTag: 47ae2021-9217-4a8c-8263-bc9bcee62cf3
+		summarizeBy: sum
+		sourceColumn: MONTHNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHSHORT
+		dataType: string
+		lineageTag: b75bc377-983d-454e-baa2-1750d91bd2e0
+		summarizeBy: none
+		sourceColumn: MONTHSHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column YEARMONTH
+		dataType: string
+		lineageTag: 5c906b34-c9b7-4d0c-9b2e-2a6e2b8f393e
+		summarizeBy: none
+		sourceColumn: YEARMONTH
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHYEARLABEL
+		dataType: string
+		lineageTag: 800bf510-4ec8-4130-a6ae-90d23043737c
+		summarizeBy: none
+		sourceColumn: MONTHYEARLABEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISOWEEK
+		dataType: int64
+		formatString: 0
+		lineageTag: 6da8b0f3-c45d-4123-8c57-29c4d6787754
+		summarizeBy: sum
+		sourceColumn: ISOWEEK
+
+		annotation SummarizationSetBy = Automatic
+
+	column DAYOFWEEK
+		dataType: int64
+		formatString: 0
+		lineageTag: 494115c3-757d-42e1-9a25-db0e65eefb43
+		summarizeBy: sum
+		sourceColumn: DAYOFWEEK
+
+		annotation SummarizationSetBy = Automatic
+
+	column DAYSHORT
+		dataType: string
+		lineageTag: dd9e7af7-8d09-4807-b9be-7b25f81d2c82
+		summarizeBy: none
+		sourceColumn: DAYSHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISWEEKEND
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d95b139-8c44-429d-aeec-a5e34aefd3e7
+		summarizeBy: sum
+		sourceColumn: ISWEEKEND
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCALYEAR
+		dataType: int64
+		formatString: 0
+		lineageTag: 1866a3d7-05be-4b77-9442-cf53cd2c6464
+		summarizeBy: sum
+		sourceColumn: FISCALYEAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCALPERIOD
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ce691e1-1113-4aa7-9e77-b14469ab5ff1
+		summarizeBy: sum
+		sourceColumn: FISCALPERIOD
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISPASTORTODAY
+		dataType: int64
+		formatString: 0
+		lineageTag: 4258ecd5-f033-4c44-9c63-319a00cb8b6c
+		summarizeBy: sum
+		sourceColumn: ISPASTORTODAY
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthSort
+		dataType: int64
+		formatString: 0
+		lineageTag: ce1b89ac-8bf2-416d-a194-dfbe9919fe6a
+		summarizeBy: sum
+		sourceColumn: MonthSort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimDate
+				   Mark as a date table on [Date] after loading.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("DIM_DATE.csv"),
+				    Renamed = Table.RenameColumns(Source, {{"DATE", "Date"}}),
+				    Typed = Table.TransformColumnTypes(
+				        Renamed,
+				        {
+				            {"Date", type date},
+				            {"YEAR", Int64.Type},
+				            {"QUARTER", type text},
+				            {"MONTHNUM", Int64.Type},
+				            {"MONTHSHORT", type text},
+				            {"YEARMONTH", type text},
+				            {"MONTHYEARLABEL", type text},
+				            {"ISOWEEK", Int64.Type},
+				            {"DAYOFWEEK", Int64.Type},
+				            {"DAYSHORT", type text},
+				            {"ISWEEKEND", Int64.Type},
+				            {"FISCALYEAR", Int64.Type},
+				            {"FISCALPERIOD", Int64.Type},
+				            {"ISPASTORTODAY", Int64.Type}
+				        },
+				        pCulture
+				    ),
+				    // sort keys so month names order chronologically, not alphabetically
+				    WithSort = Table.AddColumn(Typed, "MonthSort",
+				        each [YEAR] * 100 + [MONTHNUM], Int64.Type)
+				in
+				    WithSort
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

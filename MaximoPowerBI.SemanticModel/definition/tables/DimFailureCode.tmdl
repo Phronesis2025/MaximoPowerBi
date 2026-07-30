@@ -1,0 +1,55 @@
+table DimFailureCode
+	lineageTag: d2155765-86af-45cb-9226-337b1fae8cd4
+
+	column ProblemCode
+		dataType: string
+		lineageTag: d2a6db2f-12e3-48e3-b41e-66534a12e474
+		summarizeBy: none
+		sourceColumn: ProblemCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProblemName
+		dataType: string
+		lineageTag: 05ce5b50-d610-4963-b64c-29cfe2d4c100
+		summarizeBy: none
+		sourceColumn: ProblemName
+
+		annotation SummarizationSetBy = Automatic
+
+	column FailureClass
+		dataType: string
+		lineageTag: 342e5445-2c7a-48c6-9cd9-dd2000ee64e8
+		summarizeBy: none
+		sourceColumn: FailureClass
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimFailureCode = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimFailureCode
+				   Only PROBLEM-type codes are kept; this dimension joins to
+				   FactFailure[PROBLEMCODE]. Cause and remedy codes stay as fact attributes.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("FAILURECODE.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"FAILURECODE", type text}, {"DESCRIPTION", type text},
+				         {"PARENT", type text}, {"TYPE", type text}},
+				        pCulture
+				    ),
+				    Problems = Table.SelectRows(Typed, each [TYPE] = "PROBLEM"),
+				    Kept = Table.SelectColumns(Problems, {"FAILURECODE", "DESCRIPTION", "PARENT"}),
+				    Renamed = Table.RenameColumns(Kept,
+				        {{"FAILURECODE", "ProblemCode"}, {"DESCRIPTION", "ProblemName"},
+				         {"PARENT", "FailureClass"}})
+				in
+				    Renamed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

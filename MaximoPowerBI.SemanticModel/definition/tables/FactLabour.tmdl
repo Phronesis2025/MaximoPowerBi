@@ -1,0 +1,167 @@
+table FactLabour
+	lineageTag: c16d9729-a9e1-4e1a-a808-2323a18d15a8
+
+	column LABTRANSID
+		dataType: int64
+		formatString: 0
+		lineageTag: 67296203-f2ab-4107-a7b1-3c4473a02854
+		summarizeBy: count
+		sourceColumn: LABTRANSID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WONUM
+		dataType: string
+		lineageTag: 14b99c12-6e0b-4cc9-b94b-b9b72086325b
+		summarizeBy: none
+		sourceColumn: WONUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: 88126b16-56c3-4b77-8169-41c1a78e5da9
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LABORCODE
+		dataType: string
+		lineageTag: ab947282-bfbe-4b6d-85a7-f1fc36e665fe
+		summarizeBy: none
+		sourceColumn: LABORCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRAFT
+		dataType: string
+		lineageTag: 8ef77ba0-1209-4f31-9d6f-ae27bf0733e2
+		summarizeBy: none
+		sourceColumn: CRAFT
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGULARHRS
+		dataType: double
+		lineageTag: 3e79d795-9b4f-45fd-abbb-a2f1173e713b
+		summarizeBy: sum
+		sourceColumn: REGULARHRS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PREMIUMPAYHOURS
+		dataType: double
+		lineageTag: 442c8825-a7a3-4092-96d2-4ff217d5b27a
+		summarizeBy: sum
+		sourceColumn: PREMIUMPAYHOURS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PAYRATE
+		dataType: double
+		lineageTag: ca89ef25-f866-41a7-a72d-55e813d35e08
+		summarizeBy: sum
+		sourceColumn: PAYRATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LINECOST
+		dataType: double
+		lineageTag: 0dcc4f92-5798-4d61-8b41-cbc6c19954b8
+		summarizeBy: sum
+		sourceColumn: LINECOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TRANSTYPE
+		dataType: string
+		lineageTag: c03e7a2f-87aa-46a1-9d83-ae51f70d68ee
+		summarizeBy: none
+		sourceColumn: TRANSTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 550786a7-daec-48c0-9459-e14301df2508
+		summarizeBy: none
+		sourceColumn: TransDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TotalHours
+		dataType: double
+		lineageTag: eddf03a9-a681-4c81-b44f-6a816325c381
+		summarizeBy: sum
+		sourceColumn: TotalHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WORKTYPE
+		dataType: string
+		lineageTag: b113a227-6423-4aa9-90bc-aec5c5e6005b
+		summarizeBy: none
+		sourceColumn: WORKTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: 32121e5f-7fbb-4ea5-8b15-56bccf354d98
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactLabour = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactLabour
+				   WORKTYPE is merged in from WORKORDER so labour can be split planned vs
+				   reactive WITHOUT a fact-to-fact relationship. See the header note.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("LABTRANS.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"LABTRANSID", Int64.Type}, {"WONUM", type text}, {"SITEID", type text},
+				         {"LABORCODE", type text}, {"CRAFT", type text}, {"TRANSDATE", type datetime},
+				         {"REGULARHRS", type number}, {"PREMIUMPAYHOURS", type number},
+				         {"PAYRATE", type number}, {"LINECOST", type number}, {"TRANSTYPE", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"LABTRANSID", "WONUM", "SITEID", "LABORCODE", "CRAFT", "TRANSDATE",
+				         "REGULARHRS", "PREMIUMPAYHOURS", "PAYRATE", "LINECOST", "TRANSTYPE"}),
+				    TransDate = Table.AddColumn(Kept, "TransDate",
+				        each Date.From([TRANSDATE]), type date),
+				    TotalHrs = Table.AddColumn(TransDate, "TotalHours",
+				        each [REGULARHRS] + [PREMIUMPAYHOURS], type number),
+				    // denormalise the work-order classification
+				    Joined = Table.NestedJoin(TotalHrs, {"WONUM"}, FactWorkOrder, {"WONUM"},
+				        "wo", JoinKind.LeftOuter),
+				    Expanded = Table.ExpandTableColumn(Joined, "wo",
+				        {"WORKTYPE", "ASSETNUM"}, {"WORKTYPE", "ASSETNUM"}),
+				    Final = Table.RemoveColumns(Expanded, {"TRANSDATE"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

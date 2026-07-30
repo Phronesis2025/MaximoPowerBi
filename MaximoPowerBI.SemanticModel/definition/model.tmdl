@@ -4,12 +4,33 @@ model Model
 	sourceQueryCulture: en-US
 	valueFilterBehavior: independent
 	dataAccessOptions
+		fastCombine
 		legacyRedirects
 		returnErrorValuesAsNull
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["pSourceFolder","pCulture","fnLoadCsv","DimDate","DimAsset","DimLocation","DimSite","DimWorkType","DimStatus","DimCraft","DimLabor","DimItem","DimFailureCode","ScheduleTolerance","FactWorkOrder","FactLabour","FactMaterial","FactDowntime","FactFailure","FactMeterReading"]
+
+ref table DimDate
+ref table DimAsset
+ref table DimLocation
+ref table DimSite
+ref table DimWorkType
+ref table DimStatus
+ref table DimCraft
+ref table DimLabor
+ref table DimItem
+ref table DimFailureCode
+ref table ScheduleTolerance
+ref table FactWorkOrder
+ref table FactLabour
+ref table FactMaterial
+ref table FactDowntime
+ref table FactFailure
+ref table FactMeterReading
 
 ref cultureInfo en-US
 

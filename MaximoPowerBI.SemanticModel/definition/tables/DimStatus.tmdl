@@ -1,0 +1,66 @@
+table DimStatus
+	lineageTag: 50e23acd-48f8-470b-93aa-675e781f5821
+
+	column STATUS
+		dataType: string
+		lineageTag: 090146d2-fefa-446a-b0c1-416038f269c6
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column StatusName
+		dataType: string
+		lineageTag: a081fe27-eec8-4a45-9b80-1bf565d9d8c7
+		summarizeBy: none
+		sourceColumn: StatusName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StatusGroup
+		dataType: string
+		lineageTag: 323f8d04-9fb5-4e29-b5f2-57ead5bc4e4e
+		summarizeBy: none
+		sourceColumn: StatusGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: f9ddc283-0307-40c2-8378-e50d057b4aad
+		summarizeBy: sum
+		sourceColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimStatus = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimStatus
+				   ============================================================================ */
+				let
+				    Source = #table(
+				        type table [
+				            STATUS = text,
+				            StatusName = text,
+				            StatusGroup = text,
+				            SortOrder = Int64.Type
+				        ],
+				        {
+				            {"WAPPR", "Waiting on Approval", "Open",      1},
+				            {"APPR",  "Approved",            "Open",      2},
+				            {"INPRG", "In Progress",         "Open",      3},
+				            {"COMP",  "Completed",           "Closed",    4},
+				            {"CLOSE", "Closed",              "Closed",    5},
+				            {"CAN",   "Cancelled",           "Cancelled", 6}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

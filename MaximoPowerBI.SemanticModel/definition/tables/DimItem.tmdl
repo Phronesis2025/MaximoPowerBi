@@ -1,0 +1,76 @@
+table DimItem
+	lineageTag: 0b774bf2-4db1-4753-9862-8339ecd76fc7
+
+	column ITEMNUM
+		dataType: string
+		lineageTag: c4a8314f-d647-4efd-9267-d0e3df3ebd9b
+		summarizeBy: none
+		sourceColumn: ITEMNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemName
+		dataType: string
+		lineageTag: 37132b2d-4589-4224-982c-fa6d406e3100
+		summarizeBy: none
+		sourceColumn: ItemName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISSUEUNIT
+		dataType: string
+		lineageTag: eff45f5e-f787-4046-a01b-ec16c9083b2a
+		summarizeBy: none
+		sourceColumn: ISSUEUNIT
+
+		annotation SummarizationSetBy = Automatic
+
+	column COMMODITYGROUP
+		dataType: string
+		lineageTag: 2f2b3fa8-91be-4cc7-981e-b66bf3bbca4d
+		summarizeBy: none
+		sourceColumn: COMMODITYGROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column ROTATING
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a211e88-7ef7-4d22-a96d-728024f4c808
+		summarizeBy: sum
+		sourceColumn: ROTATING
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: 085ce86c-811b-4f71-afd6-b9a7ac58fc01
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimItem = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimItem
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("ITEM.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"ITEMNUM", type text}, {"DESCRIPTION", type text}, {"ISSUEUNIT", type text},
+				         {"COMMODITYGROUP", type text}, {"ROTATING", Int64.Type}, {"STATUS", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"ITEMNUM", "DESCRIPTION", "ISSUEUNIT", "COMMODITYGROUP", "ROTATING", "STATUS"}),
+				    Renamed = Table.RenameColumns(Kept, {{"DESCRIPTION", "ItemName"}})
+				in
+				    Renamed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

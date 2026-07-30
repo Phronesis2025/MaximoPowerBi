@@ -1,0 +1,62 @@
+table DimCraft
+	lineageTag: 555ada92-612c-478e-8393-91935b44e088
+
+	column CRAFT
+		dataType: string
+		lineageTag: ae1c18df-9f03-4cc9-9150-b6e1bdca9a16
+		summarizeBy: none
+		sourceColumn: CRAFT
+
+		annotation SummarizationSetBy = Automatic
+
+	column CraftName
+		dataType: string
+		lineageTag: e955fa8b-132c-42fa-9536-ac53917db38a
+		summarizeBy: none
+		sourceColumn: CraftName
+
+		annotation SummarizationSetBy = Automatic
+
+	column STDRATE
+		dataType: double
+		lineageTag: 38610653-f640-4826-a480-9187952db63b
+		summarizeBy: sum
+		sourceColumn: STDRATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PREMIUMRATE
+		dataType: double
+		lineageTag: 91f81686-5a40-41a3-9d8e-d431421f9ef9
+		summarizeBy: sum
+		sourceColumn: PREMIUMRATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimCraft = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimCraft
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("CRAFT.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"CRAFT", type text}, {"DESCRIPTION", type text}, {"ORGID", type text},
+				         {"STDRATE", type number}, {"PREMIUMRATE", type number}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed, {"CRAFT", "DESCRIPTION", "STDRATE", "PREMIUMRATE"}),
+				    Renamed = Table.RenameColumns(Kept, {{"DESCRIPTION", "CraftName"}})
+				in
+				    Renamed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

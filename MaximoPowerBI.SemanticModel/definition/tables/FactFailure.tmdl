@@ -1,0 +1,99 @@
+table FactFailure
+	lineageTag: 77ae6b2f-c393-4603-a288-e9046559e075
+
+	column WONUM
+		dataType: string
+		lineageTag: 240760e3-cce1-4d06-8c8e-c55498efcbec
+		summarizeBy: none
+		sourceColumn: WONUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: b04e8f19-4dc2-4034-aedd-a74011b3ffe6
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: ccd90e4e-e0c4-472a-9c11-8b80cea07eb1
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FAILURECODE
+		dataType: string
+		lineageTag: ff1d511e-7b67-400e-bb32-970750115da1
+		summarizeBy: none
+		sourceColumn: FAILURECODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column PROBLEMCODE
+		dataType: string
+		lineageTag: ff3278a2-6581-4c20-86b2-cf3b03abe17b
+		summarizeBy: none
+		sourceColumn: PROBLEMCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAUSECODE
+		dataType: string
+		lineageTag: e38c4cff-ad5e-49d8-a12e-a3ff7de5f575
+		summarizeBy: none
+		sourceColumn: CAUSECODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column REMEDYCODE
+		dataType: string
+		lineageTag: 68281a52-c404-4c81-bd24-7a854fd935bf
+		summarizeBy: none
+		sourceColumn: REMEDYCODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column FailureDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a77a3fe9-a996-41a8-a27f-b2e9e501b738
+		summarizeBy: none
+		sourceColumn: FailureDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition FactFailure = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactFailure
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("FAILUREREPORT.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"WONUM", type text}, {"ASSETNUM", type text}, {"LOCATION", type text},
+				         {"SITEID", type text}, {"FAILURECODE", type text}, {"PROBLEMCODE", type text},
+				         {"CAUSECODE", type text}, {"REMEDYCODE", type text},
+				         {"REPORTDATE", type datetime}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"WONUM", "ASSETNUM", "SITEID", "FAILURECODE", "PROBLEMCODE",
+				         "CAUSECODE", "REMEDYCODE", "REPORTDATE"}),
+				    DateCol = Table.AddColumn(Kept, "FailureDate",
+				        each Date.From([REPORTDATE]), type date),
+				    Final = Table.RemoveColumns(DateCol, {"REPORTDATE"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

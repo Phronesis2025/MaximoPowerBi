@@ -18,3 +18,7 @@
 __pycache__/
 *.pyc
 .venv/
+
+# extracted sample data - the CSVs are distributed as the tracked
+# maximo-sample-data-csv.zip and extracted locally into data/
+/data/

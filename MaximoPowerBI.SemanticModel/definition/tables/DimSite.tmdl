@@ -1,0 +1,78 @@
+table DimSite
+	lineageTag: b566670e-bcb2-4b0d-a973-d7bdc4d57f6c
+
+	column SITEID
+		dataType: string
+		lineageTag: 8169ce41-b995-4235-8e73-59d49c2db4b2
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteName
+		dataType: string
+		lineageTag: 213ef68b-fbc2-46cc-9494-cc67f11624cd
+		summarizeBy: none
+		sourceColumn: SiteName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORGID
+		dataType: string
+		lineageTag: 83fa0c04-c818-4b62-9347-22add2f4b125
+		summarizeBy: none
+		sourceColumn: ORGID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrgDescription
+		dataType: string
+		lineageTag: 6a79767e-d16e-4ead-9324-3d691ef01736
+		summarizeBy: none
+		sourceColumn: OrgDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column CITY
+		dataType: string
+		lineageTag: 18f84987-0e6a-4fd7-bf0e-3290efa7746a
+		summarizeBy: none
+		sourceColumn: CITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATE
+		dataType: string
+		lineageTag: 1254d94c-56f6-479b-a30d-cb2bd1ecaf99
+		summarizeBy: none
+		sourceColumn: STATE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimSite = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimSite
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("SITE.csv"),
+				    Org = fnLoadCsv("ORGANIZATION.csv"),
+				    Merged = Table.NestedJoin(Source, {"ORGID"}, Org, {"ORGID"}, "org", JoinKind.LeftOuter),
+				    Expanded = Table.ExpandTableColumn(Merged, "org", {"DESCRIPTION"}, {"OrgDescription"}),
+				    Typed = Table.TransformColumnTypes(
+				        Expanded,
+				        {{"SITEID", type text}, {"ORGID", type text}, {"DESCRIPTION", type text},
+				         {"CITY", type text}, {"STATE", type text}, {"OrgDescription", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"SITEID", "DESCRIPTION", "ORGID", "OrgDescription", "CITY", "STATE"}),
+				    Renamed = Table.RenameColumns(Kept, {{"DESCRIPTION", "SiteName"}})
+				in
+				    Renamed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

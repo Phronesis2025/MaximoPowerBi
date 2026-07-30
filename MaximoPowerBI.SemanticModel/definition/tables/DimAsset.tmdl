@@ -1,0 +1,180 @@
+table DimAsset
+	lineageTag: 5d7c3ea9-10ad-423a-abb0-c3457f3a899b
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: ac0b212f-5e18-40a3-a2b0-132ace464111
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column DESCRIPTION
+		dataType: string
+		lineageTag: 519370c6-dbe4-428f-9751-1ab74f7fd758
+		summarizeBy: none
+		sourceColumn: DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: f67bce20-ccda-4c30-b11a-65e2590fa62b
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOCATION
+		dataType: string
+		lineageTag: 289e4f25-6a42-440a-84f1-c71808f3aa4f
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column PARENT
+		dataType: string
+		lineageTag: c686faaa-0ad7-4811-bef9-ecec19e6a65a
+		summarizeBy: none
+		sourceColumn: PARENT
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: 6e763a3d-7aa6-4f73-9f22-d099520ff677
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSETTYPE
+		dataType: string
+		lineageTag: 1dfa3a05-f039-47cb-b6d6-42790e39ab65
+		summarizeBy: none
+		sourceColumn: ASSETTYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column MANUFACTURER
+		dataType: string
+		lineageTag: 430f5aa7-b9d8-496a-b1c7-30388cbaf1ec
+		summarizeBy: none
+		sourceColumn: MANUFACTURER
+
+		annotation SummarizationSetBy = Automatic
+
+	column INSTALLDATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d66081dd-7df0-46c7-8b98-429fd3e9e63a
+		summarizeBy: none
+		sourceColumn: INSTALLDATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column REPLACECOST
+		dataType: double
+		lineageTag: e7574455-9362-424a-802c-22f54c1e62f9
+		summarizeBy: sum
+		sourceColumn: REPLACECOST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CRITICALITY
+		dataType: int64
+		formatString: 0
+		lineageTag: 145b3856-dd67-4a55-b0b6-3fbc44471ad0
+		summarizeBy: sum
+		sourceColumn: CRITICALITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CriticalityLabel
+		dataType: string
+		lineageTag: 28138dbc-e7ae-441f-aea8-3e6c5da04d30
+		summarizeBy: none
+		sourceColumn: CriticalityLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssetAgeYears
+		dataType: double
+		lineageTag: b0896ded-025c-4f4d-a895-e3c989bb4fe6
+		summarizeBy: sum
+		sourceColumn: AssetAgeYears
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimAsset = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: DimAsset
+				   Includes an "(none)" unknown member so location-only work orders are not
+				   silently dropped from asset-sliced visuals.
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("ASSET.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {
+				            {"ASSETNUM", type text},
+				            {"DESCRIPTION", type text},
+				            {"SITEID", type text},
+				            {"LOCATION", type text},
+				            {"PARENT", type text},
+				            {"STATUS", type text},
+				            {"ASSETTYPE", type text},
+				            {"MANUFACTURER", type text},
+				            {"INSTALLDATE", type date},
+				            {"REPLACECOST", type number},
+				            {"CRITICALITY", Int64.Type}
+				        },
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"ASSETNUM", "DESCRIPTION", "SITEID", "LOCATION", "PARENT", "STATUS",
+				         "ASSETTYPE", "MANUFACTURER", "INSTALLDATE", "REPLACECOST", "CRITICALITY"}),
+				    // blank PARENT means top of the hierarchy, not missing data
+				    CleanParent = Table.TransformColumns(Kept,
+				        {{"PARENT", each if _ = null or _ = "" then null else _, type text}}),
+				    Label = Table.AddColumn(CleanParent, "CriticalityLabel",
+				        each if [CRITICALITY] = 1 then "1 - Critical"
+				        else if [CRITICALITY] = 2 then "2 - High"
+				        else if [CRITICALITY] = 3 then "3 - Medium"
+				        else "4 - Low", type text),
+				    Age = Table.AddColumn(Label, "AssetAgeYears",
+				        each if [INSTALLDATE] = null then null
+				        else Number.Round(Duration.Days(Date.From(DateTime.LocalNow()) - [INSTALLDATE]) / 365.25, 1),
+				        type number),
+				    // unknown member for location-only work
+				    WithUnknown = Table.InsertRows(Age, 0, {[
+				        ASSETNUM = "(none)",
+				        DESCRIPTION = "No asset - location-only work order",
+				        SITEID = null,
+				        LOCATION = null,
+				        PARENT = null,
+				        STATUS = "N/A",
+				        ASSETTYPE = "N/A",
+				        MANUFACTURER = null,
+				        INSTALLDATE = null,
+				        REPLACECOST = 0,
+				        CRITICALITY = null,
+				        CriticalityLabel = "Not applicable",
+				        AssetAgeYears = null
+				    ]})
+				in
+				    WithUnknown
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

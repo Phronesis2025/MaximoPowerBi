@@ -10,7 +10,7 @@ It does NOT verify DAX syntax - there is no Analysis Services engine here.
 
 import pandas as pd
 
-D = "/home/claude/out/data"
+D = "C:/dev/MaximoPowerBi/data"
 OPEN_STATUSES = ["WAPPR", "APPR", "INPRG"]
 REACTIVE_TYPES = ["CM", "EM"]
 
@@ -130,7 +130,7 @@ def m_sched_compliance(fact, tolerance_days):
 # harness cannot silently drift out of step with the generator.
 import re as _re
 
-def load_baselines(path="/home/claude/out/VALIDATION.txt"):
+def load_baselines(path="C:/dev/MaximoPowerBi/VALIDATION.txt"):
     v = open(path).read()
     keys = {
         "wo": r"work orders \(excl\. cancelled\) \.+ ([\d,]+)",

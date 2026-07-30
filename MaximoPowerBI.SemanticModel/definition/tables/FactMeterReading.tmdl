@@ -1,0 +1,83 @@
+table FactMeterReading
+	lineageTag: 596e1027-6709-4e9d-af42-b49614376cf0
+
+	column ASSETNUM
+		dataType: string
+		lineageTag: 5899b805-68d9-4294-a487-29127c53d2b1
+		summarizeBy: none
+		sourceColumn: ASSETNUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column SITEID
+		dataType: string
+		lineageTag: a1dc5a17-e288-44d6-a08c-d58f8772dd5c
+		summarizeBy: none
+		sourceColumn: SITEID
+
+		annotation SummarizationSetBy = Automatic
+
+	column METERNAME
+		dataType: string
+		lineageTag: a99e8432-ee62-4365-9938-62fff3d4ab80
+		summarizeBy: none
+		sourceColumn: METERNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column READING
+		dataType: double
+		lineageTag: b32fa5a5-484c-4f8f-ba6e-1d74e93946b7
+		summarizeBy: sum
+		sourceColumn: READING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MEASUREUNITID
+		dataType: string
+		lineageTag: 538f174c-7ae3-4905-b341-299032ca6fd8
+		summarizeBy: none
+		sourceColumn: MEASUREUNITID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReadingDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 238dac2d-57d0-48c6-aa96-4b34424454e9
+		summarizeBy: none
+		sourceColumn: ReadingDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition FactMeterReading = m
+		mode: import
+		source =
+				/* ============================================================================
+				   QUERY: FactMeterReading
+				   ============================================================================ */
+				let
+				    Source = fnLoadCsv("METERREADING.csv"),
+				    Typed = Table.TransformColumnTypes(
+				        Source,
+				        {{"ASSETNUM", type text}, {"SITEID", type text}, {"METERNAME", type text},
+				         {"READINGDATE", type datetime}, {"READING", type number},
+				         {"MEASUREUNITID", type text}},
+				        pCulture
+				    ),
+				    Kept = Table.SelectColumns(Typed,
+				        {"ASSETNUM", "SITEID", "METERNAME", "READINGDATE", "READING", "MEASUREUNITID"}),
+				    DateCol = Table.AddColumn(Kept, "ReadingDate",
+				        each Date.From([READINGDATE]), type date),
+				    Final = Table.RemoveColumns(DateCol, {"READINGDATE"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

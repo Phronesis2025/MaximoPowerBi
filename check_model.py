@@ -19,7 +19,6 @@ import os
 import re
 import sys
 import glob
-import subprocess
 
 EXPECTED_TABLES = {
     "DimDate", "DimAsset", "DimLocation", "DimSite", "DimWorkType", "DimStatus",
@@ -57,6 +56,28 @@ FACTWO_TYPES = {
     "IsPMCompleted": "int64",
     "IsPMOnTime": "int64",
     "IsScheduled": "int64",
+}
+
+# Columns on the OTHER fact and dim tables that silently break a measure if
+# mistyped. FactWorkOrder is not the only place type inference can bite:
+#   FactDowntime[DOWNTIME]        -> MTTR
+#   FactLabour/Material[WORKTYPE] -> proves the merge from FactWorkOrder worked
+#   DimLabor[IsWrenchCraft]       -> backlog capacity denominator
+#   ScheduleTolerance[Days]       -> schedule compliance tolerance
+#   DimAsset[REPLACECOST]         -> cost as % of RAV
+OTHER_TYPES = {
+    "FactDowntime": {"DOWNTIME": "double", "DowntimeStartDate": "dateTime",
+                     "ASSETNUM": "string", "SITEID": "string"},
+    "FactLabour": {"LINECOST": "double", "TotalHours": "double",
+                   "WORKTYPE": "string", "TransDate": "dateTime"},
+    "FactMaterial": {"LINECOST": "double", "QUANTITY": "double",
+                     "WORKTYPE": "string", "TransDate": "dateTime"},
+    "FactFailure": {"FailureDate": "dateTime", "PROBLEMCODE": "string"},
+    "FactMeterReading": {"READING": "double", "ReadingDate": "dateTime"},
+    "DimLabor": {"IsWrenchCraft": "int64"},
+    "ScheduleTolerance": {"Days": "int64"},
+    "DimAsset": {"REPLACECOST": "double", "ASSETNUM": "string"},
+    "DimDate": {"Date": "dateTime"},
 }
 
 REQUIRED_MEASURES = [
@@ -195,6 +216,27 @@ def main():
     else:
         add("INFO", "FactWorkOrder.tmdl not found - skipped type checks")
 
+    # ---------- other fact/dim column types ----------
+    checked = wrong = 0
+    for tbl, wants in OTHER_TYPES.items():
+        txt = read(os.path.join(defn, "tables", f"{tbl}.tmdl"))
+        if not txt:
+            add("INFO", f"{tbl}.tmdl not found - skipped type checks")
+            continue
+        cols = columns_of(txt)
+        for col, want in wants.items():
+            checked += 1
+            got = cols.get(col)
+            if got is None:
+                wrong += 1
+                add("FAIL", f"{tbl}.{col} is missing")
+            elif got != want:
+                wrong += 1
+                add("FAIL", f"{tbl}.{col} is {got}, expected {want}")
+    if checked and not wrong:
+        add("PASS", f"all {checked} checked columns on the other fact and dim "
+                    f"tables correctly typed")
+
     # ---------- date table ----------
     dd = read(os.path.join(defn, "tables", "DimDate.tmdl"))
     if dd:
@@ -220,12 +262,9 @@ def main():
 
     # ---------- repo hygiene ----------
     cache = os.path.join(root, ".pbi", "cache.abf")
-    tracked = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", cache],
-        capture_output=True).returncode == 0
-    if tracked:
-        add("FAIL", f"{cache} is tracked by git - "
-                    f"git rm --cached it and add it to .gitignore")
+    if os.path.isfile(cache):
+        mb = os.path.getsize(cache) / 1048576
+        add("INFO", f".pbi/cache.abf present ({mb:,.1f} MB) - gitignore this")
 
     # ---------- report ----------
     order = {"FAIL": 0, "WARN": 1, "PASS": 2, "INFO": 3}

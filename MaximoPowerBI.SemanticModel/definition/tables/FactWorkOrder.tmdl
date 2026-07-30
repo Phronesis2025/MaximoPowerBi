@@ -9,6 +9,301 @@ table FactWorkOrder
 		formatString: #,0
 		lineageTag: 9760519c-555e-43d1-a580-1df71e1f1d17
 
+	/// 1. REACTIVE MAINTENANCE %
+	/// (CM + EM) / all non-cancelled work orders.
+	/// Note a cancelled corrective work order still has IsReactive = 1, so the
+	/// cancelled filter is required on the numerator too.
+	/// Expected: 35.0% all sites
+	measure 'Reactive Maintenance %' =
+			VAR _Reactive =
+			    CALCULATE (
+			        SUM ( FactWorkOrder[IsReactive] ),
+			        FactWorkOrder[IsCancelled] = 0
+			    )
+			RETURN
+			    DIVIDE ( _Reactive, [Work Orders] )
+		formatString: 0.0%
+		lineageTag: 9f2a4b75-5716-4438-a543-7772df323521
+
+	/// 2. PM COMPLIANCE %
+	/// Completed PM work orders finished on or before TARGCOMPDATE.
+	/// Both numerator and denominator are pre-computed 0/1 columns in Power Query,
+	/// so this measure needs no filter arguments at all - a cancelled or still-open
+	/// PM has IsPMCompleted = 0 by construction.
+	/// The comparison behind IsPMOnTime uses DATE-only columns. Comparing raw
+	/// datetimes understates this by 22.1 points on this dataset (81.8% -> 59.7%).
+	/// Expected: 81.8% all sites
+	measure 'PM Compliance %' =
+			DIVIDE (
+			    SUM ( FactWorkOrder[IsPMOnTime] ),
+			    SUM ( FactWorkOrder[IsPMCompleted] )
+			)
+		formatString: 0.0%
+		lineageTag: d0cfecd9-b968-4d0e-b3e1-e70f1224679b
+
+	/// PM compliance is conventionally reported against the period the work was DUE,
+	/// not the period it was reported in. Grand totals are identical; the two differ
+	/// as soon as you put a month on the axis. Decide which one you mean and say so
+	/// on the report face.
+	measure 'PM Compliance % (by Due Date)' =
+			CALCULATE (
+			    [PM Compliance %],
+			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
+			)
+		formatString: 0.0%
+		lineageTag: 94e4a023-5b0a-4965-8213-a2263578b209
+
+	/// 3. SCHEDULE COMPLIANCE %
+	/// Scheduled work started within the tolerance window of SCHEDSTART.
+	/// This KPI is highly sensitive to the tolerance you pick - on this dataset
+	/// the all-sites figure moves from 21.6% (same day) to 87.0% (within a week).
+	/// That sensitivity is the point: expose the tolerance, never bury it.
+	/// 
+	/// SELECTEDVALUE's second argument is the default. Without it the measure
+	/// returns BLANK at a grand total or when nothing is selected, because
+	/// SELECTEDVALUE collapses when more than one row is in context.
+	/// Expected at tolerance 2: 71.9% all sites
+	measure 'Schedule Compliance %' =
+			VAR _Tolerance = SELECTEDVALUE ( ScheduleTolerance[Days], 2 )
+			VAR _Scheduled =
+			    CALCULATE (
+			        COUNTROWS ( FactWorkOrder ),
+			        FactWorkOrder[IsScheduled] = 1,
+			        FactWorkOrder[IsCancelled] = 0
+			    )
+			VAR _OnSchedule =
+			    CALCULATE (
+			        COUNTROWS ( FactWorkOrder ),
+			        FactWorkOrder[IsScheduled] = 1,
+			        FactWorkOrder[IsCancelled] = 0,
+			        FactWorkOrder[SchedStartVarianceDays] <= _Tolerance
+			    )
+			RETURN
+			    DIVIDE ( _OnSchedule, _Scheduled )
+		formatString: 0.0%
+		lineageTag: f81326a4-6d70-4bca-a0c6-728f871c8a5f
+
+	/// 4. MTTR (MEAN TIME TO REPAIR)
+	/// Elapsed downtime hours per downtime event.
+	/// FactDowntime[DOWNTIME] is wall-clock elapsed time. Do NOT substitute
+	/// ACTLABHRS: three technicians for four hours is 12 labour hours but 4 hours
+	/// of downtime, which inflates MTTR by roughly the crew size.
+	/// Expected: 13.45 h all sites
+	measure 'MTTR (Hours)' =
+			DIVIDE (
+			    SUM ( FactDowntime[DOWNTIME] ),
+			    COUNTROWS ( FactDowntime )
+			)
+		formatString: #,0.00
+		lineageTag: 710fb1ff-7ca4-4b02-927f-7d1082d0b8dd
+
+	/// 5. TOTAL MAINTENANCE COST
+	/// Labour + material + tool + service, at work-order level.
+	/// Work-order level is deliberate, not lazy: ACTTOOLCOST and ACTSERVCOST have
+	/// no transaction table, so summing FactLabour and FactMaterial would silently
+	/// drop 12.6% of spend. Labour and material do reconcile to the cent against
+	/// the transaction tables - see [Cost Reconciliation Check].
+	/// Expected: $28,706,414 all sites
+	measure 'Total Maintenance Cost' =
+			CALCULATE (
+			    SUM ( FactWorkOrder[ActualTotalCost] ),
+			    FactWorkOrder[IsCancelled] = 0
+			)
+		formatString: \$#,0
+		lineageTag: 0751b5fe-3335-40b7-9dbd-d801f821acf1
+
+	/// Should always return 0. If it does not, the fact tables are out of step.
+	measure 'Cost Reconciliation Check' =
+			VAR _WOLabour = CALCULATE ( SUM ( FactWorkOrder[ACTLABCOST] ), REMOVEFILTERS () )
+			VAR _TxLabour = CALCULATE ( SUM ( FactLabour[LINECOST] ), REMOVEFILTERS () )
+			VAR _WOMaterial = CALCULATE ( SUM ( FactWorkOrder[ACTMATCOST] ), REMOVEFILTERS () )
+			VAR _TxMaterial = CALCULATE ( SUM ( FactMaterial[LINECOST] ), REMOVEFILTERS () )
+			RETURN
+			    ROUND ( _WOLabour - _TxLabour, 2 ) + ROUND ( _WOMaterial - _TxMaterial, 2 )
+		formatString: #,0.00
+		lineageTag: 1db1921e-7a9b-4615-8b2e-ac827c728f2e
+
+	/// 6. BACKLOG
+	/// Open estimated labour hours, expressed in weeks of available craft capacity.
+	/// 
+	/// IMPORTANT - this is CURRENT-STATE backlog, not a historical trend.
+	/// "Open" is an attribute of the row as it stands today (STATUS in WAPPR /
+	/// APPR / INPRG), so REMOVEFILTERS(DimDate) is required: without it, slicing
+	/// by month silently changes the meaning to "work orders REPORTED that month
+	/// that happen to still be open", which is a different and much smaller
+	/// number. Trending backlog properly means reconstructing daily open state
+	/// from WOSTATUS - a snapshot fact table, not this measure.
+	/// 
+	/// Capacity is NOT in the Maximo data. It is derived from active hands-on
+	/// labour headcount x 40 hours. Planners and supervisors are excluded because
+	/// they do not burn down the work-order backlog.
+	/// Expected: 15,803.0 hours / 2,720 hours = 5.81 weeks all sites
+	measure 'Backlog Hours' =
+			CALCULATE (
+			    SUM ( FactWorkOrder[ESTLABHRS] ),
+			    FactWorkOrder[IsOpen] = 1,
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0.00
+		lineageTag: 4ce720fa-ae78-4bc4-a5fb-e8682616f493
+
+	/// TREATAS pushes the selected sites onto DimLabor without a relationship,
+	/// avoiding the ambiguous path a DimSite -> DimLabor relationship would create.
+	measure 'Weekly Craft Capacity (Hours)' =
+			VAR _Sites = VALUES ( DimSite[SITEID] )
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( DimLabor ) * 40,
+			        DimLabor[IsWrenchCraft] = 1,
+			        TREATAS ( _Sites, DimLabor[SITEID] )
+			    )
+		formatString: #,0
+		lineageTag: a0562e9a-bd69-4939-8935-d74b635c82bf
+
+	measure 'Backlog Weeks' = DIVIDE ( [Backlog Hours], [Weekly Craft Capacity (Hours)] )
+		formatString: #,0.00
+		lineageTag: 362be6ba-a69d-4d1e-8b98-3f8031a67cef
+
+	measure 'Operating Asset Count' =
+			CALCULATE (
+			    DISTINCTCOUNT ( DimAsset[ASSETNUM] ),
+			    DimAsset[STATUS] = "OPERATING",
+			    DimAsset[ASSETNUM] <> "(none)"
+			)
+		formatString: #,0
+		lineageTag: 7da965b1-7b5a-48f1-bf02-1cf7932cb2ae
+
+	/// The one place with a hardcoded date. 2023-07-01 is this dataset's window
+	/// start; ISPASTORTODAY already caps the upper bound at the window end. Change
+	/// the literal if you change START_DATE in the generator config. It is written
+	/// as a FILTER over DimDate rather than a constant so the measure still responds
+	/// correctly to a date slicer.
+	measure 'Analysis Days' =
+			COUNTROWS (
+			    FILTER (
+			        DimDate,
+			        DimDate[ISPASTORTODAY] = 1
+			            && DimDate[Date] >= DATE ( 2023, 7, 1 )
+			    )
+			)
+		formatString: #,0
+		lineageTag: f0db3124-6dea-4d60-a13d-58812216251a
+
+	measure 'Scheduled Asset Hours' = [Operating Asset Count] * [Analysis Days] * 24
+		formatString: #,0
+		lineageTag: 799dbbba-4861-4ddb-86a2-83653c245fe4
+
+	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
+	/// MTBF and availability both need asset OPERATING hours. Maximo only knows
+	/// those if a RUNHOURS meter is faithfully maintained; on this dataset only a
+	/// subset of assets carry one. The assumption used below is:
+	/// 
+	/// operating hours = operating asset count x calendar hours - reported downtime
+	/// 
+	/// Put that sentence on the report face. Do not present either measure as exact.
+	/// 
+	/// Two consequences worth understanding before you show these to anyone:
+	/// * Calendar hours assume 24/7 operation. Most assets do not run 24/7, so
+	/// availability computed this way FLATTERS every site - which is why all
+	/// three land above 99% here despite very different reliability. If the
+	/// business has scheduled runtime, use that as the denominator instead.
+	/// * MTBF is far more discriminating than availability under this assumption:
+	/// Bedford at 4,006 hours vs Houston at 908 is a 4.4x gap that the
+	/// availability figures almost completely hide.
+	/// 
+	/// Expected: 1,643 h all sites (Bedford 4,006 / Houston 908 / Aurora 1,956)
+	measure 'MTBF (Hours)' =
+			VAR _Scheduled = [Scheduled Asset Hours]
+			VAR _Downtime = SUM ( FactDowntime[DOWNTIME] )
+			VAR _Failures = COUNTROWS ( FactFailure )
+			RETURN
+			    DIVIDE ( _Scheduled - _Downtime, _Failures )
+		formatString: #,0.00
+		lineageTag: 1022a867-a2b8-4458-8075-c26c6a8b6521
+
+	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
+	/// MTBF and availability both need asset OPERATING hours. Maximo only knows
+	/// those if a RUNHOURS meter is faithfully maintained; on this dataset only a
+	/// subset of assets carry one. The assumption used below is:
+	/// 
+	/// operating hours = operating asset count x calendar hours - reported downtime
+	/// 
+	/// Put that sentence on the report face. Do not present either measure as exact.
+	/// 
+	/// Two consequences worth understanding before you show these to anyone:
+	/// * Calendar hours assume 24/7 operation. Most assets do not run 24/7, so
+	/// availability computed this way FLATTERS every site - which is why all
+	/// three land above 99% here despite very different reliability. If the
+	/// business has scheduled runtime, use that as the denominator instead.
+	/// * MTBF is far more discriminating than availability under this assumption:
+	/// Bedford at 4,006 hours vs Houston at 908 is a 4.4x gap that the
+	/// availability figures almost completely hide.
+	/// 
+	/// Expected: 99.55% all sites. See the caveat above about calendar hours.
+	measure 'Asset Availability %' =
+			VAR _Scheduled = [Scheduled Asset Hours]
+			VAR _Downtime = SUM ( FactDowntime[DOWNTIME] )
+			RETURN
+			    DIVIDE ( _Scheduled - _Downtime, _Scheduled )
+		formatString: 0.0%
+		lineageTag: f808a277-3525-44ca-a542-4dc7e991b2bc
+
+	measure 'Open Work Orders' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsOpen] = 1,
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0
+		lineageTag: 5aff65cc-34d2-44de-ace2-bd270c06b50a
+
+	measure 'Failure Events' = COUNTROWS ( FactFailure )
+		formatString: #,0
+		lineageTag: a285849b-8dab-4385-8bc1-49e47f08674b
+
+	measure 'Downtime Hours' = SUM ( FactDowntime[DOWNTIME] )
+		formatString: #,0.00
+		lineageTag: 25e79621-737b-4edf-b46a-6ed981d7e496
+
+	measure 'Actual Labour Hours' =
+			CALCULATE (
+			    SUM ( FactWorkOrder[ACTLABHRS] ),
+			    FactWorkOrder[IsCancelled] = 0
+			)
+		formatString: #,0.00
+		lineageTag: bb7c4723-36e5-4484-a681-f9107ca7ef96
+
+	/// Planned vs reactive labour split. Relies on WORKTYPE having been merged onto
+	/// FactLabour in Power Query - there is no fact-to-fact relationship to traverse.
+	measure 'Reactive Labour Hours' =
+			CALCULATE (
+			    SUM ( FactLabour[TotalHours] ),
+			    FactLabour[WORKTYPE] IN { "CM", "EM" }
+			)
+		formatString: #,0.00
+		lineageTag: ef2ac8a8-3d1e-4ce9-a4fb-64f49b47afd9
+
+	/// SMRP metric: maintenance cost as a percent of replacement asset value.
+	/// Best-in-class is 2-3% per year. This dataset runs at 6.0% overall
+	/// (Bedford 4.0%, Houston 7.1%, Aurora 6.6%) - an underperforming portfolio,
+	/// which is the story the data is built to tell.
+	measure 'Maintenance Cost % of RAV' =
+			VAR _Cost = [Total Maintenance Cost]
+			VAR _RAV =
+			    CALCULATE (
+			        SUM ( DimAsset[REPLACECOST] ),
+			        DimAsset[ASSETNUM] <> "(none)"
+			    )
+			VAR _Years = DIVIDE ( [Analysis Days], 365.25 )
+			RETURN
+			    DIVIDE ( DIVIDE ( _Cost, _Years ), _RAV )
+		formatString: 0.0%
+		lineageTag: 037349f9-4343-4532-883f-b2380cdfe1ee
+
+	measure 'Mean Days to Complete' = AVERAGE ( FactWorkOrder[DaysToComplete] )
+		formatString: #,0.00
+		lineageTag: 04a165ea-4fed-4590-945d-6331ecf2be75
+
 	column WONUM
 		dataType: string
 		lineageTag: 566bf75d-eb6f-4dff-a36e-12299448dfde

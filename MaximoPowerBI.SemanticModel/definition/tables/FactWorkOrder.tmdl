@@ -534,7 +534,11 @@ table FactWorkOrder
 	/// NOT the average of twelve monthly percentages. Averaging ratios weights a
 	/// quiet month the same as a busy one and gives a different, wrong answer.
 	measure 'Reactive Maintenance % (12M Rolling)' =
-			VAR _End = MAX ( DimDate[Date] )
+			// The window end is clamped to the data cutoff. Without the clamp, an
+			// unfiltered card evaluates MAX(DimDate[Date]) as 2026-12-31 - the calendar
+			// runs to year end - producing a Jan-Dec window that includes the future-dated
+			// PM months at 0% reactive and reads 30.5% instead of the correct 35.1%.
+			VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
 			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
 			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
 			VAR _FirstData =
@@ -561,7 +565,7 @@ table FactWorkOrder
 	/// The same treatment for PM compliance, for the second executive trend.
 	/// Sliced by DUE date, which is the convention for compliance reporting.
 	measure 'PM Compliance % (12M Rolling)' =
-			VAR _End = MAX ( DimDate[Date] )
+			VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
 			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
 			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
 			VAR _FirstData =

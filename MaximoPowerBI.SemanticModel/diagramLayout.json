@@ -101,7 +101,7 @@
         }
       ],
       "name": "01 Work Order Core",
-      "zoomValue": 80,
+      "zoomValue": 18.086898379399049,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -207,7 +207,7 @@
         }
       ],
       "name": "02 Cost and Labour",
-      "zoomValue": 80,
+      "zoomValue": 25.490465416828538,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -313,7 +313,7 @@
         }
       ],
       "name": "03 Reliability",
-      "zoomValue": 80,
+      "zoomValue": 32.042043779906571,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -546,16 +546,28 @@
             "width": 240
           },
           "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 2630,
+            "y": 872
+          },
+          "nodeIndex": "KPIDefinitions",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "99 All Tables",
-      "zoomValue": 28.419508051274118,
+      "zoomValue": 20.165216511761173,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "99 All Tables",
+  "selectedDiagram": "01 Work Order Core",
   "defaultDiagram": "99 All Tables"
 }

@@ -7,7 +7,7 @@
     "z": 0,
     "height": 972,
     "width": 760,
-    "tabOrder": 12000
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "shape",
@@ -69,6 +69,26 @@
                 }
               }
             }
+          }
+        }
+      ],
+      "outline": [
+        {
+          "properties": {
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ]

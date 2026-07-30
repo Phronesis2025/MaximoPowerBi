@@ -1,0 +1,125 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1ba2e887904d72eaadc0",
+  "position": {
+    "x": 21.028650327925561,
+    "y": 97.188816016568865,
+    "z": 1000,
+    "height": 534.44528822920267,
+    "width": 708.61719019675525,
+    "tabOrder": 13000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimWorkType"
+                    }
+                  },
+                  "Property": "WorkTypeName"
+                }
+              },
+              "queryRef": "DimWorkType.WorkTypeName",
+              "nativeQueryRef": "Type",
+              "displayName": "Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimWorkType"
+                    }
+                  },
+                  "Property": "WorkTypeGroup"
+                }
+              },
+              "queryRef": "DimWorkType.WorkTypeGroup",
+              "nativeQueryRef": "Category",
+              "displayName": "Category"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimWorkType"
+                    }
+                  },
+                  "Property": "WorkTypeDefinition"
+                }
+              },
+              "queryRef": "DimWorkType.WorkTypeDefinition",
+              "nativeQueryRef": "Definition",
+              "displayName": "Definition"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "489.9689116451158D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "DimWorkType.WorkTypeDefinition"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B3A57'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "d4af2ccc020c098bbad0"
+}

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "969cfc496d6c6a33cc8d",
   "position": {
-    "x": 940,
-    "y": 32,
-    "z": 1,
+    "x": 959.13841905419406,
+    "y": 25.486278909216431,
+    "z": 1000,
     "height": 54,
     "width": 280,
-    "tabOrder": 1
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -201,23 +201,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "b1a4813060eb396b4c00",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactWorkOrder"
-              }
-            },
-            "Property": "Data As Of Date"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

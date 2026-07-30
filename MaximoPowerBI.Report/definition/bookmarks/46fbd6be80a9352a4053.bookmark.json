@@ -1,0 +1,802 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Info Closed",
+  "name": "46fbd6be80a9352a4053",
+  "options": {
+    "targetVisualNames": []
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "910b00d66e2030d7d92e",
+    "sections": {
+      "910b00d66e2030d7d92e": {
+        "visualContainers": {
+          "505770dadedbd990302d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f9d04560b29ee6250377",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Maintenance Cost % of RAV"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Maintenance Cost % of RAV"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "6314d58907641ea696d7": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a99273c300b826e91976",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "70185440abc7ad881946",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimWorkType"
+                        }
+                      },
+                      "Property": "WORKTYPE"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "68b72fc0e60c820aa8e9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Work Orders"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Work Orders"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "6b8323220752bc8393e8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7d064e540a6e909196d8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Total Maintenance Cost"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Total Maintenance Cost"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "8e8ebe43c0203a4edab7": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "97edb7a3a471cc956623",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "969cfc496d6c6a33cc8d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "fb3e63404c643c2d2996",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Data As Of Date"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Data As Of Date"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "c74678006d7918c50080": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b4b7fca528cbcd92aac1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Reactive Maintenance %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Reactive Maintenance %"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "c9be581ed0156bb3805d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a77bea07030c15be9750",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "d",
+                        "Entity": "DimDate",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "d"
+                                    }
+                                  },
+                                  "Property": "ISPASTORTODAY"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "1L"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimDate"
+                        }
+                      },
+                      "Property": "ISPASTORTODAY"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "b785783812467a5d0daa",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimDate"
+                        }
+                      },
+                      "Property": "MONTHYEARLABEL"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cb12aea64230ed087b80",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "576dde982c144926452a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Reactive Maintenance %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimDate"
+                        }
+                      },
+                      "Property": "MONTHYEARLABEL"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimDate"
+                        }
+                      },
+                      "Property": "MONTHYEARLABEL"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "d5a3f920d2d3e4e3ba1d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7ffcca62867e8194699b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bbe93afca404edb48b91",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Work Orders"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "231d3c63e1a29edb4a47",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Reactive Maintenance %"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "80a9660802cbadeae737",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "PM Compliance %"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4039b693335273442cd9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Overdue %"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "068dc86665a32366c713",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "MTTR (Hours)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "311ffbf180d085260e4a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Backlog Weeks"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b8b0f6a2055e95d8a56d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Total Maintenance Cost"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "89ede28302e66ea6c8e1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Maintenance Cost % of RAV"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimSite"
+                        }
+                      },
+                      "Property": "SiteName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "f0d9dbb743c24d70a6e3": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f4297e3750c854c8ae95",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "PM Compliance %"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "PM Compliance %"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "f5e1a7cf32a452107550": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "4228da5f8c1b3d77b7c1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Backlog Weeks"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "Backlog Weeks"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "fa8ac0cf3074040b3176": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "3480ae12d8347d2d5c5e": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "9abbc036070b0e3544cb": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "1ba2e887904d72eaadc0": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "72dbad980109b480ce03",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimWorkType"
+                        }
+                      },
+                      "Property": "WorkTypeName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "56f1052c1ed68e609d1b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimWorkType"
+                        }
+                      },
+                      "Property": "WorkTypeGroup"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "630a33cfd19a310ee5b2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimWorkType"
+                        }
+                      },
+                      "Property": "WorkTypeDefinition"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "55be23680eccc007d7c0": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "d4af2ccc020c098bbad0": {
+            "isHidden": true
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              },
+              "visible": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

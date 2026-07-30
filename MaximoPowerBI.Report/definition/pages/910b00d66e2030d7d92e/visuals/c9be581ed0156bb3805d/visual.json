@@ -4,10 +4,10 @@
   "position": {
     "x": 36,
     "y": 300,
-    "z": 8,
+    "z": 8000,
     "height": 372,
     "width": 1140,
-    "tabOrder": 8
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "lineChart",
@@ -60,11 +60,11 @@
                       "Entity": "FactWorkOrder"
                     }
                   },
-                  "Property": "Reactive Maintenance %"
+                  "Property": "Reactive Maintenance % (12M Rolling)"
                 }
               },
-              "queryRef": "FactWorkOrder.Reactive Maintenance %",
-              "nativeQueryRef": "Reactive Maintenance %"
+              "queryRef": "FactWorkOrder.Reactive Maintenance % (12M Rolling)",
+              "nativeQueryRef": "Reactive Maintenance % (12M Rolling)"
             }
           ]
         }
@@ -243,48 +243,6 @@
   },
   "filterConfig": {
     "filters": [
-      {
-        "name": "30747830625567d27201",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DimDate"
-              }
-            },
-            "Property": "MONTHYEARLABEL"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e43bce7170e028084320",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DimSite"
-              }
-            },
-            "Property": "SiteName"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "30fe7a3c03d1d7db4ac0",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactWorkOrder"
-              }
-            },
-            "Property": "Reactive Maintenance %"
-          }
-        },
-        "type": "Advanced"
-      },
       {
         "name": "a77bea07030c15be9750",
         "field": {

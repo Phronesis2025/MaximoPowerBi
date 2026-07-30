@@ -18,13 +18,20 @@
 //   HOUSTON   43.8% -> 46.5%   (+2.7 pts)  steady degradation
 //   AURORA    35.1% -> 26.4%   (-8.6 pts)  converging toward Bedford
 //
+// EXPECTED ON AN UNFILTERED CARD - trailing 12 months, Aug 2025 to Jul 2026
+//   BEDFORD 21.3%   HOUSTON 46.5%   AURORA 26.5%   ALL 35.1%
+//
 // Note the ratio is computed as SUM(reactive) / SUM(total) across the window -
 // NOT the average of twelve monthly percentages. Averaging ratios weights a
 // quiet month the same as a busy one and gives a different, wrong answer.
 // =============================================================================
 
 Reactive Maintenance % (12M Rolling) =
-VAR _End = MAX ( DimDate[Date] )
+// The window end is clamped to the data cutoff. Without the clamp, an unfiltered
+// card evaluates MAX(DimDate[Date]) as 2026-12-31 - the calendar runs to year
+// end - producing a Jan-Dec window that includes the future-dated PM months at
+// 0% reactive and reads 30.5% instead of the correct 35.1%.
+VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
 VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
 VAR _WindowStart = MINX ( _Window, DimDate[Date] )
 VAR _FirstData =
@@ -50,7 +57,7 @@ RETURN
 // The same treatment for PM compliance, for the second executive trend.
 // Sliced by DUE date, which is the convention for compliance reporting.
 PM Compliance % (12M Rolling) =
-VAR _End = MAX ( DimDate[Date] )
+VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
 VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
 VAR _WindowStart = MINX ( _Window, DimDate[Date] )
 VAR _FirstData =

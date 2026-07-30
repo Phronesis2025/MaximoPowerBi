@@ -1,2 +1,20 @@
-**/.pbi/localSettings.json
+# Power BI Desktop local artifacts - never commit these
 **/.pbi/cache.abf
+**/.pbi/localSettings.json
+**/.pbi/editorSettings.json
+
+# localSettings.json contains machine-local paths, including the value of
+# pSourceFolder. Committing it leaks your directory structure and breaks the
+# repo for anyone else.
+
+# binary Power BI files - PBIP text is the source of truth
+*.pbix
+*.pbit
+
+# layout backups written by tidy_model_layout.py
+*.json.bak
+
+# Python
+__pycache__/
+*.pyc
+.venv/

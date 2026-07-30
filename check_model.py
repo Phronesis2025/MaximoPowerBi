@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import glob
+import subprocess
 
 EXPECTED_TABLES = {
     "DimDate", "DimAsset", "DimLocation", "DimSite", "DimWorkType", "DimStatus",
@@ -219,9 +220,12 @@ def main():
 
     # ---------- repo hygiene ----------
     cache = os.path.join(root, ".pbi", "cache.abf")
-    if os.path.isfile(cache):
-        mb = os.path.getsize(cache) / 1048576
-        add("INFO", f".pbi/cache.abf present ({mb:,.1f} MB) - gitignore this")
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", cache],
+        capture_output=True).returncode == 0
+    if tracked:
+        add("FAIL", f"{cache} is tracked by git - "
+                    f"git rm --cached it and add it to .gitignore")
 
     # ---------- report ----------
     order = {"FAIL": 0, "WARN": 1, "PASS": 2, "INFO": 3}

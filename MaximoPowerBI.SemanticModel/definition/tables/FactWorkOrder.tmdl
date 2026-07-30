@@ -1,3 +1,24 @@
+/// WHAT THIS MODEL CANNOT DO - do not build visuals that need these
+/// 
+/// BACKLOG BY CRAFT. There is no craft column on WORKORDER, and that is faithful
+/// to Maximo - craft lives on job plans and assignments, not the work order
+/// header. LABTRANS carries CRAFT but only for work already performed, so open
+/// work has none by definition. Use CREWID (9 crews) or WOPRIORITY instead;
+/// crew is the better operational cut anyway because it maps to how work is
+/// actually assigned.
+/// 
+/// SLA OR RESPONSE-TIME COMPLIANCE. No contract dimension and no SLA target
+/// fields exist. Adding a contract dimension keyed to site or location is the
+/// natural extension - name it as a roadmap item rather than faking it.
+/// 
+/// TECHNICIAN UTILISATION AGAINST AVAILABLE HOURS. Partially possible from
+/// LABTRANS hours against headcount x 40, but there is no attendance, leave, or
+/// non-productive time, so any "utilisation %" would be a ratio of two things
+/// that do not share a denominator. Show labour hours by craft instead.
+/// 
+/// A COMPOSITE ASSET HEALTH SCORE. Technically buildable, deliberately omitted.
+/// A single number blending failures, downtime, age, and cost is unfalsifiable
+/// without published weights, and invites the one question with no good answer.
 table FactWorkOrder
 	lineageTag: c82784aa-83d0-4c96-8655-5b7cbc942a71
 
@@ -303,6 +324,193 @@ table FactWorkOrder
 	measure 'Mean Days to Complete' = AVERAGE ( FactWorkOrder[DaysToComplete] )
 		formatString: #,0.00
 		lineageTag: 04a165ea-4fed-4590-945d-6331ecf2be75
+
+	/// COCKPIT MEASURES - current-state operational view
+	/// 
+	/// Add these to FactWorkOrder.tmdl using the same TMDL pattern as the existing
+	/// 23 measures.
+	/// 
+	/// Every expected value below was computed directly from the source CSVs. If a
+	/// measure disagrees, the measure is wrong.
+	/// 
+	/// EXPECTED VALUES - whole dataset, no filters
+	/// Measure                       BEDFORD   HOUSTON    AURORA       ALL
+	/// Open Work Orders                  578     1,418       600     2,596
+	/// Overdue Work Orders               172       767       247     1,186
+	/// Overdue %                       29.8%     54.1%     41.2%     45.7%
+	/// Avg Days Overdue                 35.8      34.4      34.1      34.6
+	/// Oldest Open Work Order (Days)     113       119       115       119
+	/// Open Emergency Work Orders          5        25         4        34
+	/// PM Due Next 14 Days                74       108        74       256
+	/// Data As Of Date            2026-07-29 (all sites)
+	/// 
+	/// THE ANCHOR - read this before using any measure below
+	/// Every current-state measure needs an "as of" date. Three candidates, only one
+	/// of which is correct:
+	/// 
+	/// TODAY()                        WRONG. The data ends 2026-07-29 and never
+	/// moves. TODAY() drifts further from it every
+	/// day, so overdue counts inflate over time and
+	/// a demo behaves differently each week.
+	/// 
+	/// MAX(FactWorkOrder[ReportDate]) WRONG. Returns 2026-09-09. Maximo generates
+	/// PM work orders LEADTIME days before they come
+	/// due, so 861 work orders are legitimately
+	/// dated after the data cutoff. Anchoring here
+	/// understates every overdue count.
+	/// 
+	/// MAX(DimDate[Date]) filtered    CORRECT. 2026-07-29, the true data cutoff.
+	/// to ISPASTORTODAY = 1
+	/// 
+	/// REMOVEFILTERS(DimDate) appears on nearly every measure below for the same
+	/// reason it appears on Backlog Hours: "open" and "overdue" are attributes of the
+	/// row as it stands NOW, not of a time period. Without it, slicing by month
+	/// silently changes the meaning to "work orders reported in that month that
+	/// happen to still be open" - a different and much smaller number.
+	/// 
+	/// Anchor for every current-state calculation. ISPASTORTODAY is set by the
+	/// generator and marks every date at or before the data cutoff.
+	measure 'Data As Of Date' =
+			CALCULATE (
+			    MAX ( DimDate[Date] ),
+			    DimDate[ISPASTORTODAY] = 1,
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: dd mmm yyyy
+		lineageTag: 5bf6bd48-5b76-4b86-8b5b-7be2d1c9543e
+
+	/// OVERDUE
+	/// Expected: 1,186 all sites. Houston 767 of 1,418 open (54.1%) against
+	/// Bedford's 172 of 578 (29.8%) - the sharpest single contrast in the dataset.
+	measure 'Overdue Work Orders' =
+			VAR _AsOf = [Data As Of Date]
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( FactWorkOrder ),
+			        FactWorkOrder[IsOpen] = 1,
+			        FactWorkOrder[TargCompDate] < _AsOf,
+			        REMOVEFILTERS ( DimDate )
+			    )
+		formatString: #,0
+		lineageTag: 5c58ae34-352d-4fcd-b171-1eff2d259a56
+
+	/// Expected: 45.7% all sites
+	measure 'Overdue %' = DIVIDE ( [Overdue Work Orders], [Open Work Orders] )
+		formatString: 0.0%
+		lineageTag: 34d4981b-798f-492c-a794-d854b480832c
+
+	/// AVERAGEX over the overdue rows, not an average of a column - the days-overdue
+	/// value does not exist as a column and cannot, because it depends on the anchor.
+	/// Expected: 34.6 days all sites
+	measure 'Avg Days Overdue' =
+			VAR _AsOf = [Data As Of Date]
+			VAR _Overdue =
+			    CALCULATETABLE (
+			        FactWorkOrder,
+			        FactWorkOrder[IsOpen] = 1,
+			        FactWorkOrder[TargCompDate] < _AsOf,
+			        REMOVEFILTERS ( DimDate )
+			    )
+			RETURN
+			    AVERAGEX ( _Overdue, DATEDIFF ( FactWorkOrder[TargCompDate], _AsOf, DAY ) )
+		formatString: #,0.0
+		lineageTag: 5290701f-74fa-4f84-83e6-c90df1fc9bed
+
+	/// Future-dated PM work orders produce a negative age here, which is correct -
+	/// they have not been raised yet. MAXX ignores them.
+	/// Expected: 119 days all sites
+	measure 'Oldest Open Work Order (Days)' =
+			VAR _AsOf = [Data As Of Date]
+			VAR _Open =
+			    CALCULATETABLE (
+			        FactWorkOrder,
+			        FactWorkOrder[IsOpen] = 1,
+			        REMOVEFILTERS ( DimDate )
+			    )
+			RETURN
+			    MAXX ( _Open, DATEDIFF ( FactWorkOrder[ReportDate], _AsOf, DAY ) )
+		formatString: #,0
+		lineageTag: 9e9f2a42-d2ef-4760-8c3b-5ee556bfc03f
+
+	/// TODAY'S PRIORITIES
+	/// 
+	/// Emergency work still open is the single most actionable number on the page.
+	/// Expected: 34 all sites - Houston 25, Bedford 5, Aurora 4.
+	measure 'Open Emergency Work Orders' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsOpen] = 1,
+			    FactWorkOrder[WORKTYPE] = "EM",
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0
+		lineageTag: 223067f7-f557-47c0-a4ab-921afab33f7b
+
+	/// Forward PM load. Uses TargCompDate, not ReportDate, because what matters is
+	/// when the work comes due - not when Maximo generated the record.
+	/// Expected: 256 all sites
+	measure 'PM Due Next 14 Days' =
+			VAR _AsOf = [Data As Of Date]
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( FactWorkOrder ),
+			        FactWorkOrder[IsOpen] = 1,
+			        FactWorkOrder[IsPM] = 1,
+			        FactWorkOrder[TargCompDate] >= _AsOf,
+			        FactWorkOrder[TargCompDate] <= _AsOf + 14,
+			        REMOVEFILTERS ( DimDate )
+			    )
+		formatString: #,0
+		lineageTag: 56ff7bd6-c3f8-4e9b-92ce-5a061475382a
+
+	/// THROUGHPUT
+	/// Completion is measured on ActFinishDate, which requires the inactive
+	/// relationship. Without USERELATIONSHIP this silently reports completions
+	/// against the month the work was REPORTED, which is not the same thing.
+	measure 'Work Orders Completed' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsCompleted] = 1,
+			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[ActFinishDate] )
+			)
+		formatString: #,0
+		lineageTag: 615a6733-09da-45cb-8444-82870051378b
+
+	measure 'Work Orders Reported' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsCancelled] = 0
+			)
+		formatString: #,0
+		lineageTag: 69ba2240-2bec-4c04-9792-d3b497e037e1
+
+	/// KNOWN DATA ARTIFACT - affects any intake-vs-completion trend
+	/// The generator deliberately leaves recent work open, ramping up for work under
+	/// 120 days old, to produce a realistic current backlog. The side effect is that
+	/// the final ~2 months show far more work reported than completed AT EVERY SITE,
+	/// including healthy Bedford (317 reported vs 194 completed in the last 30 days).
+	/// 
+	/// That tail is an artifact of construction, not a site-performance signal.
+	/// Plot Work Orders Reported vs Work Orders Completed by MONTH across the full
+	/// window, where the artifact is confined to the right edge - and say so if
+	/// anyone asks. Do not build a "last 30 days" intake-vs-completion card.
+	/// 
+	/// Positive means the backlog grew in the period. Pair the two on a monthly
+	/// column chart - it is the clearest way to show a backlog going the wrong way.
+	measure 'Net Backlog Change' = [Work Orders Reported] - [Work Orders Completed]
+		formatString: +#,0;-#,0;0
+		lineageTag: 4d215a58-0cf7-48c8-8933-487a759905de
+
+	/// CAPACITY
+	/// Backlog Hours / headcount, not / weekly hours. Answers "how many hours is
+	/// each technician personally carrying", which crews understand immediately.
+	measure 'Backlog Hours per Technician' =
+			DIVIDE (
+			    [Backlog Hours],
+			    DIVIDE ( [Weekly Craft Capacity (Hours)], 40 )
+			)
+		formatString: #,0.0
+		lineageTag: 71326b96-6da2-4603-b42b-51147c905d34
 
 	column WONUM
 		dataType: string

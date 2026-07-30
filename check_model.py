@@ -84,6 +84,10 @@ REQUIRED_MEASURES = [
     "Work Orders", "Reactive Maintenance %", "PM Compliance %",
     "Schedule Compliance %", "MTTR (Hours)", "Total Maintenance Cost",
     "Backlog Hours", "Weekly Craft Capacity (Hours)", "Backlog Weeks",
+    "Data As Of Date", "Overdue Work Orders", "Overdue %", "Avg Days Overdue",
+    "Oldest Open Work Order (Days)", "Open Emergency Work Orders",
+    "PM Due Next 14 Days", "Work Orders Completed", "Work Orders Reported",
+    "Net Backlog Change", "Backlog Hours per Technician",
 ]
 
 results = []

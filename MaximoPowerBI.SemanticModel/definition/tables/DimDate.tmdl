@@ -60,6 +60,9 @@ table DimDate
 		lineageTag: 800bf510-4ec8-4130-a6ae-90d23043737c
 		summarizeBy: none
 		sourceColumn: MONTHYEARLABEL
+		sortByColumn: MonthSort
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 

@@ -1,6 +1,14 @@
 table FactWorkOrder
 	lineageTag: c82784aa-83d0-4c96-8655-5b7cbc942a71
 
+	measure 'Work Orders' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsCancelled] = 0
+			)
+		formatString: #,0
+		lineageTag: 9760519c-555e-43d1-a580-1df71e1f1d17
+
 	column WONUM
 		dataType: string
 		lineageTag: 566bf75d-eb6f-4dff-a36e-12299448dfde

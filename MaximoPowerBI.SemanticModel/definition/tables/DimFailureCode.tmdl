@@ -17,14 +17,6 @@ table DimFailureCode
 
 		annotation SummarizationSetBy = Automatic
 
-	column FailureClass
-		dataType: string
-		lineageTag: 342e5445-2c7a-48c6-9cd9-dd2000ee64e8
-		summarizeBy: none
-		sourceColumn: FailureClass
-
-		annotation SummarizationSetBy = Automatic
-
 	partition DimFailureCode = m
 		mode: import
 		source =
@@ -42,12 +34,12 @@ table DimFailureCode
 				        pCulture
 				    ),
 				    Problems = Table.SelectRows(Typed, each [TYPE] = "PROBLEM"),
-				    Kept = Table.SelectColumns(Problems, {"FAILURECODE", "DESCRIPTION", "PARENT"}),
+				    Kept = Table.SelectColumns(Problems, {"FAILURECODE", "DESCRIPTION"}),
 				    Renamed = Table.RenameColumns(Kept,
-				        {{"FAILURECODE", "ProblemCode"}, {"DESCRIPTION", "ProblemName"},
-				         {"PARENT", "FailureClass"}})
+				        {{"FAILURECODE", "ProblemCode"}, {"DESCRIPTION", "ProblemName"}}),
+				    Distinct = Table.Distinct(Renamed, {"ProblemCode"})
 				in
-				    Renamed
+				    Distinct
 
 	annotation PBI_NavigationStepName = Navigation
 

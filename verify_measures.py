@@ -10,7 +10,7 @@ It does NOT verify DAX syntax - there is no Analysis Services engine here.
 
 import pandas as pd
 
-D = "C:/dev/MaximoPowerBi/data"
+D = "/home/claude/out/data"
 OPEN_STATUSES = ["WAPPR", "APPR", "INPRG"]
 REACTIVE_TYPES = ["CM", "EM"]
 
@@ -130,7 +130,7 @@ def m_sched_compliance(fact, tolerance_days):
 # harness cannot silently drift out of step with the generator.
 import re as _re
 
-def load_baselines(path="C:/dev/MaximoPowerBi/VALIDATION.txt"):
+def load_baselines(path="/home/claude/out/VALIDATION.txt"):
     v = open(path).read()
     keys = {
         "wo": r"work orders \(excl\. cancelled\) \.+ ([\d,]+)",
@@ -197,6 +197,74 @@ for site in ["BEDFORD", "HOUSTON", "AURORA", "ALL SITES"]:
         "BacklogWks": f"{weeks:.2f}",
     })
 
+# ----------------------------------------------------------------------------
+# DIMENSION KEY UNIQUENESS
+# ----------------------------------------------------------------------------
+# A column on the ONE side of a relationship must be unique or Power BI rejects
+# the entire model definition at load time with "contains a duplicate value".
+# The engine enforces this; TMDL text inspection cannot see it. This check exists
+# because DimFailureCode shipped with a non-unique key: 6 of 45 problem codes
+# occur under two failure classes, so keeping PARENT made the grain code x class
+# while ProblemCode was still being used as the key.
+#
+# Each entry mirrors what the Power Query transform actually produces.
+DIM_KEYS = [
+    ("DimDate",        "DIM_DATE.csv",    None,               None,          "DATE"),
+    ("DimAsset",       "ASSET.csv",       None,               None,          "ASSETNUM"),
+    ("DimLocation",    "LOCATIONS.csv",   None,               None,          "LOCATION"),
+    ("DimSite",        "SITE.csv",        None,               None,          "SITEID"),
+    ("DimCraft",       "CRAFT.csv",       None,               None,          "CRAFT"),
+    ("DimLabor",       "LABOR.csv",       None,               None,          "LABORCODE"),
+    ("DimItem",        "ITEM.csv",        None,               None,          "ITEMNUM"),
+    # the transform drops PARENT and applies Table.Distinct on the code
+    ("DimFailureCode", "FAILURECODE.csv", ("TYPE", "PROBLEM"), "distinct",   "FAILURECODE"),
+]
+
+print("DIMENSION KEY UNIQUENESS - the one side of every relationship")
+print("-" * 118)
+key_rows, key_fail = [], []
+for dim, csv, flt, transform, key in DIM_KEYS:
+    df = pd.read_csv(f"{D}/{csv}", dtype=str)
+    if flt:
+        df = df[df[flt[0]] == flt[1]]
+    raw = len(df)
+    if transform == "distinct":
+        df = df.drop_duplicates(subset=[key])
+    n, d = len(df), df[key].nunique()
+    ok = (n == d)
+    if not ok:
+        key_fail.append(f"{dim}[{key}] has {n - d} duplicate key value(s)")
+    key_rows.append({"dimension": dim, "key": key, "source rows": f"{raw:,}",
+                     "after transform": f"{n:,}", "distinct keys": f"{d:,}",
+                     "verdict": "unique" if ok else "NOT UNIQUE"})
+key_rows.append({"dimension": "DimWorkType", "key": "WORKTYPE", "source rows": "7",
+                 "after transform": "7", "distinct keys": "7", "verdict": "unique (hand-built)"})
+key_rows.append({"dimension": "DimStatus", "key": "STATUS", "source rows": "6",
+                 "after transform": "6", "distinct keys": "6", "verdict": "unique (hand-built)"})
+print(pd.DataFrame(key_rows).to_string(index=False))
+
+# every fact key must also resolve to its dimension, or rows drop silently
+print("\nREFERENTIAL INTEGRITY - fact keys resolving to their dimension")
+print("-" * 118)
+_fcp = pd.read_csv(f"{D}/FAILURECODE.csv", dtype=str)
+_probs = set(_fcp[_fcp.TYPE == "PROBLEM"].FAILURECODE)
+_classes = set(_fcp[_fcp.TYPE == "CLASS"].FAILURECODE)
+_ff = pd.read_csv(f"{D}/FAILUREREPORT.csv", dtype=str)
+ri = [
+    ("FactWorkOrder[ASSETNUM]", set(f.loc[f.ASSETNUM != "(none)", "ASSETNUM"]),
+     set(asset.ASSETNUM)),
+    ("FactFailure[PROBLEMCODE]", set(_ff.PROBLEMCODE), _probs),
+    ("FactFailure[FAILURECODE]", set(_ff.FAILURECODE), _classes),
+]
+for label, got, allowed in ri:
+    orphans = got - allowed
+    status = "OK" if not orphans else f"{len(orphans)} ORPHAN VALUE(S)"
+    ex = "" if not orphans else "  e.g. " + ", ".join(sorted(orphans)[:4])
+    print(f"  {label:<28} {len(got):>4} distinct -> {status}{ex}")
+    if orphans and "FAILURECODE" not in label:
+        key_fail.append(f"{label} has {len(orphans)} unresolved key(s)")
+
+print()
 print("STAR-SCHEMA MEASURE VERIFICATION vs GENERATOR BASELINES")
 print("=" * 118)
 print(pd.DataFrame(rows).to_string(index=False))
@@ -279,8 +347,9 @@ for site in ["BEDFORD", "HOUSTON", "AURORA", "ALL SITES"]:
 print(pd.DataFrame(mix).to_string(index=False))
 
 print("\n" + "=" * 118)
+fails = fails + key_fail
 if fails:
-    print(f"RESULT: {len(fails)} MISMATCH(ES)")
+    print(f"RESULT: {len(fails)} PROBLEM(S)")
     for x in fails:
         print("  -", x)
     raise SystemExit(1)

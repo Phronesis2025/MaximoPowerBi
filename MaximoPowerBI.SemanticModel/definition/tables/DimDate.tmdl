@@ -1,5 +1,6 @@
 table DimDate
 	lineageTag: ecbbb46a-47b5-48e4-89af-0c54eeab526a
+	dataCategory: Time
 
 	column Date
 		dataType: dateTime

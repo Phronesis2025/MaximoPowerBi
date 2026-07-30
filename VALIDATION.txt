@@ -1,0 +1,113 @@
+Synthetic Maximo dataset validation
+SEED=20260729  window 2023-07-01 -> 2026-07-29
+generated 2026-07-30 02:39:04
+
+TABLE MANIFEST
+==============================================================
+ORGANIZATION.csv                 1 rows    6 cols          0 KB  one row per organization
+SITE.csv                         3 rows    6 cols          0 KB  one row per site
+LOCATIONS.csv                  111 rows   11 cols         14 KB  one row per location; PARENT self-references LOCATION
+CRAFT.csv                       12 rows    6 cols          1 KB  one row per craft; rate flattened from CRAFTRATE
+LABOR.csv                       80 rows    9 cols          6 KB  one row per labor record; primary CRAFT flattened from LABORCRAFTRATE
+PERSON.csv                      80 rows    7 cols          7 KB  one row per person
+COMPANIES.csv                   18 rows    7 cols          1 KB  one row per vendor/manufacturer/courier; TYPE V=vendor M=manufacturer C=courier
+ITEM.csv                        24 rows    8 cols          2 KB  one row per item master record
+INVENTORY.csv                   72 rows   15 cols          6 KB  one row per item per storeroom (ITEMNUM + LOCATION + SITEID)
+FAILURECODE.csv                148 rows    5 cols          7 KB  failure taxonomy; PARENT links problem/cause/remedy to a failure class
+ASSET.csv                      900 rows   24 cols        187 KB  one row per asset; PARENT self-references ASSETNUM
+ASSETMETER.csv                 376 rows    8 cols         17 KB  one row per asset per meter (ASSETNUM + METERNAME + SITEID)
+JOBPLAN.csv                     24 rows    8 cols          2 KB  one row per job plan
+JOBTASK.csv                    100 rows    5 cols          6 KB  one row per job plan task (JPNUM + JPTASKID)
+PM.csv                         689 rows   18 cols         89 KB  one row per PM schedule
+WORKORDER.csv               41,014 rows   43 cols     16,706 KB  one row per work order (WONUM); the primary fact table
+WOSTATUS.csv               191,794 rows    7 cols     14,237 KB  one row per work order status change
+LABTRANS.csv                62,674 rows   15 cols      8,009 KB  one row per labour transaction against a work order
+MATUSETRANS.csv             36,778 rows   13 cols      3,956 KB  one row per material issue against a work order
+FAILUREREPORT.csv           13,662 rows   11 cols      1,663 KB  one row per reported failure against a work order
+DOWNTIMEREPORT.csv           7,506 rows   11 cols        960 KB  one row per downtime event
+METERREADING.csv            26,487 rows    9 cols      2,072 KB  one row per asset per meter per reading date
+DIM_DATE.csv                 1,461 rows   14 cols         90 KB  one row per calendar day - NOT a Maximo table, added for the model
+
+INTEGRITY CHECKS
+==============================================================
+[PASS] every LABTRANS.WONUM exists in WORKORDER
+[PASS] every MATUSETRANS.WONUM exists in WORKORDER
+[PASS] every WOSTATUS.WONUM exists in WORKORDER
+[PASS] every FAILUREREPORT.WONUM exists in WORKORDER
+[PASS] every DOWNTIMEREPORT.ASSETNUM exists in ASSET
+[PASS] every WORKORDER.ASSETNUM (where populated) exists in ASSET
+[PASS] no work order finishes before it starts
+[PASS] no work order starts before it was reported
+[PASS] no open work order carries an ACTFINISH
+[PASS] no PM work order carries a PROBLEMCODE
+[PASS] WORKORDER.ACTLABCOST reconciles to LABTRANS
+[PASS] WORKORDER.ACTMATCOST reconciles to MATUSETRANS
+
+KPI BASELINES - expected values for your DAX to reproduce
+==============================================================
+
+BEDFORD
+  work orders (excl. cancelled) ....... 10,462
+  reactive % (CM+EM / total) ......... 21.0%
+  PM work orders ..................... 6,845
+  PM compliance (done by TARGCOMPDATE) 93.2%
+  open work orders ................... 578
+  open estimated labour hours ........ 2,860.6
+  total maintenance cost ............. $6,020,214
+  failure events (FAILUREREPORT) ..... 2,127
+  downtime events .................... 1,157
+  downtime hours ..................... 10,458.6
+  MTTR (downtime hrs / events) ....... 9.04 h
+
+HOUSTON
+  work orders (excl. cancelled) ....... 19,474
+  reactive % (CM+EM / total) ......... 44.8%
+  PM work orders ..................... 8,070
+  PM compliance (done by TARGCOMPDATE) 69.3%
+  open work orders ................... 1,418
+  open estimated labour hours ........ 9,739.1
+  total maintenance cost ............. $15,435,868
+  failure events (FAILUREREPORT) ..... 8,246
+  downtime events .................... 4,608
+  downtime hours ..................... 71,685.4
+  MTTR (downtime hrs / events) ....... 15.56 h
+
+AURORA
+  work orders (excl. cancelled) ....... 10,999
+  reactive % (CM+EM / total) ......... 30.9%
+  PM work orders ..................... 6,099
+  PM compliance (done by TARGCOMPDATE) 85.2%
+  open work orders ................... 600
+  open estimated labour hours ........ 3,203.2
+  total maintenance cost ............. $7,250,332
+  failure events (FAILUREREPORT) ..... 3,289
+  downtime events .................... 1,741
+  downtime hours ..................... 18,842.0
+  MTTR (downtime hrs / events) ....... 10.82 h
+
+ALL SITES
+  work orders (excl. cancelled) ....... 40,935
+  reactive % (CM+EM / total) ......... 35.0%
+  PM work orders ..................... 21,014
+  PM compliance (done by TARGCOMPDATE) 81.8%
+  open work orders ................... 2,596
+  open estimated labour hours ........ 15,803.0
+  total maintenance cost ............. $28,706,414
+  failure events (FAILUREREPORT) ..... 13,662
+  downtime events .................... 7,506
+  downtime hours ..................... 100,986.0
+  MTTR (downtime hrs / events) ....... 13.45 h
+
+TOP 10 BAD ACTORS (failure events, all sites)
+  VALVE-00387         107 failures
+  ANALYZER-00532       99 failures
+  MOTOR-00349          81 failures
+  MIXER-00392          81 failures
+  BOILER-00409         80 failures
+  ANALYZER-00453       79 failures
+  PUMP-00499           76 failures
+  PUMP-00595           70 failures
+  PUMP-00347           69 failures
+  MIXER-00494          68 failures
+
+OVERALL INTEGRITY: ALL CHECKS PASSED

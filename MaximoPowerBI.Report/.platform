@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "MaximoPowerBI"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9b3b86b1-514f-41cc-b9fe-86346db1e352"
+  }
+}

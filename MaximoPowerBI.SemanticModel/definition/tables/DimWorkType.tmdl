@@ -6,6 +6,9 @@ table DimWorkType
 		lineageTag: 556ebd88-82df-4a86-bb11-891cfafb9265
 		summarizeBy: none
 		sourceColumn: WORKTYPE
+		sortByColumn: SortOrder
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -14,6 +17,9 @@ table DimWorkType
 		lineageTag: cd2c42c7-6d8c-41f2-913b-3583a211ee16
 		summarizeBy: none
 		sourceColumn: WorkTypeName
+		sortByColumn: SortOrder
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -22,6 +28,9 @@ table DimWorkType
 		lineageTag: 089c53b3-6859-4291-93ef-edb1bd960247
 		summarizeBy: none
 		sourceColumn: WorkTypeGroup
+		sortByColumn: GroupSortOrder
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -31,6 +40,15 @@ table DimWorkType
 		lineageTag: 99c61c05-2129-4531-a593-9c67d6bb05b7
 		summarizeBy: sum
 		sourceColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column GroupSortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: 205d94c3-a4ad-4c50-a005-a5192b062ce6
+		summarizeBy: sum
+		sourceColumn: GroupSortOrder
 
 		annotation SummarizationSetBy = Automatic
 
@@ -48,16 +66,17 @@ table DimWorkType
 				            WORKTYPE = text,
 				            WorkTypeName = text,
 				            WorkTypeGroup = text,
-				            SortOrder = Int64.Type
+				            SortOrder = Int64.Type,
+				            GroupSortOrder = Int64.Type
 				        ],
 				        {
-				            {"PM",   "Preventive",  "Planned",  1},
-				            {"PDM",  "Predictive",  "Planned",  2},
-				            {"INSP", "Inspection",  "Planned",  3},
-				            {"PROJ", "Project",     "Planned",  4},
-				            {"SAF",  "Safety",      "Planned",  5},
-				            {"CM",   "Corrective",  "Reactive", 6},
-				            {"EM",   "Emergency",   "Reactive", 7}
+				            {"EM",   "Emergency",   "Reactive", 1, 1},
+				            {"CM",   "Corrective",  "Reactive", 2, 1},
+				            {"SAF",  "Safety",      "Planned",  3, 2},
+				            {"INSP", "Inspection",  "Planned",  4, 2},
+				            {"PM",   "Preventive",  "Planned",  5, 2},
+				            {"PDM",  "Predictive",  "Planned",  6, 2},
+				            {"PROJ", "Project",     "Planned",  7, 2}
 				        }
 				    )
 				in

@@ -512,6 +512,77 @@ table FactWorkOrder
 		formatString: #,0.0
 		lineageTag: 71326b96-6da2-4603-b42b-51147c905d34
 
+	/// ROLLING TREND MEASURE - removes annual seasonality from the executive trend
+	/// 
+	/// WHY THIS EXISTS
+	/// Raw monthly Reactive Maintenance % is dominated by weather, not performance.
+	/// Aurora is a distribution centre with HVAC-driven seasonality: its reactive
+	/// rate swings 27.6 percentage points across a year, while its actual three-year
+	/// improvement is 8.6 points. On a monthly chart the improvement is invisible.
+	/// 
+	/// A 3-month average does NOT fix this - the seasonality is an annual sine wave,
+	/// so a 3-month window barely touches it (Aurora 27.6 pts -> 25.5 pts). A
+	/// 12-month window removes it almost completely (27.6 pts -> 8.8 pts residual,
+	/// which is the real trend rather than noise).
+	/// 
+	/// EXPECTED VALUES - 12M rolling, first complete window vs last
+	/// BEDFORD   21.3% -> 21.3%   ( 0.0 pts)  flat, 0.5 pt residual swing
+	/// HOUSTON   43.8% -> 46.5%   (+2.7 pts)  steady degradation
+	/// AURORA    35.1% -> 26.4%   (-8.6 pts)  converging toward Bedford
+	/// 
+	/// Note the ratio is computed as SUM(reactive) / SUM(total) across the window -
+	/// NOT the average of twelve monthly percentages. Averaging ratios weights a
+	/// quiet month the same as a busy one and gives a different, wrong answer.
+	measure 'Reactive Maintenance % (12M Rolling)' =
+			VAR _End = MAX ( DimDate[Date] )
+			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
+			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
+			VAR _FirstData =
+			    CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () )
+			VAR _Reactive =
+			    CALCULATE (
+			        SUM ( FactWorkOrder[IsReactive] ),
+			        FactWorkOrder[IsCancelled] = 0,
+			        _Window
+			    )
+			VAR _Total =
+			    CALCULATE (
+			        COUNTROWS ( FactWorkOrder ),
+			        FactWorkOrder[IsCancelled] = 0,
+			        _Window
+			    )
+			RETURN
+			    // blank until a full 12 months of data exists, so the chart does not open
+			    // with a misleading partial-window value
+			    IF ( _WindowStart >= _FirstData, DIVIDE ( _Reactive, _Total ) )
+		formatString: 0.0%
+		lineageTag: 0a6bc6f8-035f-4911-bd80-bfc1a577d81a
+
+	/// The same treatment for PM compliance, for the second executive trend.
+	/// Sliced by DUE date, which is the convention for compliance reporting.
+	measure 'PM Compliance % (12M Rolling)' =
+			VAR _End = MAX ( DimDate[Date] )
+			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
+			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
+			VAR _FirstData =
+			    CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () )
+			VAR _OnTime =
+			    CALCULATE (
+			        SUM ( FactWorkOrder[IsPMOnTime] ),
+			        _Window,
+			        USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
+			    )
+			VAR _Completed =
+			    CALCULATE (
+			        SUM ( FactWorkOrder[IsPMCompleted] ),
+			        _Window,
+			        USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
+			    )
+			RETURN
+			    IF ( _WindowStart >= _FirstData, DIVIDE ( _OnTime, _Completed ) )
+		formatString: 0.0%
+		lineageTag: 5b86b0bb-b155-4a6e-a21a-c90c816c0ff1
+
 	column WONUM
 		dataType: string
 		lineageTag: 566bf75d-eb6f-4dff-a36e-12299448dfde

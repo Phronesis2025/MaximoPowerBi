@@ -219,16 +219,17 @@ let
             WORKTYPE = text,
             WorkTypeName = text,
             WorkTypeGroup = text,
-            SortOrder = Int64.Type
+            SortOrder = Int64.Type,
+            GroupSortOrder = Int64.Type
         ],
         {
-            {"PM",   "Preventive",  "Planned",  1},
-            {"PDM",  "Predictive",  "Planned",  2},
-            {"INSP", "Inspection",  "Planned",  3},
-            {"PROJ", "Project",     "Planned",  4},
-            {"SAF",  "Safety",      "Planned",  5},
-            {"CM",   "Corrective",  "Reactive", 6},
-            {"EM",   "Emergency",   "Reactive", 7}
+            {"EM",   "Emergency",   "Reactive", 1, 1},
+            {"CM",   "Corrective",  "Reactive", 2, 1},
+            {"SAF",  "Safety",      "Planned",  3, 2},
+            {"INSP", "Inspection",  "Planned",  4, 2},
+            {"PM",   "Preventive",  "Planned",  5, 2},
+            {"PDM",  "Predictive",  "Planned",  6, 2},
+            {"PROJ", "Project",     "Planned",  7, 2}
         }
     )
 in

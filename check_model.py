@@ -88,6 +88,7 @@ REQUIRED_MEASURES = [
     "Oldest Open Work Order (Days)", "Open Emergency Work Orders",
     "PM Due Next 14 Days", "Work Orders Completed", "Work Orders Reported",
     "Net Backlog Change", "Backlog Hours per Technician",
+    "Reactive Maintenance % (12M Rolling)", "PM Compliance % (12M Rolling)",
 ]
 
 results = []

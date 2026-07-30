@@ -9,6 +9,15 @@
         "page": "2.3.1"
       },
       "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Custom8299207587210535.json",
+      "reportVersionAtImport": {
+        "visual": "2.11.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "RegisteredResources"
     }
   },
   "objects": {
@@ -65,6 +74,11 @@
       "name": "RegisteredResources",
       "type": "RegisteredResources",
       "items": [
+        {
+          "name": "Custom8299207587210535.json",
+          "path": "Custom8299207587210535.json",
+          "type": "CustomTheme"
+        },
         {
           "name": "executive_overview5243013320214268.svg",
           "path": "executive_overview5243013320214268.svg",

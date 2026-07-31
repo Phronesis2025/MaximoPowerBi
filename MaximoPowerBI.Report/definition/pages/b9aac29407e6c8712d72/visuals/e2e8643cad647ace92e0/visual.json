@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "e2e8643cad647ace92e0",
+  "position": {
+    "x": 36,
+    "y": 300,
+    "z": 9,
+    "height": 372,
+    "width": 1140,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "AgeBucket"
+                }
+              },
+              "queryRef": "FactWorkOrder.AgeBucket",
+              "nativeQueryRef": "AgeBucket",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimSite"
+                    }
+                  },
+                  "Property": "SiteName"
+                }
+              },
+              "queryRef": "DimSite.SiteName",
+              "nativeQueryRef": "SiteName"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "Backlog Hours"
+                }
+              },
+              "queryRef": "FactWorkOrder.Backlog Hours",
+              "nativeQueryRef": "Backlog Hours"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactWorkOrder"
+                  }
+                },
+                "Property": "Backlog Hours"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Backlog by Age'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Estimated labour hours on open work orders'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

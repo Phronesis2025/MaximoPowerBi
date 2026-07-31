@@ -89,6 +89,14 @@ REQUIRED_MEASURES = [
     "PM Due Next 14 Days", "Work Orders Completed", "Work Orders Reported",
     "Net Backlog Change", "Backlog Hours per Technician",
     "Reactive Maintenance % (12M Rolling)", "PM Compliance % (12M Rolling)",
+    "Reactive Status Colour", "Reactive vs Target",
+    "PM Compliance Status Colour", "PM Compliance vs Target",
+    "Backlog Status Colour", "Backlog vs Target",
+    "Cost RAV Status Colour", "Cost RAV vs Target",
+    "Avg Age of Open Work (Days)", "Backlog Hours Overdue",
+    "Overdue Emergency Work Orders", "Aged Over 90 Days",
+    "Overdue Share of Backlog", "Backlog Age Status Colour",
+    "Overdue Status Colour",
 ]
 
 results = []

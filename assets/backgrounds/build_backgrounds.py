@@ -68,6 +68,44 @@ PAGES = {
             (36, 690, 1848, 354),     # scorecard panel
         ],
     },
+    "backlog_and_aging": {
+        "name": "Backlog and Aging",
+        "canvas": (1920, 1080),
+        "margin": 36,
+        "png_scale": 2,
+        "accent_w": 4,
+        "accent_inset": 1,
+        "palette": {
+            "page_bg": "#F4F5F7",
+            "container_fill": "#FFFFFF",
+            "container_border": "#E3E6EA",
+            "container_radius": 8,
+            "header_band": "#1B3A57",
+            "divider": "#D9DEE4",
+            "kpi_accent": "#4477AA",
+        },
+        "header": {
+            "rect": (0, 0, 1920, 108),
+            "text": "Maximo Maintenance Analytics",
+            "text_xy": (60, 66),
+            "text_size": 33,
+            "text_weight": 600,
+            "text_color": "#FFFFFF",
+            "font_stack": "Segoe UI, Arial, sans-serif",
+        },
+        "kpi_cards": [
+            (36, 126, 348, 156),
+            (411, 126, 348, 156),
+            (786, 126, 348, 156),
+            (1161, 126, 348, 156),
+            (1536, 126, 348, 156),
+        ],
+        "panels": [
+            (36, 300, 1140, 372),
+            (1212, 300, 672, 372),
+            (36, 690, 1848, 354),
+        ],
+    },
 }
 
 OUT_DIR = os.path.dirname(os.path.abspath(__file__))

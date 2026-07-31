@@ -75,6 +75,11 @@
       "type": "RegisteredResources",
       "items": [
         {
+          "name": "backlog_and_aging33104035473619.svg",
+          "path": "backlog_and_aging33104035473619.svg",
+          "type": "Image"
+        },
+        {
           "name": "Custom8299207587210535.json",
           "path": "Custom8299207587210535.json",
           "type": "CustomTheme"

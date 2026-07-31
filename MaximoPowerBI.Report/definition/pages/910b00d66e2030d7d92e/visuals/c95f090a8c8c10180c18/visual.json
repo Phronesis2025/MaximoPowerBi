@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "c95f090a8c8c10180c18",
   "position": {
-    "x": 209.96064894718677,
-    "y": 672.82844321712116,
+    "x": 40,
+    "y": 632.85714285714289,
     "z": 12001,
-    "height": 45.332412840869871,
-    "width": 847.00034518467385,
+    "height": 34.285714285714285,
+    "width": 1100,
     "tabOrder": 13001
   },
   "visual": {
@@ -19,9 +19,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "Aurora lifted PM compliance 6 points since 2024; reactive work fell 9. Houston's compliance has not moved.",
+                    "value": "Aurora's reactive rate fell 9 points since 2024 as PM compliance rose from 84% to 90%. Houston's compliance has not moved.",
                     "textStyle": {
-                      "fontSize": "14pt"
+                      "fontSize": "12pt"
                     }
                   }
                 ]

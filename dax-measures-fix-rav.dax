@@ -1,0 +1,69 @@
+// =============================================================================
+// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
+// =============================================================================
+//
+// THE BUG
+// DimAsset and DimSite are both dimensions. Neither is related to the other -
+// they meet only at the fact tables, and filters propagate dim -> fact, never
+// fact -> dim. So slicing by site filters FactWorkOrder but leaves DimAsset
+// completely unfiltered.
+//
+// Any measure whose numerator comes from a fact and whose denominator comes
+// from DimAsset therefore divides a site's value by the WHOLE portfolio.
+//
+// THE TELL
+// The per-site values sum to the grand total instead of each being their own
+// ratio: 1.5% + 1.3% + 3.2% = 6.0%. A ratio that sums like an additive measure
+// is always this bug.
+//
+// WHY IT SURVIVED VERIFICATION
+// At the grand total nothing is filtered, so numerator and denominator agree
+// and the number is right. It only breaks when sliced - which is exactly what
+// a site scorecard does.
+//
+// THE FIX
+// TREATAS pushes the selected sites onto DimAsset[SITEID] without a
+// relationship. Adding a real DimSite -> DimAsset relationship would work too,
+// but would create a second filter path to the facts (DimSite -> FactWorkOrder
+// AND DimSite -> DimAsset -> FactWorkOrder) and reintroduce ambiguity.
+// Weekly Craft Capacity (Hours) already uses this pattern for DimLabor.
+//
+// -----------------------------------------------------------------------------
+// EXPECTED AFTER THE FIX
+//   Measure                      BEDFORD   HOUSTON    AURORA       ALL
+//   Operating Asset Count            316       280       239       835
+//   Maintenance Cost % of RAV       4.0%      7.1%      6.6%      6.0%
+//   MTBF (Hours)                   4,006       908     1,956     1,643
+//   Asset Availability %          99.88%    99.05%    99.71%    99.55%
+//
+// Fixing Operating Asset Count also fixes Scheduled Asset Hours, MTBF (Hours)
+// and Asset Availability %, which all derive from it. Only the two measures
+// below need editing.
+// =============================================================================
+
+
+// REPLACE the existing measure with this version.
+Operating Asset Count =
+VAR _Sites = VALUES ( DimSite[SITEID] )
+RETURN
+    CALCULATE (
+        DISTINCTCOUNT ( DimAsset[ASSETNUM] ),
+        DimAsset[STATUS] = "OPERATING",
+        DimAsset[ASSETNUM] <> "(none)",
+        TREATAS ( _Sites, DimAsset[SITEID] )
+    )
+
+
+// REPLACE the existing measure with this version.
+Maintenance Cost % of RAV =
+VAR _Sites = VALUES ( DimSite[SITEID] )
+VAR _Cost = [Total Maintenance Cost]
+VAR _RAV =
+    CALCULATE (
+        SUM ( DimAsset[REPLACECOST] ),
+        DimAsset[ASSETNUM] <> "(none)",
+        TREATAS ( _Sites, DimAsset[SITEID] )
+    )
+VAR _Years = DIVIDE ( [Analysis Days], 365.25 )
+RETURN
+    DIVIDE ( DIVIDE ( _Cost, _Years ), _RAV )

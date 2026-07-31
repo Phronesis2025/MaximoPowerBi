@@ -137,6 +137,11 @@
         }
       ]
     },
+    "syncGroup": {
+      "groupName": "SiteName",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "drillFilterOtherVisuals": true
   }
 }

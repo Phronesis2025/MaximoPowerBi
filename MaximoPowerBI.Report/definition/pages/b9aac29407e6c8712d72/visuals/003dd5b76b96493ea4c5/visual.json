@@ -1,0 +1,202 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "003dd5b76b96493ea4c5",
+  "position": {
+    "x": 36,
+    "y": 690,
+    "z": 11,
+    "height": 354,
+    "width": 1848,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "WONUM"
+                }
+              },
+              "queryRef": "FactWorkOrder.WONUM",
+              "nativeQueryRef": "WONUM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "DESCRIPTION"
+                }
+              },
+              "queryRef": "FactWorkOrder.DESCRIPTION",
+              "nativeQueryRef": "DESCRIPTION"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimSite"
+                    }
+                  },
+                  "Property": "SiteName"
+                }
+              },
+              "queryRef": "DimSite.SiteName",
+              "nativeQueryRef": "SiteName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimAsset"
+                    }
+                  },
+                  "Property": "ASSETNUM"
+                }
+              },
+              "queryRef": "DimAsset.ASSETNUM",
+              "nativeQueryRef": "ASSETNUM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimWorkType"
+                    }
+                  },
+                  "Property": "WorkTypeName"
+                }
+              },
+              "queryRef": "DimWorkType.WorkTypeName",
+              "nativeQueryRef": "WorkTypeName"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "WOPRIORITY"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FactWorkOrder.WOPRIORITY)",
+              "nativeQueryRef": "Sum of WOPRIORITY"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "DaysOverdue"
+                }
+              },
+              "queryRef": "FactWorkOrder.DaysOverdue",
+              "nativeQueryRef": "DaysOverdue"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactWorkOrder"
+                        }
+                      },
+                      "Property": "ESTLABHRS"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FactWorkOrder.ESTLABHRS)",
+              "nativeQueryRef": "Sum of ESTLABHRS"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactWorkOrder"
+                    }
+                  },
+                  "Property": "CREWID"
+                }
+              },
+              "queryRef": "FactWorkOrder.CREWID",
+              "nativeQueryRef": "CREWID"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Overdue Work Queue'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Open work past target completion, oldest first'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

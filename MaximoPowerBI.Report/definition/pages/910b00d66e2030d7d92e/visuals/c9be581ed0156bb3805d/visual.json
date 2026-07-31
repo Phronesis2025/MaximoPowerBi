@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "c9be581ed0156bb3805d",
   "position": {
-    "x": 36,
+    "x": 35.714285714285715,
     "y": 300,
     "z": 8000,
-    "height": 372,
-    "width": 1140,
+    "height": 331.42857142857144,
+    "width": 1125.7142857142858,
     "tabOrder": 8000
   },
   "visual": {
@@ -199,7 +199,7 @@
             "dataLabelShow": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -225,6 +225,27 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "dataLabelHorizontalPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'right'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "autoScale": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

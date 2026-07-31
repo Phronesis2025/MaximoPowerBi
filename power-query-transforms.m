@@ -470,7 +470,42 @@ let
             each if [ActFinishDate] = null then null
                  else Duration.Days([ActFinishDate] - [ReportDate]), Int64.Type),
 
-    Final = Table.RemoveColumns(Cycle,
+    // as-of anchor, derived from the calendar
+    AsOf = List.Max (
+        Table.SelectRows ( DimDate, each [ISPASTORTODAY] = 1 )[Date]
+    ),
+
+    // days since the work order was raised; null for anything not open
+    Aged = Table.AddColumn ( Cycle, "DaysOpen",
+        each if [IsOpen] = 1 then Duration.Days ( AsOf - [ReportDate] ) else null,
+        Int64.Type ),
+
+    // days past target completion; null unless open AND past target
+    Overdue = Table.AddColumn ( Aged, "DaysOverdue",
+        each if [IsOpen] = 1 and [TargCompDate] <> null and [TargCompDate] < AsOf
+             then Duration.Days ( AsOf - [TargCompDate] )
+             else null,
+        Int64.Type ),
+
+    Bucket = Table.AddColumn ( Overdue, "AgeBucket",
+        each if [DaysOpen] = null then null
+             else if [DaysOpen] < 0 then "Not yet due"
+             else if [DaysOpen] <= 30 then "0-30 days"
+             else if [DaysOpen] <= 60 then "31-60 days"
+             else if [DaysOpen] <= 90 then "61-90 days"
+             else "91+ days",
+        type text ),
+
+    BucketSort = Table.AddColumn ( Bucket, "AgeBucketSort",
+        each if [DaysOpen] = null then null
+             else if [DaysOpen] < 0 then 0
+             else if [DaysOpen] <= 30 then 1
+             else if [DaysOpen] <= 60 then 2
+             else if [DaysOpen] <= 90 then 3
+             else 4,
+        Int64.Type ),
+
+    Final = Table.RemoveColumns(BucketSort,
         {"REPORTDATE", "TARGSTARTDATE", "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH"})
 in
     Final

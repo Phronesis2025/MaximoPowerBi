@@ -587,6 +587,212 @@ table FactWorkOrder
 		formatString: 0.0%
 		lineageTag: 5b86b0bb-b155-4a6e-a21a-c90c816c0ff1
 
+	/// KPI STATUS MEASURES - benchmark signalling for the executive cards
+	/// 
+	/// A card showing "35.0%" tells an executive nothing. A card showing 35.0% in red
+	/// against a stated target of 20% tells them everything. These measures supply
+	/// the colour and the variance.
+	/// 
+	/// USE
+	/// Colour  - select the card > Format > Callout value > fx on Colour >
+	/// Format style: Field value > pick the matching *Colour measure
+	/// Variance- place the matching *vs Target measure in a small card or text
+	/// box directly beneath the main number
+	/// 
+	/// THRESHOLDS follow SMRP published guidance where one exists. Where it does not,
+	/// the band is stated as a convention rather than a benchmark.
+	/// 
+	/// WHAT YOUR CURRENT PAGE WOULD SHOW
+	/// Reactive Maintenance %      35.0%   RED    (target under 20%)
+	/// PM Compliance %             81.8%   AMBER  (target 90% or above)
+	/// Backlog Weeks                5.81   GREEN  (healthy band 4 to 6)
+	/// Total Maintenance Cost    $28.7M    no benchmark exists - leave uncoloured
+	/// Maintenance Cost % of RAV    6.0%   RED    (best-in-class 2% to 3%)
+	/// 
+	/// Three of five off-target. That is the honest picture and the page should say
+	/// so on sight.
+	/// 
+	/// shared palette - dark enough to stay legible as text on white
+	/// green #107C41   amber #C77700   red #C00F0C
+	/// 
+	/// REACTIVE MAINTENANCE %   target: under 20% (SMRP best-in-class)
+	measure 'Reactive Status Colour' =
+			VAR _v = [Reactive Maintenance %]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _v < 0.20, "#107C41",
+			        _v < 0.35, "#C77700",
+			        "#C00F0C"
+			    )
+		lineageTag: 32aac671-cbbc-485a-be25-9e011898c4f9
+
+	measure 'Reactive vs Target' =
+			VAR _d = [Reactive Maintenance %] - 0.20
+			RETURN
+			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 20% target"
+		lineageTag: 1e62cd93-17ae-4cda-b87b-0b839d5370f0
+
+	/// PM COMPLIANCE %   target: 90% or above
+	measure 'PM Compliance Status Colour' =
+			VAR _v = [PM Compliance %]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _v >= 0.90, "#107C41",
+			        _v >= 0.80, "#C77700",
+			        "#C00F0C"
+			    )
+		lineageTag: bcc382ad-af4d-4aa8-b3de-6ccee16d05e1
+
+	measure 'PM Compliance vs Target' =
+			VAR _d = [PM Compliance %] - 0.90
+			RETURN
+			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 90% target"
+		lineageTag: c9fd044b-891e-46a6-b57d-38cd2ffb58f8
+
+	/// BACKLOG WEEKS   healthy band 4 to 6
+	/// This is a two-sided measure - too little backlog is also a signal, usually of
+	/// over-resourcing or of work not being captured in the system at all.
+	measure 'Backlog Status Colour' =
+			VAR _v = [Backlog Weeks]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _v >= 4 && _v <= 6, "#107C41",
+			        _v >= 2 && _v <= 8, "#C77700",
+			        "#C00F0C"
+			    )
+		lineageTag: 4de2480d-e3e3-4b24-a3db-b78fa10b7bb4
+
+	measure 'Backlog vs Target' =
+			VAR _v = [Backlog Weeks]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _v < 2, "below healthy band of 4 to 6",
+			        _v <= 6, "within healthy band of 4 to 6",
+			        _v <= 8, FORMAT ( _v - 6, "+0.0" ) & " weeks above healthy band",
+			        FORMAT ( _v - 6, "+0.0" ) & " weeks above band - crew cannot keep pace"
+			    )
+		lineageTag: 5a0b6576-bf2d-475f-a56b-6054a85c0e00
+
+	/// MAINTENANCE COST % OF RAV   best-in-class 2% to 3% per year
+	measure 'Cost RAV Status Colour' =
+			VAR _v = [Maintenance Cost % of RAV]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _v <= 0.03, "#107C41",
+			        _v <= 0.05, "#C77700",
+			        "#C00F0C"
+			    )
+		lineageTag: 837561c4-c44f-478c-91be-54da4f8a372e
+
+	measure 'Cost RAV vs Target' =
+			VAR _d = [Maintenance Cost % of RAV] - 0.03
+			RETURN
+			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 3% best-in-class"
+		lineageTag: cfd48cc8-54b1-4839-9139-d8cad87298b3
+
+	/// BACKLOG AND AGING MEASURES
+	/// 
+	/// Requires the aging columns added to FactWorkOrder in Power Query
+	/// (DaysOpen, DaysOverdue, AgeBucket, AgeBucketSort). Add these measures only
+	/// after that change has been applied and refreshed.
+	/// 
+	/// Every value below computed directly from the source CSVs.
+	/// 
+	/// EXPECTED VALUES - no filters
+	/// Measure                        BEDFORD   HOUSTON    AURORA       ALL
+	/// Avg Age of Open Work (Days)       10.5      25.5      15.6      19.8
+	/// Backlog Hours Overdue            913.6   5,687.9   1,600.5   8,201.9
+	/// Overdue Emergency Work Orders        3        21         3        27
+	/// Aged Over 90 Days                   14        66        22       102
+	/// 
+	/// Houston carries 69% of all overdue backlog hours and 65% of everything aged
+	/// past 90 days, on 55% of the open work orders. Its backlog is not just larger,
+	/// it is older.
+	/// 
+	/// Mean age of open work, measured from the date it was raised. Distinct from
+	/// Avg Days Overdue, which measures against the TARGET date - a work order can
+	/// be 40 days old and not yet overdue if it was given a 60-day target.
+	/// Expected: 19.8 days all sites
+	measure 'Avg Age of Open Work (Days)' =
+			CALCULATE (
+			    AVERAGE ( FactWorkOrder[DaysOpen] ),
+			    FactWorkOrder[IsOpen] = 1,
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0.0
+		lineageTag: 54a0f7b4-9d3f-4e1b-ac67-ce38e80554b5
+
+	/// Estimated labour hours sitting on work that is already late. This is the
+	/// number a planner acts on - total backlog includes work that is still within
+	/// its window and therefore not yet a problem.
+	/// Expected: 8,201.9 hours all sites, of which Houston holds 5,687.9
+	measure 'Backlog Hours Overdue' =
+			CALCULATE (
+			    SUM ( FactWorkOrder[ESTLABHRS] ),
+			    FactWorkOrder[IsOpen] = 1,
+			    NOT ISBLANK ( FactWorkOrder[DaysOverdue] ),
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0.0
+		lineageTag: 0a399423-fbd9-4e24-8418-c2c01c3fc3ae
+
+	/// Emergency work that missed its target date. Emergency targets are same-day,
+	/// so an overdue emergency is work that was classified as an emergency and then
+	/// not treated as one. Small number, high signal.
+	/// Expected: 27 all sites - Houston 21, Bedford 3, Aurora 3
+	measure 'Overdue Emergency Work Orders' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsOpen] = 1,
+			    FactWorkOrder[WORKTYPE] = "EM",
+			    NOT ISBLANK ( FactWorkOrder[DaysOverdue] ),
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0
+		lineageTag: 5c353428-8b9f-4e9b-89bc-2c326ef8ca93
+
+	/// Open work orders raised more than 90 days ago. The aging tail - work this old
+	/// is rarely still relevant and usually needs cancelling or re-scoping rather
+	/// than scheduling.
+	/// Expected: 102 all sites - Houston 66
+	measure 'Aged Over 90 Days' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[IsOpen] = 1,
+			    FactWorkOrder[DaysOpen] > 90,
+			    REMOVEFILTERS ( DimDate )
+			)
+		formatString: #,0
+		lineageTag: 9fda6a0b-b578-49e0-8ab4-88b4829b7c51
+
+	/// Share of backlog hours that are already late. More useful than a raw hour
+	/// count when comparing sites of different sizes.
+	/// Expected: Bedford 31.9%, Houston 58.4%, Aurora 49.9%, all sites 51.9%
+	measure 'Overdue Share of Backlog' = DIVIDE ( [Backlog Hours Overdue], [Backlog Hours] )
+		formatString: 0.0%
+		lineageTag: a2095968-1ddd-4566-92f2-07e3f2de516d
+
+	/// STATUS COLOURS for the backlog cards
+	/// 
+	/// No neutral published benchmark exists for backlog age, so these bands are
+	/// stated as a working convention rather than a standard. Say so if asked.
+	measure 'Backlog Age Status Colour' =
+			VAR _v = [Avg Age of Open Work (Days)]
+			RETURN
+			    SWITCH ( TRUE (), _v <= 14, "#107C41", _v <= 30, "#C77700", "#C00F0C" )
+		lineageTag: b0be2271-6ad1-43b0-9da2-c596d1728546
+
+	measure 'Overdue Status Colour' =
+			VAR _v = [Overdue %]
+			RETURN
+			    SWITCH ( TRUE (), _v < 0.20, "#107C41", _v < 0.40, "#C77700", "#C00F0C" )
+		lineageTag: 14d0ad03-9ba5-45e5-98c2-cd842332e6fe
+
 	column WONUM
 		dataType: string
 		lineageTag: 566bf75d-eb6f-4dff-a36e-12299448dfde
@@ -899,6 +1105,41 @@ table FactWorkOrder
 
 		annotation SummarizationSetBy = Automatic
 
+	column DaysOpen
+		dataType: int64
+		formatString: 0
+		lineageTag: 520d2162-8802-449c-af73-7caae4736046
+		summarizeBy: none
+		sourceColumn: DaysOpen
+
+		annotation SummarizationSetBy = User
+
+	column DaysOverdue
+		dataType: int64
+		formatString: 0
+		lineageTag: 7abd46c1-b524-4c78-8e73-76d44fa845d2
+		summarizeBy: none
+		sourceColumn: DaysOverdue
+
+		annotation SummarizationSetBy = User
+
+	column AgeBucket
+		dataType: string
+		lineageTag: c9f7de39-f456-4e9b-8ca5-6df2a2f0f7fc
+		summarizeBy: none
+		sourceColumn: AgeBucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgeBucketSort
+		dataType: int64
+		formatString: 0
+		lineageTag: 67866a34-571d-4db9-b42c-3a6143d29053
+		summarizeBy: none
+		sourceColumn: AgeBucketSort
+
+		annotation SummarizationSetBy = User
+
 	partition FactWorkOrder = m
 		mode: import
 		source =
@@ -1008,7 +1249,42 @@ table FactWorkOrder
 				            each if [ActFinishDate] = null then null
 				                 else Duration.Days([ActFinishDate] - [ReportDate]), Int64.Type),
 				
-				    Final = Table.RemoveColumns(Cycle,
+				    // as-of anchor, derived from the calendar
+				    AsOf = List.Max (
+				        Table.SelectRows ( DimDate, each [ISPASTORTODAY] = 1 )[Date]
+				    ),
+				
+				    // days since the work order was raised; null for anything not open
+				    Aged = Table.AddColumn ( Cycle, "DaysOpen",
+				        each if [IsOpen] = 1 then Duration.Days ( AsOf - [ReportDate] ) else null,
+				        Int64.Type ),
+				
+				    // days past target completion; null unless open AND past target
+				    Overdue = Table.AddColumn ( Aged, "DaysOverdue",
+				        each if [IsOpen] = 1 and [TargCompDate] <> null and [TargCompDate] < AsOf
+				             then Duration.Days ( AsOf - [TargCompDate] )
+				             else null,
+				        Int64.Type ),
+				
+				    Bucket = Table.AddColumn ( Overdue, "AgeBucket",
+				        each if [DaysOpen] = null then null
+				             else if [DaysOpen] < 0 then "Not yet due"
+				             else if [DaysOpen] <= 30 then "0-30 days"
+				             else if [DaysOpen] <= 60 then "31-60 days"
+				             else if [DaysOpen] <= 90 then "61-90 days"
+				             else "91+ days",
+				        type text ),
+				
+				    BucketSort = Table.AddColumn ( Bucket, "AgeBucketSort",
+				        each if [DaysOpen] = null then null
+				             else if [DaysOpen] < 0 then 0
+				             else if [DaysOpen] <= 30 then 1
+				             else if [DaysOpen] <= 60 then 2
+				             else if [DaysOpen] <= 90 then 3
+				             else 4,
+				        Int64.Type ),
+				
+				    Final = Table.RemoveColumns(BucketSort,
 				        {"REPORTDATE", "TARGSTARTDATE", "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH"})
 				in
 				    Final

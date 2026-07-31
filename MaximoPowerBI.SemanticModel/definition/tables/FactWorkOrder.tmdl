@@ -28,6 +28,7 @@ table FactWorkOrder
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 9760519c-555e-43d1-a580-1df71e1f1d17
 
 	/// 1. REACTIVE MAINTENANCE %
@@ -44,6 +45,7 @@ table FactWorkOrder
 			RETURN
 			    DIVIDE ( _Reactive, [Work Orders] )
 		formatString: 0.0%
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 9f2a4b75-5716-4438-a543-7772df323521
 
 	/// 2. PM COMPLIANCE %
@@ -60,6 +62,7 @@ table FactWorkOrder
 			    SUM ( FactWorkOrder[IsPMCompleted] )
 			)
 		formatString: 0.0%
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: d0cfecd9-b968-4d0e-b3e1-e70f1224679b
 
 	/// PM compliance is conventionally reported against the period the work was DUE,
@@ -72,6 +75,7 @@ table FactWorkOrder
 			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
 			)
 		formatString: 0.0%
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 94e4a023-5b0a-4965-8213-a2263578b209
 
 	/// 3. SCHEDULE COMPLIANCE %
@@ -102,6 +106,7 @@ table FactWorkOrder
 			RETURN
 			    DIVIDE ( _OnSchedule, _Scheduled )
 		formatString: 0.0%
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: f81326a4-6d70-4bca-a0c6-728f871c8a5f
 
 	/// 4. MTTR (MEAN TIME TO REPAIR)
@@ -116,6 +121,7 @@ table FactWorkOrder
 			    COUNTROWS ( FactDowntime )
 			)
 		formatString: #,0.00
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 710fb1ff-7ca4-4b02-927f-7d1082d0b8dd
 
 	/// 5. TOTAL MAINTENANCE COST
@@ -131,6 +137,7 @@ table FactWorkOrder
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: \$#,0
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 0751b5fe-3335-40b7-9dbd-d801f821acf1
 
 	/// Should always return 0. If it does not, the fact tables are out of step.
@@ -142,6 +149,7 @@ table FactWorkOrder
 			RETURN
 			    ROUND ( _WOLabour - _TxLabour, 2 ) + ROUND ( _WOMaterial - _TxMaterial, 2 )
 		formatString: #,0.00
+		displayFolder: Measures\08 Validation
 		lineageTag: 1db1921e-7a9b-4615-8b2e-ac827c728f2e
 
 	/// 6. BACKLOG
@@ -166,6 +174,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.00
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 4ce720fa-ae78-4bc4-a5fb-e8682616f493
 
 	/// TREATAS pushes the selected sites onto DimLabor without a relationship,
@@ -179,19 +188,63 @@ table FactWorkOrder
 			        TREATAS ( _Sites, DimLabor[SITEID] )
 			    )
 		formatString: #,0
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: a0562e9a-bd69-4939-8935-d74b635c82bf
 
 	measure 'Backlog Weeks' = DIVIDE ( [Backlog Hours], [Weekly Craft Capacity (Hours)] )
 		formatString: #,0.00
+		displayFolder: Measures\01 Core KPIs
 		lineageTag: 362be6ba-a69d-4d1e-8b98-3f8031a67cef
 
+	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
+	/// 
+	/// THE BUG
+	/// DimAsset and DimSite are both dimensions. Neither is related to the other -
+	/// they meet only at the fact tables, and filters propagate dim -> fact, never
+	/// fact -> dim. So slicing by site filters FactWorkOrder but leaves DimAsset
+	/// completely unfiltered.
+	/// 
+	/// Any measure whose numerator comes from a fact and whose denominator comes
+	/// from DimAsset therefore divides a site's value by the WHOLE portfolio.
+	/// 
+	/// THE TELL
+	/// The per-site values sum to the grand total instead of each being their own
+	/// ratio: 1.5% + 1.3% + 3.2% = 6.0%. A ratio that sums like an additive measure
+	/// is always this bug.
+	/// 
+	/// WHY IT SURVIVED VERIFICATION
+	/// At the grand total nothing is filtered, so numerator and denominator agree
+	/// and the number is right. It only breaks when sliced - which is exactly what
+	/// a site scorecard does.
+	/// 
+	/// THE FIX
+	/// TREATAS pushes the selected sites onto DimAsset[SITEID] without a
+	/// relationship. Adding a real DimSite -> DimAsset relationship would work too,
+	/// but would create a second filter path to the facts (DimSite -> FactWorkOrder
+	/// AND DimSite -> DimAsset -> FactWorkOrder) and reintroduce ambiguity.
+	/// Weekly Craft Capacity (Hours) already uses this pattern for DimLabor.
+	/// 
+	/// EXPECTED AFTER THE FIX
+	/// Measure                      BEDFORD   HOUSTON    AURORA       ALL
+	/// Operating Asset Count            316       280       239       835
+	/// Maintenance Cost % of RAV       4.0%      7.1%      6.6%      6.0%
+	/// MTBF (Hours)                   4,006       908     1,956     1,643
+	/// Asset Availability %          99.88%    99.05%    99.71%    99.55%
+	/// 
+	/// Fixing Operating Asset Count also fixes Scheduled Asset Hours, MTBF (Hours)
+	/// and Asset Availability %, which all derive from it. Only the two measures
+	/// below need editing.
 	measure 'Operating Asset Count' =
-			CALCULATE (
-			    DISTINCTCOUNT ( DimAsset[ASSETNUM] ),
-			    DimAsset[STATUS] = "OPERATING",
-			    DimAsset[ASSETNUM] <> "(none)"
-			)
+			VAR _Sites = VALUES ( DimSite[SITEID] )
+			RETURN
+			    CALCULATE (
+			        DISTINCTCOUNT ( DimAsset[ASSETNUM] ),
+			        DimAsset[STATUS] = "OPERATING",
+			        DimAsset[ASSETNUM] <> "(none)",
+			        TREATAS ( _Sites, DimAsset[SITEID] )
+			    )
 		formatString: #,0
+		displayFolder: Measures\05 Reliability
 		lineageTag: 7da965b1-7b5a-48f1-bf02-1cf7932cb2ae
 
 	/// The one place with a hardcoded date. 2023-07-01 is this dataset's window
@@ -208,10 +261,12 @@ table FactWorkOrder
 			    )
 			)
 		formatString: #,0
+		displayFolder: Measures\05 Reliability
 		lineageTag: f0db3124-6dea-4d60-a13d-58812216251a
 
 	measure 'Scheduled Asset Hours' = [Operating Asset Count] * [Analysis Days] * 24
 		formatString: #,0
+		displayFolder: Measures\05 Reliability
 		lineageTag: 799dbbba-4861-4ddb-86a2-83653c245fe4
 
 	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
@@ -240,6 +295,7 @@ table FactWorkOrder
 			RETURN
 			    DIVIDE ( _Scheduled - _Downtime, _Failures )
 		formatString: #,0.00
+		displayFolder: Measures\05 Reliability
 		lineageTag: 1022a867-a2b8-4458-8075-c26c6a8b6521
 
 	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
@@ -267,6 +323,7 @@ table FactWorkOrder
 			RETURN
 			    DIVIDE ( _Scheduled - _Downtime, _Scheduled )
 		formatString: 0.0%
+		displayFolder: Measures\05 Reliability
 		lineageTag: f808a277-3525-44ca-a542-4dc7e991b2bc
 
 	measure 'Open Work Orders' =
@@ -276,14 +333,17 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 5aff65cc-34d2-44de-ace2-bd270c06b50a
 
 	measure 'Failure Events' = COUNTROWS ( FactFailure )
 		formatString: #,0
+		displayFolder: Measures\05 Reliability
 		lineageTag: a285849b-8dab-4385-8bc1-49e47f08674b
 
 	measure 'Downtime Hours' = SUM ( FactDowntime[DOWNTIME] )
 		formatString: #,0.00
+		displayFolder: Measures\05 Reliability
 		lineageTag: 25e79621-737b-4edf-b46a-6ed981d7e496
 
 	measure 'Actual Labour Hours' =
@@ -292,6 +352,7 @@ table FactWorkOrder
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0.00
+		displayFolder: Measures\06 Cost and Labour
 		lineageTag: bb7c4723-36e5-4484-a681-f9107ca7ef96
 
 	/// Planned vs reactive labour split. Relies on WORKTYPE having been merged onto
@@ -302,27 +363,70 @@ table FactWorkOrder
 			    FactLabour[WORKTYPE] IN { "CM", "EM" }
 			)
 		formatString: #,0.00
+		displayFolder: Measures\06 Cost and Labour
 		lineageTag: ef2ac8a8-3d1e-4ce9-a4fb-64f49b47afd9
 
+	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
+	/// 
+	/// THE BUG
+	/// DimAsset and DimSite are both dimensions. Neither is related to the other -
+	/// they meet only at the fact tables, and filters propagate dim -> fact, never
+	/// fact -> dim. So slicing by site filters FactWorkOrder but leaves DimAsset
+	/// completely unfiltered.
+	/// 
+	/// Any measure whose numerator comes from a fact and whose denominator comes
+	/// from DimAsset therefore divides a site's value by the WHOLE portfolio.
+	/// 
+	/// THE TELL
+	/// The per-site values sum to the grand total instead of each being their own
+	/// ratio: 1.5% + 1.3% + 3.2% = 6.0%. A ratio that sums like an additive measure
+	/// is always this bug.
+	/// 
+	/// WHY IT SURVIVED VERIFICATION
+	/// At the grand total nothing is filtered, so numerator and denominator agree
+	/// and the number is right. It only breaks when sliced - which is exactly what
+	/// a site scorecard does.
+	/// 
+	/// THE FIX
+	/// TREATAS pushes the selected sites onto DimAsset[SITEID] without a
+	/// relationship. Adding a real DimSite -> DimAsset relationship would work too,
+	/// but would create a second filter path to the facts (DimSite -> FactWorkOrder
+	/// AND DimSite -> DimAsset -> FactWorkOrder) and reintroduce ambiguity.
+	/// Weekly Craft Capacity (Hours) already uses this pattern for DimLabor.
+	/// 
+	/// EXPECTED AFTER THE FIX
+	/// Measure                      BEDFORD   HOUSTON    AURORA       ALL
+	/// Operating Asset Count            316       280       239       835
+	/// Maintenance Cost % of RAV       4.0%      7.1%      6.6%      6.0%
+	/// MTBF (Hours)                   4,006       908     1,956     1,643
+	/// Asset Availability %          99.88%    99.05%    99.71%    99.55%
+	/// 
+	/// Fixing Operating Asset Count also fixes Scheduled Asset Hours, MTBF (Hours)
+	/// and Asset Availability %, which all derive from it. Only the two measures
+	/// below need editing.
 	/// SMRP metric: maintenance cost as a percent of replacement asset value.
 	/// Best-in-class is 2-3% per year. This dataset runs at 6.0% overall
 	/// (Bedford 4.0%, Houston 7.1%, Aurora 6.6%) - an underperforming portfolio,
 	/// which is the story the data is built to tell.
 	measure 'Maintenance Cost % of RAV' =
+			VAR _Sites = VALUES ( DimSite[SITEID] )
 			VAR _Cost = [Total Maintenance Cost]
 			VAR _RAV =
 			    CALCULATE (
 			        SUM ( DimAsset[REPLACECOST] ),
-			        DimAsset[ASSETNUM] <> "(none)"
+			        DimAsset[ASSETNUM] <> "(none)",
+			        TREATAS ( _Sites, DimAsset[SITEID] )
 			    )
 			VAR _Years = DIVIDE ( [Analysis Days], 365.25 )
 			RETURN
 			    DIVIDE ( DIVIDE ( _Cost, _Years ), _RAV )
 		formatString: 0.0%
+		displayFolder: Measures\06 Cost and Labour
 		lineageTag: 037349f9-4343-4532-883f-b2380cdfe1ee
 
 	measure 'Mean Days to Complete' = AVERAGE ( FactWorkOrder[DaysToComplete] )
 		formatString: #,0.00
+		displayFolder: Measures\06 Cost and Labour
 		lineageTag: 04a165ea-4fed-4590-945d-6331ecf2be75
 
 	/// COCKPIT MEASURES - current-state operational view
@@ -377,6 +481,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: dd mmm yyyy
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 5bf6bd48-5b76-4b86-8b5b-7be2d1c9543e
 
 	/// OVERDUE
@@ -392,11 +497,13 @@ table FactWorkOrder
 			        REMOVEFILTERS ( DimDate )
 			    )
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 5c58ae34-352d-4fcd-b171-1eff2d259a56
 
 	/// Expected: 45.7% all sites
 	measure 'Overdue %' = DIVIDE ( [Overdue Work Orders], [Open Work Orders] )
 		formatString: 0.0%
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 34d4981b-798f-492c-a794-d854b480832c
 
 	/// AVERAGEX over the overdue rows, not an average of a column - the days-overdue
@@ -414,6 +521,7 @@ table FactWorkOrder
 			RETURN
 			    AVERAGEX ( _Overdue, DATEDIFF ( FactWorkOrder[TargCompDate], _AsOf, DAY ) )
 		formatString: #,0.0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 5290701f-74fa-4f84-83e6-c90df1fc9bed
 
 	/// Future-dated PM work orders produce a negative age here, which is correct -
@@ -430,6 +538,7 @@ table FactWorkOrder
 			RETURN
 			    MAXX ( _Open, DATEDIFF ( FactWorkOrder[ReportDate], _AsOf, DAY ) )
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 9e9f2a42-d2ef-4760-8c3b-5ee556bfc03f
 
 	/// TODAY'S PRIORITIES
@@ -444,6 +553,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 223067f7-f557-47c0-a4ab-921afab33f7b
 
 	/// Forward PM load. Uses TargCompDate, not ReportDate, because what matters is
@@ -461,6 +571,7 @@ table FactWorkOrder
 			        REMOVEFILTERS ( DimDate )
 			    )
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 56ff7bd6-c3f8-4e9b-92ce-5a061475382a
 
 	/// THROUGHPUT
@@ -474,6 +585,7 @@ table FactWorkOrder
 			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[ActFinishDate] )
 			)
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 615a6733-09da-45cb-8444-82870051378b
 
 	measure 'Work Orders Reported' =
@@ -482,6 +594,7 @@ table FactWorkOrder
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 69ba2240-2bec-4c04-9792-d3b497e037e1
 
 	/// KNOWN DATA ARTIFACT - affects any intake-vs-completion trend
@@ -499,6 +612,7 @@ table FactWorkOrder
 	/// column chart - it is the clearest way to show a backlog going the wrong way.
 	measure 'Net Backlog Change' = [Work Orders Reported] - [Work Orders Completed]
 		formatString: +#,0;-#,0;0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 4d215a58-0cf7-48c8-8933-487a759905de
 
 	/// CAPACITY
@@ -510,6 +624,7 @@ table FactWorkOrder
 			    DIVIDE ( [Weekly Craft Capacity (Hours)], 40 )
 			)
 		formatString: #,0.0
+		displayFolder: Measures\03 Cockpit
 		lineageTag: 71326b96-6da2-4603-b42b-51147c905d34
 
 	/// ROLLING TREND MEASURE - removes annual seasonality from the executive trend
@@ -560,6 +675,7 @@ table FactWorkOrder
 			    // with a misleading partial-window value
 			    IF ( _WindowStart >= _FirstData, DIVIDE ( _Reactive, _Total ) )
 		formatString: 0.0%
+		displayFolder: Measures\02 Trend
 		lineageTag: 0a6bc6f8-035f-4911-bd80-bfc1a577d81a
 
 	/// The same treatment for PM compliance, for the second executive trend.
@@ -585,6 +701,7 @@ table FactWorkOrder
 			RETURN
 			    IF ( _WindowStart >= _FirstData, DIVIDE ( _OnTime, _Completed ) )
 		formatString: 0.0%
+		displayFolder: Measures\02 Trend
 		lineageTag: 5b86b0bb-b155-4a6e-a21a-c90c816c0ff1
 
 	/// KPI STATUS MEASURES - benchmark signalling for the executive cards
@@ -625,12 +742,14 @@ table FactWorkOrder
 			        _v < 0.35, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 32aac671-cbbc-485a-be25-9e011898c4f9
 
 	measure 'Reactive vs Target' =
 			VAR _d = [Reactive Maintenance %] - 0.20
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 20% target"
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 1e62cd93-17ae-4cda-b87b-0b839d5370f0
 
 	/// PM COMPLIANCE %   target: 90% or above
@@ -643,12 +762,14 @@ table FactWorkOrder
 			        _v >= 0.80, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: bcc382ad-af4d-4aa8-b3de-6ccee16d05e1
 
 	measure 'PM Compliance vs Target' =
 			VAR _d = [PM Compliance %] - 0.90
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 90% target"
+		displayFolder: Measures\07 Status Colours
 		lineageTag: c9fd044b-891e-46a6-b57d-38cd2ffb58f8
 
 	/// BACKLOG WEEKS   healthy band 4 to 6
@@ -663,6 +784,7 @@ table FactWorkOrder
 			        _v >= 2 && _v <= 8, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 4de2480d-e3e3-4b24-a3db-b78fa10b7bb4
 
 	measure 'Backlog vs Target' =
@@ -675,6 +797,7 @@ table FactWorkOrder
 			        _v <= 8, FORMAT ( _v - 6, "+0.0" ) & " weeks above healthy band",
 			        FORMAT ( _v - 6, "+0.0" ) & " weeks above band - crew cannot keep pace"
 			    )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 5a0b6576-bf2d-475f-a56b-6054a85c0e00
 
 	/// MAINTENANCE COST % OF RAV   best-in-class 2% to 3% per year
@@ -687,12 +810,14 @@ table FactWorkOrder
 			        _v <= 0.05, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 837561c4-c44f-478c-91be-54da4f8a372e
 
 	measure 'Cost RAV vs Target' =
 			VAR _d = [Maintenance Cost % of RAV] - 0.03
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 3% best-in-class"
+		displayFolder: Measures\07 Status Colours
 		lineageTag: cfd48cc8-54b1-4839-9139-d8cad87298b3
 
 	/// BACKLOG AND AGING MEASURES
@@ -725,6 +850,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.0
+		displayFolder: Measures\04 Backlog and Aging
 		lineageTag: 54a0f7b4-9d3f-4e1b-ac67-ce38e80554b5
 
 	/// Estimated labour hours sitting on work that is already late. This is the
@@ -739,6 +865,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.0
+		displayFolder: Measures\04 Backlog and Aging
 		lineageTag: 0a399423-fbd9-4e24-8418-c2c01c3fc3ae
 
 	/// Emergency work that missed its target date. Emergency targets are same-day,
@@ -754,6 +881,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: Measures\04 Backlog and Aging
 		lineageTag: 5c353428-8b9f-4e9b-89bc-2c326ef8ca93
 
 	/// Open work orders raised more than 90 days ago. The aging tail - work this old
@@ -768,6 +896,7 @@ table FactWorkOrder
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: Measures\04 Backlog and Aging
 		lineageTag: 9fda6a0b-b578-49e0-8ab4-88b4829b7c51
 
 	/// Share of backlog hours that are already late. More useful than a raw hour
@@ -775,6 +904,7 @@ table FactWorkOrder
 	/// Expected: Bedford 31.9%, Houston 58.4%, Aurora 49.9%, all sites 51.9%
 	measure 'Overdue Share of Backlog' = DIVIDE ( [Backlog Hours Overdue], [Backlog Hours] )
 		formatString: 0.0%
+		displayFolder: Measures\04 Backlog and Aging
 		lineageTag: a2095968-1ddd-4566-92f2-07e3f2de516d
 
 	/// STATUS COLOURS for the backlog cards
@@ -785,12 +915,14 @@ table FactWorkOrder
 			VAR _v = [Avg Age of Open Work (Days)]
 			RETURN
 			    SWITCH ( TRUE (), _v <= 14, "#107C41", _v <= 30, "#C77700", "#C00F0C" )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: b0be2271-6ad1-43b0-9da2-c596d1728546
 
 	measure 'Overdue Status Colour' =
 			VAR _v = [Overdue %]
 			RETURN
 			    SWITCH ( TRUE (), _v < 0.20, "#107C41", _v < 0.40, "#C77700", "#C00F0C" )
+		displayFolder: Measures\07 Status Colours
 		lineageTag: 14d0ad03-9ba5-45e5-98c2-cd842332e6fe
 
 	column WONUM

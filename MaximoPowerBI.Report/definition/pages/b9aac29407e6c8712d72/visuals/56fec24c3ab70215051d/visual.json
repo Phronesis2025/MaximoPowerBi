@@ -4,10 +4,10 @@
   "position": {
     "x": 1212,
     "y": 300,
-    "z": 10,
+    "z": 10000,
     "height": 372,
     "width": 672,
-    "tabOrder": 10
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "barChart",
@@ -39,13 +39,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Backlog Weeks"
                 }
               },
-              "queryRef": "FactWorkOrder.Backlog Weeks",
+              "queryRef": "_Measures.Backlog Weeks",
               "nativeQueryRef": "Backlog Weeks"
             }
           ]
@@ -58,7 +58,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Backlog Weeks"

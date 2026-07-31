@@ -4,10 +4,10 @@
   "position": {
     "x": 411,
     "y": 126,
-    "z": 6,
+    "z": 6000,
     "height": 156,
     "width": 348,
-    "tabOrder": 6
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -20,28 +20,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Overdue Work Orders"
                 }
               },
-              "queryRef": "FactWorkOrder.Overdue Work Orders",
+              "queryRef": "_Measures.Overdue Work Orders",
               "nativeQueryRef": "Overdue Work Orders"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "FactWorkOrder"
-                    }
-                  },
-                  "Property": "Overdue %"
-                }
-              },
-              "queryRef": "FactWorkOrder.Overdue %",
-              "nativeQueryRef": "Overdue %"
             }
           ]
         }
@@ -53,7 +39,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Overdue Work Orders"
@@ -77,12 +63,10 @@
               }
             }
           }
-        }
-      ],
-      "outline": [
+        },
         {
           "properties": {
-            "show": {
+            "backgroundShow": {
               "expr": {
                 "Literal": {
                   "Value": "false"
@@ -91,23 +75,7 @@
             }
           },
           "selector": {
-            "metadata": "FactWorkOrder.Overdue Work Orders"
-          }
-        }
-      ],
-      "divider": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "FactWorkOrder.Overdue Work Orders"
+            "id": "default"
           }
         }
       ],
@@ -124,32 +92,49 @@
           }
         }
       ],
+      "value": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Overdue Work Orders"
+          }
+        },
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "42D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
       "label": [
         {
           "properties": {
             "position": {
               "expr": {
                 "Literal": {
-                  "Value": "'belowValue'"
+                  "Value": "'aboveValue'"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "FactWorkOrder.Overdue Work Orders"
-          }
-        },
-        {
-          "properties": {},
-          "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 0
-                }
-              }
-            ],
-            "metadata": "FactWorkOrder.Overdue %"
+            "id": "default"
           }
         }
       ],
@@ -165,83 +150,67 @@
             }
           },
           "selector": {
-            "metadata": "FactWorkOrder.Overdue Work Orders"
-          }
-        },
-        {
-          "properties": {
-            "verticalSpacing": {
-              "expr": {
-                "Literal": {
-                  "Value": "0L"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "FactWorkOrder.Overdue %"
+            "id": "default"
           }
         }
       ],
-      "value": [
+      "divider": [
         {
           "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "FactWorkOrder"
-                        }
-                      },
-                      "Property": "Overdue Status Colour"
-                    }
-                  }
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
           },
           "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 0
-                }
-              }
-            ],
-            "metadata": "FactWorkOrder.Overdue %"
+            "id": "default"
           }
-        },
+        }
+      ],
+      "outline": [
         {
           "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "FactWorkOrder"
-                        }
-                      },
-                      "Property": "Overdue Status Colour"
-                    }
-                  }
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
           },
           "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 0
+            "id": "default"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
-            ],
-            "metadata": "FactWorkOrder.Overdue Work Orders"
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
           }
         }
       ]

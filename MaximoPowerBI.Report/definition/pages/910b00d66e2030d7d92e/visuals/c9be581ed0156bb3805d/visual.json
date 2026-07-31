@@ -57,13 +57,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Reactive Maintenance % (12M Rolling)"
                 }
               },
-              "queryRef": "FactWorkOrder.Reactive Maintenance % (12M Rolling)",
+              "queryRef": "_Measures.Reactive Maintenance % (12M Rolling)",
               "nativeQueryRef": "Reactive Maintenance % (12M Rolling)"
             }
           ]

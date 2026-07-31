@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Backlog Weeks"
                 }
               },
-              "queryRef": "FactWorkOrder.Backlog Weeks",
+              "queryRef": "_Measures.Backlog Weeks",
               "nativeQueryRef": "Backlog Weeks"
             }
           ]
@@ -39,7 +39,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Backlog Weeks"
@@ -114,10 +114,10 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "FactWorkOrder"
+                          "Entity": "_Measures"
                         }
                       },
-                      "Property": "Backlog Status Colour"
+                      "Property": "Backlog Age Status Colour"
                     }
                   }
                 }

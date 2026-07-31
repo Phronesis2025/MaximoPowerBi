@@ -4,10 +4,10 @@
   "position": {
     "x": 36,
     "y": 300,
-    "z": 9,
+    "z": 9000,
     "height": 372,
     "width": 1140,
-    "tabOrder": 9
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "columnChart",
@@ -57,13 +57,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Backlog Hours"
                 }
               },
-              "queryRef": "FactWorkOrder.Backlog Hours",
+              "queryRef": "_Measures.Backlog Hours",
               "nativeQueryRef": "Backlog Hours"
             }
           ]
@@ -76,7 +76,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Backlog Hours"

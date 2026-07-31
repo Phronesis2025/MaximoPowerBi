@@ -4,10 +4,10 @@
   "position": {
     "x": 34,
     "y": 229,
-    "z": 12002,
+    "z": 14000,
     "height": 60,
     "width": 301,
-    "tabOrder": 13002
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Reactive vs Target"
                 }
               },
-              "queryRef": "FactWorkOrder.Reactive vs Target",
+              "queryRef": "_Measures.Reactive vs Target",
               "nativeQueryRef": "Reactive vs Target"
             }
           ]

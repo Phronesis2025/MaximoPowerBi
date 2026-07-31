@@ -4,8 +4,8 @@
   "position": {
     "x": 959.13841905419406,
     "y": 25.486278909216431,
-    "z": 1000,
-    "height": 54,
+    "z": 0,
+    "height": 60,
     "width": 280,
     "tabOrder": 1000
   },
@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Data As Of Date"
                 }
               },
-              "queryRef": "FactWorkOrder.Data As Of Date",
+              "queryRef": "_Measures.Data As Of Date",
               "nativeQueryRef": "Data As Of Date"
             }
           ]
@@ -39,7 +39,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Data As Of Date"
@@ -65,34 +65,6 @@
           },
           "selector": {
             "id": "default"
-          }
-        }
-      ],
-      "value": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "18D"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "FactWorkOrder.Data As Of Date"
           }
         }
       ],
@@ -139,20 +111,6 @@
               }
             }
           }
-        },
-        {
-          "properties": {
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "100D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "FactWorkOrder.Data As Of Date"
-          }
         }
       ],
       "layout": [
@@ -168,6 +126,34 @@
           },
           "selector": {
             "id": "default"
+          }
+        }
+      ],
+      "value": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Data As Of Date"
           }
         }
       ]

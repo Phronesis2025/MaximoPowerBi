@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Maintenance Cost % of RAV"
                 }
               },
-              "queryRef": "FactWorkOrder.Maintenance Cost % of RAV",
+              "queryRef": "_Measures.Maintenance Cost % of RAV",
               "nativeQueryRef": "Maintenance Cost % of RAV"
             }
           ]
@@ -39,7 +39,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "FactWorkOrder"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Maintenance Cost % of RAV"
@@ -114,7 +114,7 @@
                     "Measure": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "FactWorkOrder"
+                          "Entity": "_Measures"
                         }
                       },
                       "Property": "Cost RAV Status Colour"
@@ -183,29 +183,6 @@
           },
           "selector": {
             "id": "default"
-          }
-        }
-      ],
-      "padding": [
-        {
-          "properties": {
-            "paddingIndividual": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "topMargin": {
-              "expr": {
-                "Literal": {
-                  "Value": "0L"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "FactWorkOrder.Maintenance Cost % of RAV"
           }
         }
       ]

@@ -57,35 +57,17 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
-                  "Property": "Work Orders"
+                  "Property": "Work Orders Completed"
                 }
               },
-              "queryRef": "FactWorkOrder.Work Orders",
-              "nativeQueryRef": "Work Orders"
+              "queryRef": "_Measures.Work Orders Completed",
+              "nativeQueryRef": "Work Orders Completed"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactWorkOrder"
-                  }
-                },
-                "Property": "Work Orders"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": true
       }
     },
     "objects": {

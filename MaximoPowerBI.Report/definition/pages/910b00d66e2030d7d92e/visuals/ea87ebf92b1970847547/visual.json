@@ -4,10 +4,10 @@
   "position": {
     "x": 411,
     "y": 229,
-    "z": 12003,
+    "z": 15000,
     "height": 60,
     "width": 301,
-    "tabOrder": 13003
+    "tabOrder": 15000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "PM Compliance vs Target"
                 }
               },
-              "queryRef": "FactWorkOrder.PM Compliance vs Target",
+              "queryRef": "_Measures.PM Compliance vs Target",
               "nativeQueryRef": "PM Compliance vs Target"
             }
           ]

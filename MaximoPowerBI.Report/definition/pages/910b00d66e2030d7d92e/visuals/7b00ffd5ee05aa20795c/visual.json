@@ -4,10 +4,10 @@
   "position": {
     "x": 1536,
     "y": 229,
-    "z": 12005,
+    "z": 17000,
     "height": 60,
     "width": 301,
-    "tabOrder": 13005
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactWorkOrder"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Cost RAV vs Target"
                 }
               },
-              "queryRef": "FactWorkOrder.Cost RAV vs Target",
+              "queryRef": "_Measures.Cost RAV vs Target",
               "nativeQueryRef": "Cost RAV vs Target"
             }
           ]

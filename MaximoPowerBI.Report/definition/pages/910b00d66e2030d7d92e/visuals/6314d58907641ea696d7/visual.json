@@ -68,6 +68,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactWorkOrder"
+                  }
+                },
+                "Property": "Work Orders"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {

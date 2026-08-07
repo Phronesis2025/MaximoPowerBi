@@ -4,7 +4,7 @@
   "position": {
     "x": 1161,
     "y": 126,
-    "z": 7000,
+    "z": 6000,
     "height": 156,
     "width": 348,
     "tabOrder": 7000
@@ -59,13 +59,8 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "FactWorkOrder"
-                        }
-                      },
-                      "Property": "Backlog Age Status Colour"
+                    "Literal": {
+                      "Value": "'#252B33'"
                     }
                   }
                 }
@@ -91,6 +86,24 @@
               "expr": {
                 "Literal": {
                   "Value": "'aboveValue'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6570'"
+                    }
+                  }
                 }
               }
             }

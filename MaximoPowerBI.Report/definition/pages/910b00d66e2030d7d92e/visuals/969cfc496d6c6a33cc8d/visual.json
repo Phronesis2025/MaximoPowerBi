@@ -39,7 +39,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "_Measures"
+                    "Entity": "FactWorkOrder"
                   }
                 },
                 "Property": "Data As Of Date"

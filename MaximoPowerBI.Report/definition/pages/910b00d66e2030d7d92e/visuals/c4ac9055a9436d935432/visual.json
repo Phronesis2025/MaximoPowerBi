@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "c4ac9055a9436d935432",
   "position": {
-    "x": 26.36363636363636,
-    "y": 105.45454545454544,
+    "x": 27.5,
+    "y": 105,
     "z": 2000,
-    "height": 364.5454545454545,
-    "width": 708.18181818181813,
+    "height": 442.5,
+    "width": 707.5,
     "tabOrder": 3000
   },
   "visual": {
@@ -15,6 +15,20 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIDefinitions"
+                    }
+                  },
+                  "Property": "Section"
+                }
+              },
+              "queryRef": "KPIDefinitions.Section",
+              "nativeQueryRef": "Section"
+            },
             {
               "field": {
                 "Column": {
@@ -143,7 +157,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "327.1064517236963D"
+                  "Value": "219.6406668307339D"
                 }
               }
             }
@@ -157,7 +171,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "210.2764478092887D"
+                  "Value": "212.7732280879581D"
                 }
               }
             }

@@ -322,7 +322,7 @@
     {
       "ordinal": 3,
       "scrollPosition": {
-        "x": 0,
+        "x": 503.77475632576079,
         "y": 0
       },
       "nodes": [
@@ -558,6 +558,45 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2914,
+            "y": 810
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "8001dd72-0476-4f50-bb57-db8f42fc8bf0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3198,
+            "y": 848
+          },
+          "nodeIndex": "KPICards",
+          "nodeLineageTag": "7fc9a92f-5276-425b-83a1-cd0ff0b01ed3",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3482,
+            "y": 810
+          },
+          "nodeIndex": "PerformanceTargets",
+          "nodeLineageTag": "42ad7410-fd28-4de2-af3c-8f7ea1524b6e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "99 All Tables",
@@ -568,6 +607,6 @@
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "01 Work Order Core",
+  "selectedDiagram": "99 All Tables",
   "defaultDiagram": "99 All Tables"
 }

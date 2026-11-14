@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Segoe UI, Arial, sans-serif">
+<rect x="0.0" y="0.0" width="1920.0" height="1080.0" rx="0" fill="#EEF1F6"/>
+<rect x="0.0" y="0.0" width="1920.0" height="64.0" rx="0" fill="#1B3A57"/>
+<polygon points="50.3,27.6 55.6,28.0 55.6,36.0 50.3,36.4" fill="#FFFFFF"/>
+<polygon points="49.2,39.0 52.7,43.0 47.0,48.7 43.0,45.2" fill="#FFFFFF"/>
+<polygon points="40.4,46.3 40.0,51.6 32.0,51.6 31.6,46.3" fill="#FFFFFF"/>
+<polygon points="29.0,45.2 25.0,48.7 19.3,43.0 22.8,39.0" fill="#FFFFFF"/>
+<polygon points="21.7,36.4 16.4,36.0 16.4,28.0 21.7,27.6" fill="#FFFFFF"/>
+<polygon points="22.8,25.0 19.3,21.0 25.0,15.3 29.0,18.8" fill="#FFFFFF"/>
+<polygon points="31.6,17.7 32.0,12.4 40.0,12.4 40.4,17.7" fill="#FFFFFF"/>
+<polygon points="43.0,18.8 47.0,15.3 52.7,21.0 49.2,25.0" fill="#FFFFFF"/>
+<circle cx="36.0" cy="32.0" r="11.8" fill="none" stroke="#FFFFFF" stroke-width="7.6"/>
+<polygon points="16.1,19.4 48.6,51.9 55.9,44.6 23.4,12.1" fill="#1B3A57"/>
+<circle cx="19.7" cy="15.7" r="8.2" fill="#1B3A57"/>
+<circle cx="52.3" cy="48.3" r="8.2" fill="#1B3A57"/>
+<polygon points="17.6,17.9 50.1,50.4 54.4,46.1 21.9,13.6" fill="#FFFFFF"/>
+<circle cx="19.7" cy="15.7" r="6.0" fill="#FFFFFF"/>
+<circle cx="52.3" cy="48.3" r="6.0" fill="#FFFFFF"/>
+<polygon points="10.3,10.7 14.7,6.3 19.7,15.7" fill="#1B3A57"/>
+<polygon points="57.3,57.7 61.7,53.3 52.3,48.3" fill="#1B3A57"/>
+<text x="66.0" y="41.0" font-size="26" fill="#FFFFFF" font-weight="600">Maximo Maintenance Analytics</text>
+<text x="474.0" y="40.0" font-size="19" fill="#8FA3C0" font-weight="600">Asset Health</text>
+<text x="1130.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Site:</text>
+<rect x="1176.0" y="19.0" width="150.0" height="27.0" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1186.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<text x="1352.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Year:</text>
+<rect x="1402.0" y="19.0" width="120.0" height="27.0" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1412.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<text x="1570.0" y="40.0" font-size="18" fill="#FFFFFF" font-weight="600">29 Jul 2026</text>
+<polygon points="1882.5,27.0 1888.5,27.4 1888.5,36.6 1882.5,37.0" fill="#E8A33D"/>
+<polygon points="1881.2,40.1 1885.2,44.7 1878.7,51.2 1874.1,47.2" fill="#E8A33D"/>
+<polygon points="1871.0,48.5 1870.6,54.5 1861.4,54.5 1861.0,48.5" fill="#E8A33D"/>
+<polygon points="1857.9,47.2 1853.3,51.2 1846.8,44.7 1850.8,40.1" fill="#E8A33D"/>
+<polygon points="1849.5,37.0 1843.5,36.6 1843.5,27.4 1849.5,27.0" fill="#E8A33D"/>
+<polygon points="1850.8,23.9 1846.8,19.3 1853.3,12.8 1857.9,16.8" fill="#E8A33D"/>
+<polygon points="1861.0,15.5 1861.4,9.5 1870.6,9.5 1871.0,15.5" fill="#E8A33D"/>
+<polygon points="1874.1,16.8 1878.7,12.8 1885.2,19.3 1881.2,23.9" fill="#E8A33D"/>
+<circle cx="1866.0" cy="32.0" r="13.6" fill="none" stroke="#E8A33D" stroke-width="8.7"/>
+<polygon points="1843.1,17.5 1880.5,54.9 1888.9,46.5 1851.5,9.1" fill="#1B3A57"/>
+<circle cx="1847.3" cy="13.3" r="9.4" fill="#1B3A57"/>
+<circle cx="1884.7" cy="50.7" r="9.4" fill="#1B3A57"/>
+<polygon points="1844.9,15.7 1882.3,53.1 1887.1,48.3 1849.7,10.9" fill="#E8A33D"/>
+<circle cx="1847.3" cy="13.3" r="6.9" fill="#E8A33D"/>
+<circle cx="1884.7" cy="50.7" r="6.9" fill="#E8A33D"/>
+<polygon points="1836.5,7.5 1841.5,2.5 1847.2,13.2" fill="#1B3A57"/>
+<polygon points="1890.5,61.5 1895.5,56.5 1884.8,50.8" fill="#1B3A57"/>
+<rect x="0.0" y="1016.0" width="1920.0" height="64.0" rx="0" fill="#1B3A57"/>
+<circle cx="46.0" cy="1048.0" r="15.0" fill="none" stroke="#8FA3C0" stroke-width="2"/>
+<text x="46.0" y="1055.0" font-size="18" fill="#FFFFFF" font-weight="600" text-anchor="middle" font-style="italic">i</text>
+<text x="72.0" y="1054.0" font-size="15" fill="#8FA3C0">How to read this report</text>
+<text x="520.4" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Executive Overview</text>
+<text x="706.3" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">PM &amp; Compliance</text>
+<text x="862.1" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Reliability</text>
+<text x="987.8" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Planning</text>
+<rect x="1053.2" y="1028.0" width="129.2" height="40.0" rx="20" fill="#2C4E7A"/>
+<text x="1117.8" y="1054.0" font-size="16" fill="#FFFFFF" font-weight="600" text-anchor="middle">Asset Health</text>
+<rect x="1067.2" y="1063.0" width="101.2" height="3.5" rx="1.75" fill="#E8A33D"/>
+<text x="1260.7" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Information</text>
+<text x="1892.0" y="1054.0" font-size="14" fill="#8FA3C0" text-anchor="end">40,935 work orders · Jul 2023 – Jul 2026</text>
+<text x="76.0" y="136.0" font-size="42" fill="#16283F" font-weight="600">900</text>
+<text x="76.0" y="164.0" font-size="17" fill="#5B6B80">Assets</text>
+<line x1="392.0" y1="94.0" x2="392.0" y2="172.0" stroke="#DCE2EA" stroke-width="1.5"/>
+<text x="432.0" y="136.0" font-size="42" fill="#16283F" font-weight="600">835</text>
+<text x="432.0" y="164.0" font-size="17" fill="#5B6B80">Operating</text>
+<line x1="748.0" y1="94.0" x2="748.0" y2="172.0" stroke="#DCE2EA" stroke-width="1.5"/>
+<text x="788.0" y="136.0" font-size="42" fill="#16283F" font-weight="600">$155.8M</text>
+<text x="788.0" y="164.0" font-size="17" fill="#5B6B80">Replacement value</text>
+<line x1="1104.0" y1="94.0" x2="1104.0" y2="172.0" stroke="#DCE2EA" stroke-width="1.5"/>
+<text x="1144.0" y="136.0" font-size="42" fill="#A32D2D" font-weight="600">46</text>
+<text x="1144.0" y="164.0" font-size="17" fill="#5B6B80">Bad actors</text>
+<line x1="1460.0" y1="94.0" x2="1460.0" y2="172.0" stroke="#DCE2EA" stroke-width="1.5"/>
+<text x="1500.0" y="136.0" font-size="42" fill="#16283F" font-weight="600">11.4 yrs</text>
+<text x="1500.0" y="164.0" font-size="17" fill="#5B6B80">Median age</text>
+<rect x="24.0" y="196.0" width="1140.0" height="500.0" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="52.0" y="240.0" font-size="28" fill="#16283F" font-weight="600">Which assets carry the risk, and what should we do?</text>
+<text x="52.0" y="265.0" font-size="16" fill="#5B6B80">risk score combines failure frequency, downtime and replacement value · each bar shows the contribution of the three</text>
+<text x="90.0" y="292.0" font-size="15" fill="#5B6B80" font-weight="600" text-anchor="start">Asset</text>
+<text x="640.0" y="292.0" font-size="15" fill="#5B6B80" font-weight="600" text-anchor="end">Failures</text>
+<text x="760.0" y="292.0" font-size="15" fill="#5B6B80" font-weight="600" text-anchor="end">Downtime</text>
+<text x="880.0" y="292.0" font-size="15" fill="#5B6B80" font-weight="600" text-anchor="end">Value</text>
+<text x="960.0" y="292.0" font-size="15" fill="#5B6B80" font-weight="600" text-anchor="start">Action</text>
+<line x1="90.0" y1="302.0" x2="1130.0" y2="302.0" stroke="#D9DEE4" stroke-width="1.5"/>
+<text x="90.0" y="337.0" font-size="17" fill="#16283F">PUMP-00623</text>
+<rect x="300.0" y="321.0" width="174.0" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="474.0" y="321.0" width="78.0" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="552.0" y="321.0" width="48.0" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="337.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">47</text>
+<text x="760.0" y="337.0" font-size="16" fill="#16283F" text-anchor="end">1,820 h</text>
+<text x="880.0" y="337.0" font-size="16" fill="#16283F" text-anchor="end">$690k</text>
+<text x="960.0" y="337.0" font-size="16" fill="#A32D2D" font-weight="600">Replace — beyond economic repair</text>
+<rect x="80.0" y="358.0" width="1060.0" height="36.0" rx="6" fill="#F8FAFC"/>
+<text x="90.0" y="381.0" font-size="17" fill="#16283F">HEATEXCH-00481</text>
+<rect x="300.0" y="365.0" width="142.7" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="442.7" y="365.0" width="76.9" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="519.6" y="365.0" width="54.9" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="381.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">43</text>
+<text x="760.0" y="381.0" font-size="16" fill="#16283F" text-anchor="end">1,610 h</text>
+<text x="880.0" y="381.0" font-size="16" fill="#16283F" text-anchor="end">$610k</text>
+<text x="960.0" y="381.0" font-size="16" fill="#A32D2D" font-weight="600">Rebuild at shutdown</text>
+<text x="90.0" y="425.0" font-size="17" fill="#16283F">CONVEYOR-00038</text>
+<rect x="300.0" y="409.0" width="118.9" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="418.9" y="409.0" width="72.8" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="491.6" y="409.0" width="50.9" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="425.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">38</text>
+<text x="760.0" y="425.0" font-size="16" fill="#16283F" text-anchor="end">1,290 h</text>
+<text x="880.0" y="425.0" font-size="16" fill="#16283F" text-anchor="end">$520k</text>
+<text x="960.0" y="425.0" font-size="16" fill="#A32D2D" font-weight="600">Rebuild at shutdown</text>
+<rect x="80.0" y="446.0" width="1060.0" height="36.0" rx="6" fill="#F8FAFC"/>
+<text x="90.0" y="469.0" font-size="17" fill="#16283F">COMPRESS-00194</text>
+<rect x="300.0" y="453.0" width="105.7" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="405.7" y="453.0" width="73.5" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="479.2" y="453.0" width="50.6" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="469.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">36</text>
+<text x="760.0" y="469.0" font-size="16" fill="#16283F" text-anchor="end">1,140 h</text>
+<text x="880.0" y="469.0" font-size="16" fill="#16283F" text-anchor="end">$430k</text>
+<text x="960.0" y="469.0" font-size="16" fill="#B87514" font-weight="600">Condition monitoring — weekly</text>
+<text x="90.0" y="513.0" font-size="17" fill="#16283F">ANALYZER-00611</text>
+<rect x="300.0" y="497.0" width="143.9" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="443.9" y="497.0" width="68.0" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="512.0" y="497.0" width="49.7" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="513.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">41</text>
+<text x="760.0" y="513.0" font-size="16" fill="#16283F" text-anchor="end">880 h</text>
+<text x="880.0" y="513.0" font-size="16" fill="#16283F" text-anchor="end">$300k</text>
+<text x="960.0" y="513.0" font-size="16" fill="#B87514" font-weight="600">Condition monitoring — weekly</text>
+<rect x="80.0" y="534.0" width="1060.0" height="36.0" rx="6" fill="#F8FAFC"/>
+<text x="90.0" y="557.0" font-size="17" fill="#16283F">AHU-00059</text>
+<rect x="300.0" y="541.0" width="92.7" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="392.7" y="541.0" width="71.6" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="464.3" y="541.0" width="46.3" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="557.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">33</text>
+<text x="760.0" y="557.0" font-size="16" fill="#16283F" text-anchor="end">760 h</text>
+<text x="880.0" y="557.0" font-size="16" fill="#16283F" text-anchor="end">$260k</text>
+<text x="960.0" y="557.0" font-size="16" fill="#B87514" font-weight="600">Review PM frequency</text>
+<text x="90.0" y="601.0" font-size="17" fill="#16283F">CONVEYOR-00765</text>
+<rect x="300.0" y="585.0" width="83.1" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="383.1" y="585.0" width="69.3" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="452.4" y="585.0" width="45.5" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="601.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">31</text>
+<text x="760.0" y="601.0" font-size="16" fill="#16283F" text-anchor="end">690 h</text>
+<text x="880.0" y="601.0" font-size="16" fill="#16283F" text-anchor="end">$240k</text>
+<text x="960.0" y="601.0" font-size="16" fill="#B87514" font-weight="600">Review PM frequency</text>
+<rect x="80.0" y="622.0" width="1060.0" height="36.0" rx="6" fill="#F8FAFC"/>
+<text x="90.0" y="645.0" font-size="17" fill="#16283F">MOTOR-00733</text>
+<rect x="300.0" y="629.0" width="68.9" height="20.0" rx="3" fill="#A32D2D"/>
+<rect x="368.9" y="629.0" width="62.0" height="20.0" rx="0" fill="#E8734A"/>
+<rect x="431.0" y="629.0" width="41.4" height="20.0" rx="3" fill="#F0B27A"/>
+<text x="640.0" y="645.0" font-size="17" fill="#16283F" font-weight="600" text-anchor="end">27</text>
+<text x="760.0" y="645.0" font-size="16" fill="#16283F" text-anchor="end">540 h</text>
+<text x="880.0" y="645.0" font-size="16" fill="#16283F" text-anchor="end">$210k</text>
+<text x="960.0" y="645.0" font-size="16" fill="#2C6FAD" font-weight="600">Monitor</text>
+<rect x="300.0" y="676.0" width="16.0" height="16.0" rx="3" fill="#A32D2D"/>
+<text x="322.0" y="690.0" font-size="15" fill="#5B6B80">failure frequency</text>
+<rect x="490.0" y="676.0" width="16.0" height="16.0" rx="3" fill="#E8734A"/>
+<text x="512.0" y="690.0" font-size="15" fill="#5B6B80">downtime</text>
+<rect x="680.0" y="676.0" width="16.0" height="16.0" rx="3" fill="#F0B27A"/>
+<text x="702.0" y="690.0" font-size="15" fill="#5B6B80">replacement value</text>
+<rect x="1188.0" y="196.0" width="708.0" height="500.0" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="1216.0" y="240.0" font-size="28" fill="#16283F" font-weight="600">Where is the value concentrated?</text>
+<text x="1216.0" y="265.0" font-size="16" fill="#5B6B80">replacement asset value by criticality band</text>
+<text x="1400.0" y="329.0" font-size="18" fill="#16283F" text-anchor="end">1 – Critical</text>
+<rect x="1420.0" y="308.0" width="370.0" height="28.0" rx="6" fill="#E9EDF3"/>
+<rect x="1420.0" y="308.0" width="329.3" height="28.0" rx="6" fill="#A32D2D"/>
+<text x="1820.0" y="330.0" font-size="18" fill="#16283F" font-weight="600">$62.3M</text>
+<text x="1420.0" y="358.0" font-size="15" fill="#5B6B80">43% of downtime</text>
+<text x="1400.0" y="411.0" font-size="18" fill="#16283F" text-anchor="end">2 – High</text>
+<rect x="1420.0" y="390.0" width="370.0" height="28.0" rx="6" fill="#E9EDF3"/>
+<rect x="1420.0" y="390.0" width="254.2" height="28.0" rx="6" fill="#B87514"/>
+<text x="1820.0" y="412.0" font-size="18" fill="#16283F" font-weight="600">$48.1M</text>
+<text x="1420.0" y="440.0" font-size="15" fill="#5B6B80">31% of downtime</text>
+<text x="1400.0" y="493.0" font-size="18" fill="#16283F" text-anchor="end">3 – Medium</text>
+<rect x="1420.0" y="472.0" width="370.0" height="28.0" rx="6" fill="#E9EDF3"/>
+<rect x="1420.0" y="472.0" width="164.9" height="28.0" rx="6" fill="#2C6FAD"/>
+<text x="1820.0" y="494.0" font-size="18" fill="#16283F" font-weight="600">$31.2M</text>
+<text x="1420.0" y="522.0" font-size="15" fill="#5B6B80">19% of downtime</text>
+<text x="1400.0" y="575.0" font-size="18" fill="#16283F" text-anchor="end">4 – Low</text>
+<rect x="1420.0" y="554.0" width="370.0" height="28.0" rx="6" fill="#E9EDF3"/>
+<rect x="1420.0" y="554.0" width="75.1" height="28.0" rx="6" fill="#7FB3D9"/>
+<text x="1820.0" y="576.0" font-size="18" fill="#16283F" font-weight="600">$14.2M</text>
+<text x="1420.0" y="604.0" font-size="15" fill="#5B6B80">7% of downtime</text>
+<rect x="1216.0" y="620.0" width="656.0" height="40.0" rx="6" fill="#F4F7FA"/>
+<rect x="1216.0" y="620.0" width="5.0" height="40.0" rx="2" fill="#A32D2D"/>
+<text x="1234.0" y="646.0" font-size="17" fill="#16283F">40% of value sits on criticality-1 assets, and they take 43% of downtime.</text>
+<text x="1216.0" y="682.0" font-size="16" fill="#5B6B80">That ratio is the argument for condition monitoring.</text>
+<rect x="24.0" y="720.0" width="1872.0" height="290.0" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="52.0" y="764.0" font-size="28" fill="#16283F" font-weight="600">How old is the fleet?</text>
+<text x="52.0" y="789.0" font-size="16" fill="#5B6B80">asset count by installed age · shaded band is beyond typical design life</text>
+<rect x="1230.0" y="806.0" width="600.0" height="154.0" rx="0" fill="#F7E4E4" opacity="0.5"/>
+<rect x="150.0" y="919.3" width="96.0" height="40.7" rx="3" fill="#2C6FAD"/>
+<text x="198.0" y="911.3" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">38</text>
+<text x="198.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">0–2</text>
+<rect x="270.0" y="893.6" width="96.0" height="66.4" rx="3" fill="#2C6FAD"/>
+<text x="318.0" y="885.6" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">62</text>
+<text x="318.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">2–4</text>
+<rect x="390.0" y="865.7" width="96.0" height="94.3" rx="3" fill="#2C6FAD"/>
+<text x="438.0" y="857.7" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">88</text>
+<text x="438.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">4–6</text>
+<rect x="510.0" y="848.6" width="96.0" height="111.4" rx="3" fill="#2C6FAD"/>
+<text x="558.0" y="840.6" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">104</text>
+<text x="558.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">6–8</text>
+<rect x="630.0" y="830.4" width="96.0" height="129.6" rx="3" fill="#2C6FAD"/>
+<text x="678.0" y="822.4" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">121</text>
+<text x="678.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">8–10</text>
+<rect x="750.0" y="813.2" width="96.0" height="146.8" rx="3" fill="#2C6FAD"/>
+<text x="798.0" y="805.2" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">137</text>
+<text x="798.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">10–12</text>
+<rect x="870.0" y="822.9" width="96.0" height="137.1" rx="3" fill="#2C6FAD"/>
+<text x="918.0" y="814.9" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">128</text>
+<text x="918.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">12–14</text>
+<rect x="990.0" y="857.1" width="96.0" height="102.9" rx="3" fill="#2C6FAD"/>
+<text x="1038.0" y="849.1" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">96</text>
+<text x="1038.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">14–16</text>
+<rect x="1110.0" y="880.7" width="96.0" height="79.3" rx="3" fill="#2C6FAD"/>
+<text x="1158.0" y="872.7" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">74</text>
+<text x="1158.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">16–18</text>
+<rect x="1230.0" y="897.9" width="96.0" height="62.1" rx="3" fill="#A32D2D"/>
+<text x="1278.0" y="889.9" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">58</text>
+<text x="1278.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">18–20</text>
+<rect x="1350.0" y="916.1" width="96.0" height="43.9" rx="3" fill="#A32D2D"/>
+<text x="1398.0" y="908.1" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">41</text>
+<text x="1398.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">20–22</text>
+<rect x="1470.0" y="928.9" width="96.0" height="31.1" rx="3" fill="#A32D2D"/>
+<text x="1518.0" y="920.9" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">29</text>
+<text x="1518.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">22–24</text>
+<rect x="1590.0" y="940.7" width="96.0" height="19.3" rx="3" fill="#A32D2D"/>
+<text x="1638.0" y="932.7" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">18</text>
+<text x="1638.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">24–26</text>
+<rect x="1710.0" y="953.6" width="96.0" height="6.4" rx="3" fill="#A32D2D"/>
+<text x="1758.0" y="945.6" font-size="14" fill="#16283F" font-weight="600" text-anchor="middle">6</text>
+<text x="1758.0" y="984.0" font-size="13" fill="#5B6B80" text-anchor="middle">26–28</text>
+<text x="1250.0" y="828.0" font-size="16" fill="#A32D2D" font-weight="600">152 assets beyond 18 years · 17% of the fleet</text>
+</svg>

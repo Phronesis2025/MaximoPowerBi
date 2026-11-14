@@ -1,0 +1,51 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "How does each site compare - site by metric grid, cell tinted by status, value printed in the cell. DATASET must be unpivoted: SiteName (text), Metric (text), MetricOrder (number), ValueLabel (text), Status (text: green|amber|red|neutral). Unpivot in Power Query or with a small disconnected metric table plus a SWITCH measure - a rect mark needs one value column, not one column per metric.",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "axis": { "labelColor": "#16283F", "labelFontSize": 16, "domain": false, "ticks": false, "grid": false, "title": null }
+  },
+  "width": 520,
+  "height": 150,
+  "transform": [
+    { "calculate": "datum.Status === 'green' ? '#E7F3EC' : datum.Status === 'amber' ? '#FBF0DE' : datum.Status === 'red' ? '#F7E4E4' : '#F2F4F7'", "as": "Tint" }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Metric",
+      "type": "nominal",
+      "sort": { "field": "MetricOrder" },
+      "axis": { "orient": "top", "labelFontSize": 15, "labelColor": "#5B6B80", "labelPadding": 10, "labelAngle": 0 }
+    },
+    "y": {
+      "field": "SiteName",
+      "type": "nominal",
+      "axis": { "labelPadding": 14, "labelLimit": 200 }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rect", "cornerRadius": 6, "width": { "band": 0.9 }, "height": { "band": 0.72 }, "cursor": "pointer" },
+      "encoding": {
+        "color": { "field": "Tint", "type": "nominal", "scale": null, "legend": null },
+        "opacity": {
+          "condition": { "test": "!datum['__selected__'] || datum['__selected__'] !== 'off'", "value": 1 },
+          "value": 0.35
+        },
+        "tooltip": [
+          { "field": "SiteName", "type": "nominal", "title": "Site" },
+          { "field": "Metric", "type": "nominal" },
+          { "field": "ValueLabel", "type": "nominal", "title": "Value" },
+          { "field": "Status", "type": "nominal", "title": "Against target" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "fontSize": 16, "fontWeight": 600, "color": "#16283F" },
+      "encoding": { "text": { "field": "ValueLabel", "type": "nominal" } }
+    }
+  ]
+}

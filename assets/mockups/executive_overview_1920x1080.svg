@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Segoe UI, Arial, sans-serif">
+<rect width="1920" height="1080" fill="#EEF1F6"/>
+<rect width="1920" height="64" fill="#1B3A57"/>
+<polygon points="50.3,27.6 55.6,28.0 55.6,36.0 50.3,36.4" fill="#FFFFFF"/>
+<polygon points="49.2,39.0 52.7,43.0 47.0,48.7 43.0,45.2" fill="#FFFFFF"/>
+<polygon points="40.4,46.3 40.0,51.6 32.0,51.6 31.6,46.3" fill="#FFFFFF"/>
+<polygon points="29.0,45.2 25.0,48.7 19.3,43.0 22.8,39.0" fill="#FFFFFF"/>
+<polygon points="21.7,36.4 16.4,36.0 16.4,28.0 21.7,27.6" fill="#FFFFFF"/>
+<polygon points="22.8,25.0 19.3,21.0 25.0,15.3 29.0,18.8" fill="#FFFFFF"/>
+<polygon points="31.6,17.7 32.0,12.4 40.0,12.4 40.4,17.7" fill="#FFFFFF"/>
+<polygon points="43.0,18.8 47.0,15.3 52.7,21.0 49.2,25.0" fill="#FFFFFF"/>
+<circle cx="36.0" cy="32.0" r="11.8" fill="none" stroke="#FFFFFF" stroke-width="7.6"/>
+<polygon points="16.1,19.4 48.6,51.9 55.9,44.6 23.4,12.1" fill="#1B3A57"/>
+<circle cx="19.7" cy="15.7" r="8.2" fill="#1B3A57"/>
+<circle cx="52.3" cy="48.3" r="8.2" fill="#1B3A57"/>
+<polygon points="17.6,17.9 50.1,50.4 54.4,46.1 21.9,13.6" fill="#FFFFFF"/>
+<circle cx="19.7" cy="15.7" r="6.0" fill="#FFFFFF"/>
+<circle cx="52.3" cy="48.3" r="6.0" fill="#FFFFFF"/>
+<polygon points="10.3,10.7 14.7,6.3 19.7,15.7" fill="#1B3A57"/>
+<polygon points="57.3,57.7 61.7,53.3 52.3,48.3" fill="#1B3A57"/>
+<text x="66.0" y="41.0" font-size="26" fill="#FFFFFF" font-weight="600">Maximo Maintenance Analytics</text>
+<text x="474.0" y="40.0" font-size="19" fill="#8FA3C0" font-weight="600">Executive Overview</text>
+<text x="1130.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Site:</text>
+<rect x="1176" y="19" width="150" height="27" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1186.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<path d="M1302 30 l6 7 l6 -7" fill="none" stroke="#8FA3C0" stroke-width="1.6"/>
+<text x="1352.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Year:</text>
+<rect x="1402" y="19" width="120" height="27" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1412.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<path d="M1498 30 l6 7 l6 -7" fill="none" stroke="#8FA3C0" stroke-width="1.6"/>
+<text x="1570.0" y="40.0" font-size="18" fill="#FFFFFF" font-weight="600">29 Jul 2026</text>
+<polygon points="1882.5,27.0 1888.5,27.4 1888.5,36.6 1882.5,37.0" fill="#E8A33D"/>
+<polygon points="1881.2,40.1 1885.2,44.7 1878.7,51.2 1874.1,47.2" fill="#E8A33D"/>
+<polygon points="1871.0,48.5 1870.6,54.5 1861.4,54.5 1861.0,48.5" fill="#E8A33D"/>
+<polygon points="1857.9,47.2 1853.3,51.2 1846.8,44.7 1850.8,40.1" fill="#E8A33D"/>
+<polygon points="1849.5,37.0 1843.5,36.6 1843.5,27.4 1849.5,27.0" fill="#E8A33D"/>
+<polygon points="1850.8,23.9 1846.8,19.3 1853.3,12.8 1857.9,16.8" fill="#E8A33D"/>
+<polygon points="1861.0,15.5 1861.4,9.5 1870.6,9.5 1871.0,15.5" fill="#E8A33D"/>
+<polygon points="1874.1,16.8 1878.7,12.8 1885.2,19.3 1881.2,23.9" fill="#E8A33D"/>
+<circle cx="1866.0" cy="32.0" r="13.6" fill="none" stroke="#E8A33D" stroke-width="8.7"/>
+<polygon points="1843.1,17.5 1880.5,54.9 1888.9,46.5 1851.5,9.1" fill="#1B3A57"/>
+<circle cx="1847.3" cy="13.3" r="9.4" fill="#1B3A57"/>
+<circle cx="1884.7" cy="50.7" r="9.4" fill="#1B3A57"/>
+<polygon points="1844.9,15.7 1882.3,53.1 1887.1,48.3 1849.7,10.9" fill="#E8A33D"/>
+<circle cx="1847.3" cy="13.3" r="6.9" fill="#E8A33D"/>
+<circle cx="1884.7" cy="50.7" r="6.9" fill="#E8A33D"/>
+<polygon points="1836.5,7.5 1841.5,2.5 1847.2,13.2" fill="#1B3A57"/>
+<polygon points="1890.5,61.5 1895.5,56.5 1884.8,50.8" fill="#1B3A57"/>
+<rect x="24" y="84" width="360" height="190" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<polygon points="76.2,120.3 80.7,120.6 80.7,127.4 76.2,127.7" fill="#A32D2D"/>
+<polygon points="75.2,130.0 78.2,133.4 73.4,138.2 70.0,135.2" fill="#A32D2D"/>
+<polygon points="67.7,136.2 67.4,140.7 60.6,140.7 60.3,136.2" fill="#A32D2D"/>
+<polygon points="58.0,135.2 54.6,138.2 49.8,133.4 52.8,130.0" fill="#A32D2D"/>
+<polygon points="51.8,127.7 47.3,127.4 47.3,120.6 51.8,120.3" fill="#A32D2D"/>
+<polygon points="52.8,118.0 49.8,114.6 54.6,109.8 58.0,112.8" fill="#A32D2D"/>
+<polygon points="60.3,111.8 60.6,107.3 67.4,107.3 67.7,111.8" fill="#A32D2D"/>
+<polygon points="70.0,112.8 73.4,109.8 78.2,114.6 75.2,118.0" fill="#A32D2D"/>
+<circle cx="64.0" cy="124.0" r="10.0" fill="none" stroke="#A32D2D" stroke-width="6.5"/>
+<polygon points="47.1,113.3 74.7,140.9 80.9,134.7 53.3,107.1" fill="#FFFFFF"/>
+<circle cx="50.2" cy="110.2" r="7.0" fill="#FFFFFF"/>
+<circle cx="77.8" cy="137.8" r="7.0" fill="#FFFFFF"/>
+<polygon points="48.4,112.0 76.0,139.6 79.6,136.0 52.0,108.4" fill="#A32D2D"/>
+<circle cx="50.2" cy="110.2" r="5.1" fill="#A32D2D"/>
+<circle cx="77.8" cy="137.8" r="5.1" fill="#A32D2D"/>
+<polygon points="42.2,105.9 45.9,102.2 50.1,110.1" fill="#FFFFFF"/>
+<polygon points="82.1,145.8 85.8,142.1 77.9,137.9" fill="#FFFFFF"/>
+<text x="204.0" y="132.0" font-size="19" fill="#5B6B80" text-anchor="middle">Reactive Maintenance %</text>
+<text x="204.0" y="202.0" font-size="54" fill="#16283F" font-weight="600" text-anchor="middle">35.0%</text>
+<text x="204.0" y="242.0" font-size="16" fill="#5B6B80" text-anchor="middle">+15.0 pts vs 20% target</text>
+<rect x="402" y="84" width="360" height="190" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<polygon points="454.2,120.3 458.7,120.6 458.7,127.4 454.2,127.7" fill="#B87514"/>
+<polygon points="453.2,130.0 456.2,133.4 451.4,138.2 448.0,135.2" fill="#B87514"/>
+<polygon points="445.7,136.2 445.4,140.7 438.6,140.7 438.3,136.2" fill="#B87514"/>
+<polygon points="436.0,135.2 432.6,138.2 427.8,133.4 430.8,130.0" fill="#B87514"/>
+<polygon points="429.8,127.7 425.3,127.4 425.3,120.6 429.8,120.3" fill="#B87514"/>
+<polygon points="430.8,118.0 427.8,114.6 432.6,109.8 436.0,112.8" fill="#B87514"/>
+<polygon points="438.3,111.8 438.6,107.3 445.4,107.3 445.7,111.8" fill="#B87514"/>
+<polygon points="448.0,112.8 451.4,109.8 456.2,114.6 453.2,118.0" fill="#B87514"/>
+<circle cx="442.0" cy="124.0" r="10.0" fill="none" stroke="#B87514" stroke-width="6.5"/>
+<polygon points="425.1,113.3 452.7,140.9 458.9,134.7 431.3,107.1" fill="#FFFFFF"/>
+<circle cx="428.2" cy="110.2" r="7.0" fill="#FFFFFF"/>
+<circle cx="455.8" cy="137.8" r="7.0" fill="#FFFFFF"/>
+<polygon points="426.4,112.0 454.0,139.6 457.6,136.0 430.0,108.4" fill="#B87514"/>
+<circle cx="428.2" cy="110.2" r="5.1" fill="#B87514"/>
+<circle cx="455.8" cy="137.8" r="5.1" fill="#B87514"/>
+<polygon points="420.2,105.9 423.9,102.2 428.1,110.1" fill="#FFFFFF"/>
+<polygon points="460.1,145.8 463.8,142.1 455.9,137.9" fill="#FFFFFF"/>
+<text x="582.0" y="132.0" font-size="19" fill="#5B6B80" text-anchor="middle">PM Compliance %</text>
+<text x="582.0" y="202.0" font-size="54" fill="#16283F" font-weight="600" text-anchor="middle">81.8%</text>
+<text x="582.0" y="242.0" font-size="16" fill="#5B6B80" text-anchor="middle">−8.2 pts vs 90% target</text>
+<rect x="780" y="84" width="360" height="190" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<polygon points="832.2,120.3 836.7,120.6 836.7,127.4 832.2,127.7" fill="#0A7A4B"/>
+<polygon points="831.2,130.0 834.2,133.4 829.4,138.2 826.0,135.2" fill="#0A7A4B"/>
+<polygon points="823.7,136.2 823.4,140.7 816.6,140.7 816.3,136.2" fill="#0A7A4B"/>
+<polygon points="814.0,135.2 810.6,138.2 805.8,133.4 808.8,130.0" fill="#0A7A4B"/>
+<polygon points="807.8,127.7 803.3,127.4 803.3,120.6 807.8,120.3" fill="#0A7A4B"/>
+<polygon points="808.8,118.0 805.8,114.6 810.6,109.8 814.0,112.8" fill="#0A7A4B"/>
+<polygon points="816.3,111.8 816.6,107.3 823.4,107.3 823.7,111.8" fill="#0A7A4B"/>
+<polygon points="826.0,112.8 829.4,109.8 834.2,114.6 831.2,118.0" fill="#0A7A4B"/>
+<circle cx="820.0" cy="124.0" r="10.0" fill="none" stroke="#0A7A4B" stroke-width="6.5"/>
+<polygon points="803.1,113.3 830.7,140.9 836.9,134.7 809.3,107.1" fill="#FFFFFF"/>
+<circle cx="806.2" cy="110.2" r="7.0" fill="#FFFFFF"/>
+<circle cx="833.8" cy="137.8" r="7.0" fill="#FFFFFF"/>
+<polygon points="804.4,112.0 832.0,139.6 835.6,136.0 808.0,108.4" fill="#0A7A4B"/>
+<circle cx="806.2" cy="110.2" r="5.1" fill="#0A7A4B"/>
+<circle cx="833.8" cy="137.8" r="5.1" fill="#0A7A4B"/>
+<polygon points="798.2,105.9 801.9,102.2 806.1,110.1" fill="#FFFFFF"/>
+<polygon points="838.1,145.8 841.8,142.1 833.9,137.9" fill="#FFFFFF"/>
+<text x="960.0" y="132.0" font-size="19" fill="#5B6B80" text-anchor="middle">Backlog Weeks</text>
+<text x="960.0" y="202.0" font-size="54" fill="#16283F" font-weight="600" text-anchor="middle">5.81</text>
+<text x="960.0" y="242.0" font-size="16" fill="#5B6B80" text-anchor="middle">within healthy band of 4 to 6</text>
+<rect x="1158" y="84" width="360" height="190" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<polygon points="1210.2,120.3 1214.7,120.6 1214.7,127.4 1210.2,127.7" fill="#9AA7B8"/>
+<polygon points="1209.2,130.0 1212.2,133.4 1207.4,138.2 1204.0,135.2" fill="#9AA7B8"/>
+<polygon points="1201.7,136.2 1201.4,140.7 1194.6,140.7 1194.3,136.2" fill="#9AA7B8"/>
+<polygon points="1192.0,135.2 1188.6,138.2 1183.8,133.4 1186.8,130.0" fill="#9AA7B8"/>
+<polygon points="1185.8,127.7 1181.3,127.4 1181.3,120.6 1185.8,120.3" fill="#9AA7B8"/>
+<polygon points="1186.8,118.0 1183.8,114.6 1188.6,109.8 1192.0,112.8" fill="#9AA7B8"/>
+<polygon points="1194.3,111.8 1194.6,107.3 1201.4,107.3 1201.7,111.8" fill="#9AA7B8"/>
+<polygon points="1204.0,112.8 1207.4,109.8 1212.2,114.6 1209.2,118.0" fill="#9AA7B8"/>
+<circle cx="1198.0" cy="124.0" r="10.0" fill="none" stroke="#9AA7B8" stroke-width="6.5"/>
+<polygon points="1181.1,113.3 1208.7,140.9 1214.9,134.7 1187.3,107.1" fill="#FFFFFF"/>
+<circle cx="1184.2" cy="110.2" r="7.0" fill="#FFFFFF"/>
+<circle cx="1211.8" cy="137.8" r="7.0" fill="#FFFFFF"/>
+<polygon points="1182.4,112.0 1210.0,139.6 1213.6,136.0 1186.0,108.4" fill="#9AA7B8"/>
+<circle cx="1184.2" cy="110.2" r="5.1" fill="#9AA7B8"/>
+<circle cx="1211.8" cy="137.8" r="5.1" fill="#9AA7B8"/>
+<polygon points="1176.2,105.9 1179.9,102.2 1184.1,110.1" fill="#FFFFFF"/>
+<polygon points="1216.1,145.8 1219.8,142.1 1211.9,137.9" fill="#FFFFFF"/>
+<text x="1338.0" y="132.0" font-size="19" fill="#5B6B80" text-anchor="middle">Total Maintenance Cost</text>
+<text x="1338.0" y="202.0" font-size="54" fill="#16283F" font-weight="600" text-anchor="middle">$28.7M</text>
+<text x="1338.0" y="242.0" font-size="16" fill="#5B6B80" text-anchor="middle">no benchmark · $9.3M per year</text>
+<rect x="1536" y="84" width="360" height="190" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<polygon points="1588.2,120.3 1592.7,120.6 1592.7,127.4 1588.2,127.7" fill="#A32D2D"/>
+<polygon points="1587.2,130.0 1590.2,133.4 1585.4,138.2 1582.0,135.2" fill="#A32D2D"/>
+<polygon points="1579.7,136.2 1579.4,140.7 1572.6,140.7 1572.3,136.2" fill="#A32D2D"/>
+<polygon points="1570.0,135.2 1566.6,138.2 1561.8,133.4 1564.8,130.0" fill="#A32D2D"/>
+<polygon points="1563.8,127.7 1559.3,127.4 1559.3,120.6 1563.8,120.3" fill="#A32D2D"/>
+<polygon points="1564.8,118.0 1561.8,114.6 1566.6,109.8 1570.0,112.8" fill="#A32D2D"/>
+<polygon points="1572.3,111.8 1572.6,107.3 1579.4,107.3 1579.7,111.8" fill="#A32D2D"/>
+<polygon points="1582.0,112.8 1585.4,109.8 1590.2,114.6 1587.2,118.0" fill="#A32D2D"/>
+<circle cx="1576.0" cy="124.0" r="10.0" fill="none" stroke="#A32D2D" stroke-width="6.5"/>
+<polygon points="1559.1,113.3 1586.7,140.9 1592.9,134.7 1565.3,107.1" fill="#FFFFFF"/>
+<circle cx="1562.2" cy="110.2" r="7.0" fill="#FFFFFF"/>
+<circle cx="1589.8" cy="137.8" r="7.0" fill="#FFFFFF"/>
+<polygon points="1560.4,112.0 1588.0,139.6 1591.6,136.0 1564.0,108.4" fill="#A32D2D"/>
+<circle cx="1562.2" cy="110.2" r="5.1" fill="#A32D2D"/>
+<circle cx="1589.8" cy="137.8" r="5.1" fill="#A32D2D"/>
+<polygon points="1554.2,105.9 1557.9,102.2 1562.1,110.1" fill="#FFFFFF"/>
+<polygon points="1594.1,145.8 1597.8,142.1 1589.9,137.9" fill="#FFFFFF"/>
+<text x="1716.0" y="132.0" font-size="19" fill="#5B6B80" text-anchor="middle">Maintenance Cost % of RAV</text>
+<text x="1716.0" y="202.0" font-size="54" fill="#16283F" font-weight="600" text-anchor="middle">6.0%</text>
+<text x="1716.0" y="242.0" font-size="16" fill="#5B6B80" text-anchor="middle">+3.0 pts vs 3% best-in-class</text>
+<rect x="24" y="294" width="1140" height="436" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="54.0" y="342.0" font-size="32" fill="#16283F" font-weight="600">Is reactive work falling?</text>
+<text x="54.0" y="368.0" font-size="17" fill="#5B6B80">12-month rolling reactive rate · lower is better · SMRP best-in-class is under 20%</text>
+<line x1="54" y1="396" x2="82" y2="396" stroke="#16283F" stroke-width="4" stroke-linecap="round"/>
+<text x="90.0" y="402.0" font-size="18" fill="#16283F" font-weight="600">All sites</text>
+<line x1="210" y1="396" x2="238" y2="396" stroke="#1E3A5F" stroke-width="4" stroke-dasharray="8 6" stroke-linecap="round"/>
+<text x="246.0" y="402.0" font-size="18" fill="#5B6B80">Bedford</text>
+<line x1="346" y1="396" x2="374" y2="396" stroke="#2C6FAD" stroke-width="4" stroke-dasharray="8 6" stroke-linecap="round"/>
+<text x="382.0" y="402.0" font-size="18" fill="#5B6B80">Aurora</text>
+<line x1="472" y1="396" x2="500" y2="396" stroke="#E8734A" stroke-width="4" stroke-dasharray="8 6" stroke-linecap="round"/>
+<text x="508.0" y="402.0" font-size="18" fill="#5B6B80">Houston</text>
+<line x1="112" y1="426.0" x2="974" y2="426.0" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="432.0" font-size="17" fill="#5B6B80" text-anchor="end">50%</text>
+<line x1="112" y1="469.6" x2="974" y2="469.6" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="475.6" font-size="17" fill="#5B6B80" text-anchor="end">40%</text>
+<line x1="112" y1="513.2" x2="974" y2="513.2" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="519.2" font-size="17" fill="#5B6B80" text-anchor="end">30%</text>
+<line x1="112" y1="556.8" x2="974" y2="556.8" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="562.8" font-size="17" fill="#5B6B80" text-anchor="end">20%</text>
+<line x1="112" y1="600.4" x2="974" y2="600.4" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="606.4" font-size="17" fill="#5B6B80" text-anchor="end">10%</text>
+<line x1="112" y1="644.0" x2="974" y2="644.0" stroke="#EDF0F4" stroke-width="1.2"/>
+<text x="100.0" y="650.0" font-size="17" fill="#5B6B80" text-anchor="end">0%</text>
+<line x1="112" y1="556.8" x2="974" y2="556.8" stroke="#E8A33D" stroke-width="2.5" stroke-dasharray="9 6"/>
+<rect x="712" y="564.8" width="262" height="24" rx="4" fill="#FDF3E2"/>
+<text x="962.0" y="582.8" font-size="16" fill="#9A6812" font-weight="600" text-anchor="end">SMRP best-in-class · 20%</text>
+<polyline points="112.0,551.1 147.9,550.3 183.8,551.6 219.8,552.4 255.7,550.7 291.6,549.8 327.5,551.1 363.4,552.0 399.3,550.3 435.2,551.6 471.2,552.4 507.1,551.1 543.0,549.8 578.9,550.7 614.8,552.0 650.8,551.1 686.7,550.3 722.6,551.6 758.5,552.4 794.4,550.7 830.3,551.1 866.2,552.0 902.2,550.7 938.1,551.6 974.0,551.1" fill="none" stroke="#1E3A5F" stroke-width="3" stroke-dasharray="8 6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="974" cy="551.1" r="5" fill="#1E3A5F"/>
+<text x="988.0" y="558.1" font-size="21" fill="#1E3A5F" font-weight="600">21.3%</text>
+<polyline points="112.0,491.0 147.9,492.3 183.8,494.0 219.8,495.8 255.7,497.9 291.6,500.1 327.5,502.7 363.4,504.9 399.3,507.5 435.2,509.7 471.2,512.3 507.1,514.1 543.0,515.8 578.9,517.6 614.8,518.9 650.8,520.2 686.7,521.5 722.6,522.8 758.5,524.1 794.4,525.0 830.3,525.8 866.2,526.7 902.2,527.6 938.1,528.5 974.0,528.9" fill="none" stroke="#2C6FAD" stroke-width="3" stroke-dasharray="8 6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="974" cy="528.9" r="5" fill="#2C6FAD"/>
+<text x="988.0" y="535.9" font-size="21" fill="#2C6FAD" font-weight="600">26.4%</text>
+<polyline points="112.0,453.0 147.9,452.6 183.8,451.7 219.8,452.2 255.7,450.9 291.6,450.0 327.5,450.4 363.4,449.1 399.3,448.2 435.2,447.8 471.2,446.9 507.1,447.4 543.0,446.1 578.9,445.2 614.8,445.6 650.8,444.3 686.7,443.9 722.6,443.4 758.5,443.0 794.4,443.4 830.3,442.6 866.2,442.1 902.2,441.7 938.1,441.7 974.0,441.3" fill="none" stroke="#E8734A" stroke-width="3" stroke-dasharray="8 6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="974" cy="441.3" r="5" fill="#E8734A"/>
+<text x="988.0" y="448.3" font-size="21" fill="#E8734A" font-weight="600">46.5%</text>
+<polyline points="112.0,487.9 147.9,488.3 183.8,488.3 219.8,488.8 255.7,488.8 291.6,489.2 327.5,489.2 363.4,489.7 399.3,489.7 435.2,490.1 471.2,490.1 507.1,490.5 543.0,490.5 578.9,490.5 614.8,491.0 650.8,491.0 686.7,491.0 722.6,491.4 758.5,491.4 794.4,491.4 830.3,491.4 866.2,491.4 902.2,491.4 938.1,491.4 974.0,491.4" fill="none" stroke="#16283F" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="974" cy="491.4" r="5.5" fill="#16283F"/>
+<text x="988.0" y="498.4" font-size="23" fill="#16283F" font-weight="600">35.0%</text>
+<text x="112.0" y="672.0" font-size="16" fill="#5B6B80" text-anchor="middle">Jul 24</text>
+<text x="327.5" y="672.0" font-size="16" fill="#5B6B80" text-anchor="middle">Jan 25</text>
+<text x="543.0" y="672.0" font-size="16" fill="#5B6B80" text-anchor="middle">Jul 25</text>
+<text x="758.5" y="672.0" font-size="16" fill="#5B6B80" text-anchor="middle">Jan 26</text>
+<text x="974.0" y="672.0" font-size="16" fill="#5B6B80" text-anchor="middle">Jul 26</text>
+<text x="54.0" y="706.0" font-size="17" fill="#16283F">Aurora fell 8.7 points and is converging on Bedford. Houston is the only site moving the wrong way.</text>
+<rect x="1188" y="294" width="708" height="436" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="1218.0" y="342.0" font-size="32" fill="#16283F" font-weight="600">Which assets keep failing?</text>
+<text x="1218.0" y="368.0" font-size="17" fill="#5B6B80">top 10 by failure events · graded by criticality · right-click for asset detail</text>
+<text x="1364.0" y="410.0" font-size="17" fill="#16283F" text-anchor="end">PUMP-00623</text>
+<rect x="1378" y="394" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="394" width="278.2" height="20" rx="6" fill="#A32D2D"/>
+<text x="1722.0" y="411.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">47</text>
+<text x="1740.0" y="410.0" font-size="16" fill="#8A94A3">MTBF 412 h</text>
+<text x="1364.0" y="439.0" font-size="17" fill="#16283F" text-anchor="end">HEATEXCH-00481</text>
+<rect x="1378" y="423" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="423" width="254.6" height="20" rx="6" fill="#A32D2D"/>
+<text x="1722.0" y="440.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">43</text>
+<text x="1740.0" y="439.0" font-size="16" fill="#8A94A3">MTBF 455 h</text>
+<text x="1364.0" y="468.0" font-size="17" fill="#16283F" text-anchor="end">ANALYZER-00611</text>
+<rect x="1378" y="452" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="452" width="242.7" height="20" rx="6" fill="#B87514"/>
+<text x="1722.0" y="469.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">41</text>
+<text x="1740.0" y="468.0" font-size="16" fill="#8A94A3">MTBF 478 h</text>
+<text x="1364.0" y="497.0" font-size="17" fill="#16283F" text-anchor="end">CONVEYOR-00038</text>
+<rect x="1378" y="481" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="481" width="225.0" height="20" rx="6" fill="#A32D2D"/>
+<text x="1722.0" y="498.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">38</text>
+<text x="1740.0" y="497.0" font-size="16" fill="#8A94A3">MTBF 512 h</text>
+<text x="1364.0" y="526.0" font-size="17" fill="#16283F" text-anchor="end">COMPRESS-00194</text>
+<rect x="1378" y="510" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="510" width="213.1" height="20" rx="6" fill="#B87514"/>
+<text x="1722.0" y="527.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">36</text>
+<text x="1740.0" y="526.0" font-size="16" fill="#8A94A3">MTBF 548 h</text>
+<text x="1364.0" y="555.0" font-size="17" fill="#16283F" text-anchor="end">AHU-00059</text>
+<rect x="1378" y="539" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="539" width="195.4" height="20" rx="6" fill="#2C6FAD"/>
+<text x="1722.0" y="556.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">33</text>
+<text x="1740.0" y="555.0" font-size="16" fill="#8A94A3">MTBF 601 h</text>
+<text x="1364.0" y="584.0" font-size="17" fill="#16283F" text-anchor="end">CONVEYOR-00765</text>
+<rect x="1378" y="568" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="568" width="183.5" height="20" rx="6" fill="#B87514"/>
+<text x="1722.0" y="585.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">31</text>
+<text x="1740.0" y="584.0" font-size="16" fill="#8A94A3">MTBF 644 h</text>
+<text x="1364.0" y="613.0" font-size="17" fill="#16283F" text-anchor="end">PUMP-00287</text>
+<rect x="1378" y="597" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="597" width="171.7" height="20" rx="6" fill="#2C6FAD"/>
+<text x="1722.0" y="614.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">29</text>
+<text x="1740.0" y="613.0" font-size="16" fill="#8A94A3">MTBF 690 h</text>
+<text x="1364.0" y="642.0" font-size="17" fill="#16283F" text-anchor="end">MOTOR-00733</text>
+<rect x="1378" y="626" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="626" width="159.8" height="20" rx="6" fill="#2C6FAD"/>
+<text x="1722.0" y="643.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">27</text>
+<text x="1740.0" y="642.0" font-size="16" fill="#8A94A3">MTBF 742 h</text>
+<text x="1364.0" y="671.0" font-size="17" fill="#16283F" text-anchor="end">VALVE-00512</text>
+<rect x="1378" y="655" width="296" height="20" rx="6" fill="#E9EDF3"/>
+<rect x="1378" y="655" width="153.9" height="20" rx="6" fill="#7FB3D9"/>
+<text x="1722.0" y="672.0" font-size="21" fill="#16283F" font-weight="600" text-anchor="end">26</text>
+<text x="1740.0" y="671.0" font-size="16" fill="#8A94A3">MTBF 771 h</text>
+<text x="1218.0" y="706.0" font-size="17" fill="#16283F">Six of the ten sit at Houston. Four are criticality 1.</text>
+<rect x="24" y="746" width="1872" height="264" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="54.0" y="794.0" font-size="32" fill="#16283F" font-weight="600">How does each site compare?</text>
+<text x="54.0" y="820.0" font-size="17" fill="#5B6B80">full period, July 2023 – July 2026 · cells graded against target</text>
+<text x="443.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Work Orders</text>
+<text x="633.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Reactive %</text>
+<text x="823.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">PM Compliance %</text>
+<text x="1013.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Overdue %</text>
+<text x="1203.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">MTTR (Hours)</text>
+<text x="1393.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Backlog Weeks</text>
+<text x="1583.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Total Cost</text>
+<text x="1773.0" y="854.0" font-size="16" fill="#5B6B80" font-weight="600" text-anchor="middle">Cost % of RAV</text>
+<text x="54.0" y="899.0" font-size="18" fill="#16283F">Bedford Assembly Plant</text>
+<rect x="354" y="878" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="443.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">10,462</text>
+<rect x="544" y="878" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="633.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">21.0%</text>
+<rect x="734" y="878" width="178" height="30" rx="6" fill="#E7F3EC"/>
+<text x="823.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">93.2%</text>
+<rect x="924" y="878" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="1013.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">29.8%</text>
+<rect x="1114" y="878" width="178" height="30" rx="6" fill="#E7F3EC"/>
+<text x="1203.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">9.04</text>
+<rect x="1304" y="878" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="1393.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">2.75</text>
+<rect x="1494" y="878" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="1583.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">$6.02M</text>
+<rect x="1684" y="878" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="1773.0" y="899.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">4.0%</text>
+<text x="54.0" y="937.0" font-size="18" fill="#16283F">Aurora Distribution Center</text>
+<rect x="354" y="916" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="443.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">10,999</text>
+<rect x="544" y="916" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="633.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">30.9%</text>
+<rect x="734" y="916" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="823.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">85.2%</text>
+<rect x="924" y="916" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1013.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">41.2%</text>
+<rect x="1114" y="916" width="178" height="30" rx="6" fill="#FBF0DE"/>
+<text x="1203.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">10.82</text>
+<rect x="1304" y="916" width="178" height="30" rx="6" fill="#E7F3EC"/>
+<text x="1393.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">4.45</text>
+<rect x="1494" y="916" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="1583.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">$7.25M</text>
+<rect x="1684" y="916" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1773.0" y="937.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">6.6%</text>
+<text x="54.0" y="975.0" font-size="18" fill="#16283F">Houston Process Facility</text>
+<rect x="354" y="954" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="443.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">19,474</text>
+<rect x="544" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="633.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">44.8%</text>
+<rect x="734" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="823.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">69.3%</text>
+<rect x="924" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1013.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">54.1%</text>
+<rect x="1114" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1203.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">15.56</text>
+<rect x="1304" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1393.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">10.14</text>
+<rect x="1494" y="954" width="178" height="30" rx="6" fill="#F2F4F7"/>
+<text x="1583.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">$15.44M</text>
+<rect x="1684" y="954" width="178" height="30" rx="6" fill="#F7E4E4"/>
+<text x="1773.0" y="975.0" font-size="18" fill="#16283F" font-weight="600" text-anchor="middle">7.1%</text>
+<rect x="0" y="1016" width="1920" height="64" fill="#1B3A57"/>
+<circle cx="46" cy="1048" r="15" fill="none" stroke="#8FA3C0" stroke-width="2"/>
+<text x="46.0" y="1055.0" font-size="18" fill="#FFFFFF" font-weight="600" text-anchor="middle" font-style="italic">i</text>
+<text x="72.0" y="1054.0" font-size="15" fill="#8FA3C0">How to read this report</text>
+<rect x="470" y="1028" width="181" height="40" rx="20" fill="#2C4E7A"/>
+<text x="560.4" y="1054.0" font-size="16" fill="#FFFFFF" font-weight="600" text-anchor="middle">Executive Overview</text>
+<rect x="484" y="1063" width="153" height="3.5" rx="1.75" fill="#E8A33D"/>
+<text x="744.3" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Backlog &amp; Aging</text>
+<text x="898.1" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Reliability</text>
+<text x="1043.3" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Cost &amp; Labour</text>
+<text x="1192.8" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Site Details</text>
+<text x="1333.7" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Information</text>
+<text x="1892.0" y="1054.0" font-size="14" fill="#8FA3C0" text-anchor="end">40,935 work orders · Jul 2023 – Jul 2026</text>
+</svg>

@@ -1,0 +1,87 @@
+table KPICards
+	lineageTag: 7fc9a92f-5276-425b-83a1-cd0ff0b01ed3
+
+	column CardOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: bee31967-948c-41d5-b35d-710d57526847
+		summarizeBy: sum
+		sourceColumn: CardOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column CardKey
+		dataType: string
+		lineageTag: ddc02000-c81b-4612-a260-1b146b4fe078
+		summarizeBy: none
+		sourceColumn: CardKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CardLabel
+		dataType: string
+		lineageTag: 03f27fc9-32e7-40c9-a24e-94fffcc0f9af
+		summarizeBy: none
+		sourceColumn: CardLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target
+		dataType: double
+		lineageTag: 89f06d69-bdb9-4fa9-bdd1-b4689d98406f
+		summarizeBy: sum
+		sourceColumn: Target
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ScaleMax
+		dataType: double
+		lineageTag: 3942f008-1a9a-4de3-b697-e8279db45412
+		summarizeBy: sum
+		sourceColumn: ScaleMax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TargetLabel
+		dataType: string
+		lineageTag: d8506085-fa77-4b9d-a848-e44c74ff92dd
+		summarizeBy: none
+		sourceColumn: TargetLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	partition KPICards = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        type table [
+				            CardOrder = Int64.Type,
+				            CardKey = text,
+				            CardLabel = text,
+				            Target = number,
+				            ScaleMax = number,
+				            TargetLabel = text
+				        ],
+				        {
+				            {1, "AVAIL",     "Asset Availability %",       0.98,  1.00,  "target 98%"},
+				            {2, "PM",        "PM Compliance %",            0.90,  1.00,  "target 90%"},
+				            {3, "STAT",      "Statutory Compliance %",     1.00,  1.00,  "target 100%"},
+				            {4, "SCHED",     "Schedule Compliance %",      0.90,  1.00,  "target 90%"},
+				            {5, "REACTIVE",  "Reactive Maintenance %",     0.20,  0.50,  "target under 20%"},
+				            {6, "MTBF",      "MTBF (Hours)",            1810.00, 2200.00, "trend up"},
+				            {7, "MTTR",      "MTTR (Hours)",              12.90,   20.00, "trend down"},
+				            {8, "COSTRAV",   "Maintenance Cost % of RAV",  0.03,   0.08, "best-in-class 2–3%"}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

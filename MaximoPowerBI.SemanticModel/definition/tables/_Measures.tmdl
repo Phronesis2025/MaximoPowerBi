@@ -1,12 +1,14 @@
 table _Measures
 	lineageTag: 8001dd72-0476-4f50-bb57-db8f42fc8bf0
 
+	/// Pages: Executive Overview, PM & Compliance, Planning
 	measure 'Work Orders' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 9760519c-555e-43d1-a580-1df71e1f1d17
 
 	/// 1. REACTIVE MAINTENANCE %
@@ -14,6 +16,8 @@ table _Measures
 	/// Note a cancelled corrective work order still has IsReactive = 1, so the
 	/// cancelled filter is required on the numerator too.
 	/// Expected: 35.0% all sites
+	/// 
+	/// Pages: Executive Overview, PM & Compliance
 	measure 'Reactive Maintenance %' =
 			VAR _Reactive =
 			    CALCULATE (
@@ -23,6 +27,7 @@ table _Measures
 			RETURN
 			    DIVIDE ( _Reactive, [Work Orders] )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 9f2a4b75-5716-4438-a543-7772df323521
 
 	/// 2. PM COMPLIANCE %
@@ -33,24 +38,30 @@ table _Measures
 	/// The comparison behind IsPMOnTime uses DATE-only columns. Comparing raw
 	/// datetimes understates this by 22.1 points on this dataset (81.8% -> 59.7%).
 	/// Expected: 81.8% all sites
+	/// 
+	/// Pages: Executive Overview, PM & Compliance
 	measure 'PM Compliance %' =
 			DIVIDE (
 			    SUM ( FactWorkOrder[IsPMOnTime] ),
 			    SUM ( FactWorkOrder[IsPMCompleted] )
 			)
 		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: d0cfecd9-b968-4d0e-b3e1-e70f1224679b
 
 	/// PM compliance is conventionally reported against the period the work was DUE,
 	/// not the period it was reported in. Grand totals are identical; the two differ
 	/// as soon as you put a month on the axis. Decide which one you mean and say so
 	/// on the report face.
+	/// 
+	/// Pages: PM & Compliance
 	measure 'PM Compliance % (by Due Date)' =
 			CALCULATE (
 			    [PM Compliance %],
 			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
 			)
 		formatString: 0.0%
+		displayFolder: 02 PM & Compliance
 		lineageTag: 94e4a023-5b0a-4965-8213-a2263578b209
 
 	/// 3. SCHEDULE COMPLIANCE %
@@ -63,6 +74,8 @@ table _Measures
 	/// returns BLANK at a grand total or when nothing is selected, because
 	/// SELECTEDVALUE collapses when more than one row is in context.
 	/// Expected at tolerance 2: 71.9% all sites
+	/// 
+	/// Pages: Executive Overview, PM & Compliance, Planning
 	measure 'Schedule Compliance %' =
 			VAR _Tolerance = SELECTEDVALUE ( ScheduleTolerance[Days], 2 )
 			VAR _Scheduled =
@@ -81,6 +94,7 @@ table _Measures
 			RETURN
 			    DIVIDE ( _OnSchedule, _Scheduled )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: f81326a4-6d70-4bca-a0c6-728f871c8a5f
 
 	/// 4. MTTR (MEAN TIME TO REPAIR)
@@ -89,12 +103,15 @@ table _Measures
 	/// ACTLABHRS: three technicians for four hours is 12 labour hours but 4 hours
 	/// of downtime, which inflates MTTR by roughly the crew size.
 	/// Expected: 13.45 h all sites
+	/// 
+	/// Pages: Executive Overview, Reliability
 	measure 'MTTR (Hours)' =
 			DIVIDE (
 			    SUM ( FactDowntime[DOWNTIME] ),
 			    COUNTROWS ( FactDowntime )
 			)
 		formatString: #,0.00
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 710fb1ff-7ca4-4b02-927f-7d1082d0b8dd
 
 	/// 5. TOTAL MAINTENANCE COST
@@ -104,15 +121,20 @@ table _Measures
 	/// drop 12.6% of spend. Labour and material do reconcile to the cent against
 	/// the transaction tables - see [Cost Reconciliation Check].
 	/// Expected: $28,706,414 all sites
+	/// 
+	/// Pages: Executive Overview, Asset Health
 	measure 'Total Maintenance Cost' =
 			CALCULATE (
 			    SUM ( FactWorkOrder[ActualTotalCost] ),
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: \$#,0
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 0751b5fe-3335-40b7-9dbd-d801f821acf1
 
 	/// Should always return 0. If it does not, the fact tables are out of step.
+	/// 
+	/// Pages: Information
 	measure 'Cost Reconciliation Check' =
 			VAR _WOLabour = CALCULATE ( SUM ( FactWorkOrder[ACTLABCOST] ), REMOVEFILTERS () )
 			VAR _TxLabour = CALCULATE ( SUM ( FactLabour[LINECOST] ), REMOVEFILTERS () )
@@ -121,6 +143,7 @@ table _Measures
 			RETURN
 			    ROUND ( _WOLabour - _TxLabour, 2 ) + ROUND ( _WOMaterial - _TxMaterial, 2 )
 		formatString: #,0.00
+		displayFolder: 06 Information
 		lineageTag: 1db1921e-7a9b-4615-8b2e-ac827c728f2e
 
 	/// 6. BACKLOG
@@ -138,6 +161,8 @@ table _Measures
 	/// labour headcount x 40 hours. Planners and supervisors are excluded because
 	/// they do not burn down the work-order backlog.
 	/// Expected: 15,803.0 hours / 2,720 hours = 5.81 weeks all sites
+	/// 
+	/// Pages: Planning
 	measure 'Backlog Hours' =
 			CALCULATE (
 			    SUM ( FactWorkOrder[ESTLABHRS] ),
@@ -145,10 +170,13 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.00
+		displayFolder: 04 Planning
 		lineageTag: 4ce720fa-ae78-4bc4-a5fb-e8682616f493
 
 	/// TREATAS pushes the selected sites onto DimLabor without a relationship,
 	/// avoiding the ambiguous path a DimSite -> DimLabor relationship would create.
+	/// 
+	/// Pages: Planning
 	measure 'Weekly Craft Capacity (Hours)' =
 			VAR _Sites = VALUES ( DimSite[SITEID] )
 			RETURN
@@ -158,10 +186,13 @@ table _Measures
 			        TREATAS ( _Sites, DimLabor[SITEID] )
 			    )
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: a0562e9a-bd69-4939-8935-d74b635c82bf
 
+	/// Pages: Executive Overview, Planning
 	measure 'Backlog Weeks' = DIVIDE ( [Backlog Hours], [Weekly Craft Capacity (Hours)] )
 		formatString: #,0.00
+		displayFolder: 04 Planning
 		lineageTag: 362be6ba-a69d-4d1e-8b98-3f8031a67cef
 
 	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
@@ -202,6 +233,8 @@ table _Measures
 	/// Fixing Operating Asset Count also fixes Scheduled Asset Hours, MTBF (Hours)
 	/// and Asset Availability %, which all derive from it. Only the two measures
 	/// below need editing.
+	/// 
+	/// Pages: Reliability, Asset Health
 	measure 'Operating Asset Count' =
 			VAR _Sites = VALUES ( DimSite[SITEID] )
 			RETURN
@@ -212,6 +245,7 @@ table _Measures
 			        TREATAS ( _Sites, DimAsset[SITEID] )
 			    )
 		formatString: #,0
+		displayFolder: 03 Reliability
 		lineageTag: 7da965b1-7b5a-48f1-bf02-1cf7932cb2ae
 
 	/// The one place with a hardcoded date. 2023-07-01 is this dataset's window
@@ -219,6 +253,8 @@ table _Measures
 	/// the literal if you change START_DATE in the generator config. It is written
 	/// as a FILTER over DimDate rather than a constant so the measure still responds
 	/// correctly to a date slicer.
+	/// 
+	/// Pages: Reliability, Asset Health
 	measure 'Analysis Days' =
 			COUNTROWS (
 			    FILTER (
@@ -228,10 +264,13 @@ table _Measures
 			    )
 			)
 		formatString: #,0
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: f0db3124-6dea-4d60-a13d-58812216251a
 
+	/// Pages: Reliability
 	measure 'Scheduled Asset Hours' = [Operating Asset Count] * [Analysis Days] * 24
 		formatString: #,0
+		displayFolder: 03 Reliability
 		lineageTag: 799dbbba-4861-4ddb-86a2-83653c245fe4
 
 	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
@@ -253,6 +292,8 @@ table _Measures
 	/// availability figures almost completely hide.
 	/// 
 	/// Expected: 1,643 h all sites (Bedford 4,006 / Houston 908 / Aurora 1,956)
+	/// 
+	/// Pages: Executive Overview, Reliability
 	measure 'MTBF (Hours)' =
 			VAR _Scheduled = [Scheduled Asset Hours]
 			VAR _Downtime = SUM ( FactDowntime[DOWNTIME] )
@@ -260,6 +301,7 @@ table _Measures
 			RETURN
 			    DIVIDE ( _Scheduled - _Downtime, _Failures )
 		formatString: #,0.00
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 1022a867-a2b8-4458-8075-c26c6a8b6521
 
 	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
@@ -281,14 +323,18 @@ table _Measures
 	/// availability figures almost completely hide.
 	/// 
 	/// Expected: 99.55% all sites. See the caveat above about calendar hours.
+	/// 
+	/// Pages: Executive Overview, Reliability
 	measure 'Asset Availability %' =
 			VAR _Scheduled = [Scheduled Asset Hours]
 			VAR _Downtime = SUM ( FactDowntime[DOWNTIME] )
 			RETURN
 			    DIVIDE ( _Scheduled - _Downtime, _Scheduled )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: f808a277-3525-44ca-a542-4dc7e991b2bc
 
+	/// Pages: Planning
 	measure 'Open Work Orders' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
@@ -296,32 +342,42 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 5aff65cc-34d2-44de-ace2-bd270c06b50a
 
+	/// Pages: Reliability, Asset Health
 	measure 'Failure Events' = COUNTROWS ( FactFailure )
 		formatString: #,0
+		displayFolder: 03 Reliability
 		lineageTag: a285849b-8dab-4385-8bc1-49e47f08674b
 
+	/// Pages: Executive Overview, Reliability, Asset Health
 	measure 'Downtime Hours' = SUM ( FactDowntime[DOWNTIME] )
 		formatString: #,0.00
+		displayFolder: 03 Reliability
 		lineageTag: 25e79621-737b-4edf-b46a-6ed981d7e496
 
+	/// Pages: Planning
 	measure 'Actual Labour Hours' =
 			CALCULATE (
 			    SUM ( FactWorkOrder[ACTLABHRS] ),
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0.00
+		displayFolder: 04 Planning
 		lineageTag: bb7c4723-36e5-4484-a681-f9107ca7ef96
 
 	/// Planned vs reactive labour split. Relies on WORKTYPE having been merged onto
 	/// FactLabour in Power Query - there is no fact-to-fact relationship to traverse.
+	/// 
+	/// Pages: Planning
 	measure 'Reactive Labour Hours' =
 			CALCULATE (
 			    SUM ( FactLabour[TotalHours] ),
 			    FactLabour[WORKTYPE] IN { "CM", "EM" }
 			)
 		formatString: #,0.00
+		displayFolder: 04 Planning
 		lineageTag: ef2ac8a8-3d1e-4ce9-a4fb-64f49b47afd9
 
 	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
@@ -366,6 +422,8 @@ table _Measures
 	/// Best-in-class is 2-3% per year. This dataset runs at 6.0% overall
 	/// (Bedford 4.0%, Houston 7.1%, Aurora 6.6%) - an underperforming portfolio,
 	/// which is the story the data is built to tell.
+	/// 
+	/// Pages: Executive Overview, Asset Health
 	measure 'Maintenance Cost % of RAV' =
 			VAR _Sites = VALUES ( DimSite[SITEID] )
 			VAR _Cost = [Total Maintenance Cost]
@@ -379,10 +437,13 @@ table _Measures
 			RETURN
 			    DIVIDE ( DIVIDE ( _Cost, _Years ), _RAV )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 037349f9-4343-4532-883f-b2380cdfe1ee
 
+	/// Pages: Planning
 	measure 'Mean Days to Complete' = AVERAGE ( FactWorkOrder[DaysToComplete] )
 		formatString: #,0.00
+		displayFolder: 04 Planning
 		lineageTag: 04a165ea-4fed-4590-945d-6331ecf2be75
 
 	/// COCKPIT MEASURES - current-state operational view
@@ -430,6 +491,8 @@ table _Measures
 	/// 
 	/// Anchor for every current-state calculation. ISPASTORTODAY is set by the
 	/// generator and marks every date at or before the data cutoff.
+	/// 
+	/// Pages: Executive Overview, PM & Compliance, Reliability, Planning, Asset Health
 	measure 'Data As Of Date' =
 			CALCULATE (
 			    MAX ( DimDate[Date] ),
@@ -437,11 +500,14 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: dd mmm yyyy
+		displayFolder: 00 Shared\Headline KPIs
 		lineageTag: 5bf6bd48-5b76-4b86-8b5b-7be2d1c9543e
 
 	/// OVERDUE
 	/// Expected: 1,186 all sites. Houston 767 of 1,418 open (54.1%) against
 	/// Bedford's 172 of 578 (29.8%) - the sharpest single contrast in the dataset.
+	/// 
+	/// Pages: Planning
 	measure 'Overdue Work Orders' =
 			VAR _AsOf = [Data As Of Date]
 			RETURN
@@ -452,16 +518,22 @@ table _Measures
 			        REMOVEFILTERS ( DimDate )
 			    )
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 5c58ae34-352d-4fcd-b171-1eff2d259a56
 
 	/// Expected: 45.7% all sites
+	/// 
+	/// Pages: Planning
 	measure 'Overdue %' = DIVIDE ( [Overdue Work Orders], [Open Work Orders] )
 		formatString: 0.0%
+		displayFolder: 04 Planning
 		lineageTag: 34d4981b-798f-492c-a794-d854b480832c
 
 	/// AVERAGEX over the overdue rows, not an average of a column - the days-overdue
 	/// value does not exist as a column and cannot, because it depends on the anchor.
 	/// Expected: 34.6 days all sites
+	/// 
+	/// Pages: Planning
 	measure 'Avg Days Overdue' =
 			VAR _AsOf = [Data As Of Date]
 			VAR _Overdue =
@@ -474,11 +546,14 @@ table _Measures
 			RETURN
 			    AVERAGEX ( _Overdue, DATEDIFF ( FactWorkOrder[TargCompDate], _AsOf, DAY ) )
 		formatString: #,0.0
+		displayFolder: 04 Planning
 		lineageTag: 5290701f-74fa-4f84-83e6-c90df1fc9bed
 
 	/// Future-dated PM work orders produce a negative age here, which is correct -
 	/// they have not been raised yet. MAXX ignores them.
 	/// Expected: 119 days all sites
+	/// 
+	/// Pages: Planning
 	measure 'Oldest Open Work Order (Days)' =
 			VAR _AsOf = [Data As Of Date]
 			VAR _Open =
@@ -490,12 +565,15 @@ table _Measures
 			RETURN
 			    MAXX ( _Open, DATEDIFF ( FactWorkOrder[ReportDate], _AsOf, DAY ) )
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 9e9f2a42-d2ef-4760-8c3b-5ee556bfc03f
 
 	/// TODAY'S PRIORITIES
 	/// 
 	/// Emergency work still open is the single most actionable number on the page.
 	/// Expected: 34 all sites - Houston 25, Bedford 5, Aurora 4.
+	/// 
+	/// Pages: Planning
 	measure 'Open Emergency Work Orders' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
@@ -504,11 +582,14 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 223067f7-f557-47c0-a4ab-921afab33f7b
 
 	/// Forward PM load. Uses TargCompDate, not ReportDate, because what matters is
 	/// when the work comes due - not when Maximo generated the record.
 	/// Expected: 256 all sites
+	/// 
+	/// Pages: PM & Compliance, Planning
 	measure 'PM Due Next 14 Days' =
 			VAR _AsOf = [Data As Of Date]
 			RETURN
@@ -521,12 +602,15 @@ table _Measures
 			        REMOVEFILTERS ( DimDate )
 			    )
 		formatString: #,0
+		displayFolder: 02 PM & Compliance
 		lineageTag: 56ff7bd6-c3f8-4e9b-92ce-5a061475382a
 
 	/// THROUGHPUT
 	/// Completion is measured on ActFinishDate, which requires the inactive
 	/// relationship. Without USERELATIONSHIP this silently reports completions
 	/// against the month the work was REPORTED, which is not the same thing.
+	/// 
+	/// Pages: Planning
 	measure 'Work Orders Completed' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
@@ -534,14 +618,17 @@ table _Measures
 			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[ActFinishDate] )
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 615a6733-09da-45cb-8444-82870051378b
 
+	/// Pages: Planning
 	measure 'Work Orders Reported' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 69ba2240-2bec-4c04-9792-d3b497e037e1
 
 	/// KNOWN DATA ARTIFACT - affects any intake-vs-completion trend
@@ -557,19 +644,25 @@ table _Measures
 	/// 
 	/// Positive means the backlog grew in the period. Pair the two on a monthly
 	/// column chart - it is the clearest way to show a backlog going the wrong way.
+	/// 
+	/// Pages: Planning
 	measure 'Net Backlog Change' = [Work Orders Reported] - [Work Orders Completed]
 		formatString: +#,0;-#,0;0
+		displayFolder: 04 Planning
 		lineageTag: 4d215a58-0cf7-48c8-8933-487a759905de
 
 	/// CAPACITY
 	/// Backlog Hours / headcount, not / weekly hours. Answers "how many hours is
 	/// each technician personally carrying", which crews understand immediately.
+	/// 
+	/// Pages: Planning
 	measure 'Backlog Hours per Technician' =
 			DIVIDE (
 			    [Backlog Hours],
 			    DIVIDE ( [Weekly Craft Capacity (Hours)], 40 )
 			)
 		formatString: #,0.0
+		displayFolder: 04 Planning
 		lineageTag: 71326b96-6da2-4603-b42b-51147c905d34
 
 	/// ROLLING TREND MEASURE - removes annual seasonality from the executive trend
@@ -593,6 +686,8 @@ table _Measures
 	/// Note the ratio is computed as SUM(reactive) / SUM(total) across the window -
 	/// NOT the average of twelve monthly percentages. Averaging ratios weights a
 	/// quiet month the same as a busy one and gives a different, wrong answer.
+	/// 
+	/// Pages: Executive Overview, Reliability
 	measure 'Reactive Maintenance % (12M Rolling)' =
 			// The window end is clamped to the data cutoff. Without the clamp, an
 			// unfiltered card evaluates MAX(DimDate[Date]) as 2026-12-31 - the calendar
@@ -620,10 +715,13 @@ table _Measures
 			    // with a misleading partial-window value
 			    IF ( _WindowStart >= _FirstData, DIVIDE ( _Reactive, _Total ) )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Trend
 		lineageTag: 0a6bc6f8-035f-4911-bd80-bfc1a577d81a
 
 	/// The same treatment for PM compliance, for the second executive trend.
 	/// Sliced by DUE date, which is the convention for compliance reporting.
+	/// 
+	/// Pages: Executive Overview, PM & Compliance
 	measure 'PM Compliance % (12M Rolling)' =
 			VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
 			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
@@ -645,6 +743,7 @@ table _Measures
 			RETURN
 			    IF ( _WindowStart >= _FirstData, DIVIDE ( _OnTime, _Completed ) )
 		formatString: 0.0%
+		displayFolder: 00 Shared\Trend
 		lineageTag: 5b86b0bb-b155-4a6e-a21a-c90c816c0ff1
 
 	/// KPI STATUS MEASURES - benchmark signalling for the executive cards
@@ -676,6 +775,8 @@ table _Measures
 	/// green #107C41   amber #C77700   red #C00F0C
 	/// 
 	/// REACTIVE MAINTENANCE %   target: under 20% (SMRP best-in-class)
+	/// 
+	/// Pages: Executive Overview
 	measure 'Reactive Status Colour' =
 			VAR _v = [Reactive Maintenance %]
 			RETURN
@@ -685,15 +786,20 @@ table _Measures
 			        _v < 0.35, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: 01 Executive Overview\Card status colours
 		lineageTag: 32aac671-cbbc-485a-be25-9e011898c4f9
 
+	/// Pages: Executive Overview
 	measure 'Reactive vs Target' =
 			VAR _d = [Reactive Maintenance %] - 0.20
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 20% target"
+		displayFolder: 01 Executive Overview\Card variance text
 		lineageTag: 1e62cd93-17ae-4cda-b87b-0b839d5370f0
 
 	/// PM COMPLIANCE %   target: 90% or above
+	/// 
+	/// Pages: Executive Overview
 	measure 'PM Compliance Status Colour' =
 			VAR _v = [PM Compliance %]
 			RETURN
@@ -703,17 +809,22 @@ table _Measures
 			        _v >= 0.80, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: 01 Executive Overview\Card status colours
 		lineageTag: bcc382ad-af4d-4aa8-b3de-6ccee16d05e1
 
+	/// Pages: Executive Overview
 	measure 'PM Compliance vs Target' =
 			VAR _d = [PM Compliance %] - 0.90
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 90% target"
+		displayFolder: 01 Executive Overview\Card variance text
 		lineageTag: c9fd044b-891e-46a6-b57d-38cd2ffb58f8
 
 	/// BACKLOG WEEKS   healthy band 4 to 6
 	/// This is a two-sided measure - too little backlog is also a signal, usually of
 	/// over-resourcing or of work not being captured in the system at all.
+	/// 
+	/// Pages: Planning
 	measure 'Backlog Status Colour' =
 			VAR _v = [Backlog Weeks]
 			RETURN
@@ -723,8 +834,10 @@ table _Measures
 			        _v >= 2 && _v <= 8, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: 04 Planning\Card status colours
 		lineageTag: 4de2480d-e3e3-4b24-a3db-b78fa10b7bb4
 
+	/// Pages: Planning
 	measure 'Backlog vs Target' =
 			VAR _v = [Backlog Weeks]
 			RETURN
@@ -735,9 +848,12 @@ table _Measures
 			        _v <= 8, FORMAT ( _v - 6, "+0.0" ) & " weeks above healthy band",
 			        FORMAT ( _v - 6, "+0.0" ) & " weeks above band - crew cannot keep pace"
 			    )
+		displayFolder: 04 Planning\Card variance text
 		lineageTag: 5a0b6576-bf2d-475f-a56b-6054a85c0e00
 
 	/// MAINTENANCE COST % OF RAV   best-in-class 2% to 3% per year
+	/// 
+	/// Pages: Executive Overview
 	measure 'Cost RAV Status Colour' =
 			VAR _v = [Maintenance Cost % of RAV]
 			RETURN
@@ -747,12 +863,15 @@ table _Measures
 			        _v <= 0.05, "#C77700",
 			        "#C00F0C"
 			    )
+		displayFolder: 01 Executive Overview\Card status colours
 		lineageTag: 837561c4-c44f-478c-91be-54da4f8a372e
 
+	/// Pages: Executive Overview
 	measure 'Cost RAV vs Target' =
 			VAR _d = [Maintenance Cost % of RAV] - 0.03
 			RETURN
 			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 3% best-in-class"
+		displayFolder: 01 Executive Overview\Card variance text
 		lineageTag: cfd48cc8-54b1-4839-9139-d8cad87298b3
 
 	/// BACKLOG AND AGING MEASURES
@@ -778,6 +897,8 @@ table _Measures
 	/// Avg Days Overdue, which measures against the TARGET date - a work order can
 	/// be 40 days old and not yet overdue if it was given a 60-day target.
 	/// Expected: 19.8 days all sites
+	/// 
+	/// Pages: Planning
 	measure 'Avg Age of Open Work (Days)' =
 			CALCULATE (
 			    AVERAGE ( FactWorkOrder[DaysOpen] ),
@@ -785,12 +906,15 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.0
+		displayFolder: 04 Planning
 		lineageTag: 54a0f7b4-9d3f-4e1b-ac67-ce38e80554b5
 
 	/// Estimated labour hours sitting on work that is already late. This is the
 	/// number a planner acts on - total backlog includes work that is still within
 	/// its window and therefore not yet a problem.
 	/// Expected: 8,201.9 hours all sites, of which Houston holds 5,687.9
+	/// 
+	/// Pages: Planning
 	measure 'Backlog Hours Overdue' =
 			CALCULATE (
 			    SUM ( FactWorkOrder[ESTLABHRS] ),
@@ -799,12 +923,15 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.0
+		displayFolder: 04 Planning
 		lineageTag: 0a399423-fbd9-4e24-8418-c2c01c3fc3ae
 
 	/// Emergency work that missed its target date. Emergency targets are same-day,
 	/// so an overdue emergency is work that was classified as an emergency and then
 	/// not treated as one. Small number, high signal.
 	/// Expected: 27 all sites - Houston 21, Bedford 3, Aurora 3
+	/// 
+	/// Pages: Planning
 	measure 'Overdue Emergency Work Orders' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
@@ -814,12 +941,15 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 5c353428-8b9f-4e9b-89bc-2c326ef8ca93
 
 	/// Open work orders raised more than 90 days ago. The aging tail - work this old
 	/// is rarely still relevant and usually needs cancelling or re-scoping rather
 	/// than scheduling.
 	/// Expected: 102 all sites - Houston 66
+	/// 
+	/// Pages: Planning, Asset Health
 	measure 'Aged Over 90 Days' =
 			CALCULATE (
 			    COUNTROWS ( FactWorkOrder ),
@@ -828,30 +958,316 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: 04 Planning
 		lineageTag: 9fda6a0b-b578-49e0-8ab4-88b4829b7c51
 
 	/// Share of backlog hours that are already late. More useful than a raw hour
 	/// count when comparing sites of different sizes.
 	/// Expected: Bedford 31.9%, Houston 58.4%, Aurora 49.9%, all sites 51.9%
+	/// 
+	/// Pages: Planning
 	measure 'Overdue Share of Backlog' = DIVIDE ( [Backlog Hours Overdue], [Backlog Hours] )
 		formatString: 0.0%
+		displayFolder: 04 Planning
 		lineageTag: a2095968-1ddd-4566-92f2-07e3f2de516d
 
 	/// STATUS COLOURS for the backlog cards
 	/// 
 	/// No neutral published benchmark exists for backlog age, so these bands are
 	/// stated as a working convention rather than a standard. Say so if asked.
+	/// 
+	/// Pages: Planning
 	measure 'Backlog Age Status Colour' =
 			VAR _v = [Avg Age of Open Work (Days)]
 			RETURN
 			    SWITCH ( TRUE (), _v <= 14, "#107C41", _v <= 30, "#C77700", "#C00F0C" )
+		displayFolder: 04 Planning\Card status colours
 		lineageTag: b0be2271-6ad1-43b0-9da2-c596d1728546
 
+	/// Pages: Planning
 	measure 'Overdue Status Colour' =
 			VAR _v = [Overdue %]
 			RETURN
 			    SWITCH ( TRUE (), _v < 0.20, "#107C41", _v < 0.40, "#C77700", "#C00F0C" )
+		displayFolder: 04 Planning\Card status colours
 		lineageTag: 14d0ad03-9ba5-45e5-98c2-cd842332e6fe
+
+	/// Statutory and safety inspections that have actually been completed.
+	/// DimWorkType defines INSP as regulatory, insurance or statutory inspection on a
+	/// fixed schedule, and SAF as safety or regulatory deficiency work. Together they
+	/// are the legally-driven population - the work a regulator or insurer asks about.
+	/// 
+	/// Pages: PM & Compliance
+	measure 'Statutory Inspections Completed' =
+			CALCULATE (
+			    COUNTROWS ( FactWorkOrder ),
+			    FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" },
+			    FactWorkOrder[IsCompleted] = 1,
+			    NOT ISBLANK ( FactWorkOrder[ActFinishDate] )
+			)
+		formatString: #,0
+		displayFolder: 02 PM & Compliance
+		lineageTag: 4c32f339-d758-4b0a-8cac-b1276f1ae119
+
+	/// Completed on or before the target date. Compared on DATE-only columns, the same
+	/// rule as IsPMOnTime - comparing raw datetimes understates compliance.
+	/// 
+	/// Pages: PM & Compliance
+	measure 'Statutory Inspections On Time' =
+			COUNTROWS (
+			    FILTER (
+			        CALCULATETABLE (
+			            FactWorkOrder,
+			            FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" },
+			            FactWorkOrder[IsCompleted] = 1,
+			            NOT ISBLANK ( FactWorkOrder[ActFinishDate] )
+			        ),
+			        FactWorkOrder[ActFinishDate] <= FactWorkOrder[TargCompDate]
+			    )
+			)
+		formatString: #,0
+		displayFolder: 02 PM & Compliance
+		lineageTag: 945019cf-1ab2-4ab5-a7fe-a9ac53f8d90e
+
+	/// The number that matters. A missed statutory inspection is a regulatory breach and
+	/// can invalidate insurance, so this is reported as a count, never as a rounded rate.
+	/// 
+	/// Pages: Executive Overview, PM & Compliance
+	measure 'Statutory Inspections Late' = [Statutory Inspections Completed] - [Statutory Inspections On Time]
+		formatString: #,0
+		displayFolder: 02 PM & Compliance
+		lineageTag: ad024246-08e8-4b45-960f-e7cba0462884
+
+	/// Share of statutory and safety inspections closed on or before target.
+	/// Target is 100% - see PerformanceTargets. There is no acceptable shortfall; the
+	/// amber band exists only to flag a near miss before it becomes a breach.
+	/// 
+	/// Pages: Executive Overview, PM & Compliance
+	measure 'Statutory Compliance %' = DIVIDE ( [Statutory Inspections On Time], [Statutory Inspections Completed] )
+		formatString: 0.0%
+		displayFolder: 00 Shared\Headline KPIs
+		lineageTag: 6223ebb4-0352-48bb-b08b-24010e62af18
+
+	/// Denominator behind PM Compliance %, surfaced so a card can show the volume the
+	/// percentage is built on.
+	/// 
+	/// Pages: PM & Compliance
+	measure 'PMs Completed' = SUM ( FactWorkOrder[IsPMCompleted] )
+		formatString: #,0
+		displayFolder: 02 PM & Compliance
+		lineageTag: a99e19d4-55c3-4aa4-9caa-f3a74400450e
+
+	/// Statutory work grades against 100%, not against a benchmark.
+	/// 
+	/// Pages: Executive Overview
+	measure 'Statutory Status Colour' =
+			VAR _v = [Statutory Compliance %]
+			RETURN
+			    SWITCH ( TRUE (), _v >= 1, "#107C41", _v >= 0.98, "#C77700", "#C00F0C" )
+		displayFolder: 01 Executive Overview\Card status colours
+		lineageTag: 381fa70b-8192-482e-9638-706e234e0b22
+
+	/// 98% is the contract norm for building-critical and production-critical plant.
+	/// 
+	/// Pages: Executive Overview
+	measure 'Availability Status Colour' =
+			VAR _v = [Asset Availability %]
+			RETURN
+			    SWITCH ( TRUE (), _v >= 0.98, "#107C41", _v >= 0.95, "#C77700", "#C00F0C" )
+		displayFolder: 01 Executive Overview\Card status colours
+		lineageTag: 312b2c1e-7be9-4aa0-8834-4867e0dc8fd8
+
+	/// SMRP world-class is 90%; industry average runs 75-80%.
+	/// Sensitive to the tolerance selected in ScheduleTolerance - show the tolerance.
+	/// 
+	/// Pages: Executive Overview
+	measure 'Schedule Status Colour' =
+			VAR _v = [Schedule Compliance %]
+			RETURN
+			    SWITCH ( TRUE (), _v >= 0.90, "#107C41", _v >= 0.80, "#C77700", "#C00F0C" )
+		displayFolder: 01 Executive Overview\Card status colours
+		lineageTag: 1cc32e7f-e7be-4598-8476-8bcb10ca59ea
+
+	/// No absolute MTBF benchmark exists - the denominator rests on an operating-hours
+	/// assumption. Graded on direction of travel against the same period last year.
+	/// 
+	/// Pages: Executive Overview
+	measure 'MTBF Status Colour' =
+			VAR _v = [MTBF (Hours)]
+			VAR _prior = CALCULATE ( [MTBF (Hours)], DATEADD ( DimDate[Date], -12, MONTH ) )
+			RETURN
+			    SWITCH ( TRUE (), ISBLANK ( _prior ), "#9AA7B8",
+			        _v >= _prior, "#107C41", _v >= 0.95 * _prior, "#C77700", "#C00F0C" )
+		displayFolder: 01 Executive Overview\Card status colours
+		lineageTag: 4ff24c81-b759-4cef-ba68-97f41233d6a3
+
+	/// Same treatment as MTBF: contract-specific, so graded on direction, not level.
+	/// 
+	/// Pages: Executive Overview
+	measure 'MTTR Status Colour' =
+			VAR _v = [MTTR (Hours)]
+			VAR _prior = CALCULATE ( [MTTR (Hours)], DATEADD ( DimDate[Date], -12, MONTH ) )
+			RETURN
+			    SWITCH ( TRUE (), ISBLANK ( _prior ), "#9AA7B8",
+			        _v <= _prior, "#107C41", _v <= 1.05 * _prior, "#C77700", "#C00F0C" )
+		displayFolder: 01 Executive Overview\Card status colours
+		lineageTag: c3559a2d-9e38-4168-aab0-128d005063ec
+
+	/// Reports the exception count rather than the percentage. An executive acts on
+	/// 'four late', not on '99.8%'.
+	/// 
+	/// Pages: Executive Overview
+	measure 'Statutory vs Target' =
+			VAR _late = [Statutory Inspections Late]
+			RETURN
+			    IF ( _late = 0, "all inspections on time",
+			        FORMAT ( _late, "#,0" ) & " inspection" & IF ( _late = 1, "", "s" ) & " late vs 100% target" )
+		displayFolder: 01 Executive Overview\Card variance text
+		lineageTag: 3314de56-5098-4c84-b40b-2d1661a02ed8
+
+	/// Pages: Executive Overview
+	measure 'Availability vs Target' =
+			VAR _d = [Asset Availability %] - 0.98
+			RETURN FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 98% target"
+		displayFolder: 01 Executive Overview\Card variance text
+		lineageTag: 179dc5ca-29a0-45ea-ba73-f5dacc8a13df
+
+	/// Pages: Executive Overview
+	measure 'Schedule vs Target' =
+			VAR _d = [Schedule Compliance %] - 0.90
+			RETURN FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 90% target"
+		displayFolder: 01 Executive Overview\Card variance text
+		lineageTag: 4444bc30-ad9c-4936-a21e-6199d324ec07
+
+	/// Renders one Executive Overview KPI card as HTML for the HTML Content visual.
+	/// 
+	/// Place eight HTML Content visuals on the page, each filtered to a single
+	/// KPICards[CardKey], and put this measure in each. One measure, one disconnected
+	/// table, eight visuals - rather than eight near-identical measures.
+	/// 
+	/// The card carries the gear status mark, the value, the target label, a bullet
+	/// bar with a target tick, the variance sentence and a 12-month sparkline. Colour
+	/// comes from the per-metric Status Colour measures, so a card can never disagree
+	/// with the colour policy used everywhere else.
+	/// 
+	/// The sparkline is an inline SVG polyline built with CONCATENATEX over the last
+	/// twelve months - no image, no external dependency, no second visual.
+	/// 
+	/// HTML Content is a certified custom visual and must be installed from AppSource
+	/// before this renders. Attribute quoting is single-quote inside the SVG and
+	/// doubled-double-quote in the DAX string literals; do not normalise them.
+	/// 
+	/// Pages: Executive Overview
+	measure 'KPI Card HTML' =
+			VAR _key = SELECTEDVALUE ( KPICards[CardKey] )
+			VAR _label = SELECTEDVALUE ( KPICards[CardLabel] )
+			VAR _targetLab = SELECTEDVALUE ( KPICards[TargetLabel] )
+			VAR _target = SELECTEDVALUE ( KPICards[Target] )
+			VAR _max = SELECTEDVALUE ( KPICards[ScaleMax] )
+			VAR _actual =
+			    SWITCH ( _key,
+			        "AVAIL", [Asset Availability %],
+			        "PM", [PM Compliance %],
+			        "STAT", [Statutory Compliance %],
+			        "SCHED", [Schedule Compliance %],
+			        "REACTIVE", [Reactive Maintenance %],
+			        "MTBF", [MTBF (Hours)],
+			        "MTTR", [MTTR (Hours)],
+			        "COSTRAV", [Maintenance Cost % of RAV]
+			    )
+			VAR _valueText =
+			    SWITCH ( _key,
+			        "MTBF", FORMAT ( _actual, "#,0" ),
+			        "MTTR", FORMAT ( _actual, "#,0.00" ),
+			        FORMAT ( _actual, "0.0%" )
+			    )
+			VAR _colour =
+			    SWITCH ( _key,
+			        "AVAIL", [Availability Status Colour],
+			        "PM", [PM Compliance Status Colour],
+			        "STAT", [Statutory Status Colour],
+			        "SCHED", [Schedule Status Colour],
+			        "REACTIVE", [Reactive Status Colour],
+			        "MTBF", [MTBF Status Colour],
+			        "MTTR", [MTTR Status Colour],
+			        "COSTRAV", [Cost RAV Status Colour]
+			    )
+			VAR _delta =
+			    SWITCH ( _key,
+			        "AVAIL", [Availability vs Target],
+			        "PM", [PM Compliance vs Target],
+			        "STAT", [Statutory vs Target],
+			        "SCHED", [Schedule vs Target],
+			        "REACTIVE", [Reactive vs Target],
+			        "MTBF", FORMAT ( [MTBF (Hours)] - _target, "+#,0;-#,0" ) & " h vs last year",
+			        "MTTR", FORMAT ( [MTTR (Hours)] - _target, "+#,0.00;-#,0.00" ) & " h vs last year",
+			        "COSTRAV", [Cost RAV vs Target]
+			    )
+			VAR _pct = MIN ( DIVIDE ( _actual, _max ), 1 ) * 100
+			VAR _tpct = MIN ( DIVIDE ( _target, _max ), 1 ) * 100
+			VAR _months =
+			    TOPN ( 12, ALLSELECTED ( DimDate[MonthSort] ), DimDate[MonthSort], DESC )
+			VAR _series =
+			    ADDCOLUMNS (
+			        _months,
+			        "@v",
+			            CALCULATE (
+			                SWITCH ( _key,
+			                    "AVAIL", [Asset Availability %],
+			                    "PM", [PM Compliance %],
+			                    "STAT", [Statutory Compliance %],
+			                    "SCHED", [Schedule Compliance %],
+			                    "REACTIVE", [Reactive Maintenance %],
+			                    "MTBF", [MTBF (Hours)],
+			                    "MTTR", [MTTR (Hours)],
+			                    "COSTRAV", [Maintenance Cost % of RAV]
+			                )
+			            )
+			    )
+			VAR _clean = FILTER ( _series, NOT ISBLANK ( [@v] ) )
+			VAR _lo = MINX ( _clean, [@v] )
+			VAR _hi = MAXX ( _clean, [@v] )
+			VAR _n = COUNTROWS ( _clean )
+			VAR _ranked =
+			    ADDCOLUMNS ( _clean, "@i", RANKX ( _clean, [MonthSort], , ASC, DENSE ) )
+			VAR _points =
+			    CONCATENATEX (
+			        _ranked,
+			        FORMAT ( DIVIDE ( [@i] - 1, MAX ( _n - 1, 1 ) ) * 120, "0.0" ) & ","
+			            & FORMAT ( 26 - DIVIDE ( [@v] - _lo, MAX ( _hi - _lo, 0.0000001 ) ) * 24, "0.0" ),
+			        " ",
+			        [@i], ASC
+			    )
+			VAR _spark =
+			    IF ( _n < 2, "",
+			        "<svg viewBox='0 0 120 30' width='120' height='30' style='flex:0 0 auto'>"
+			            & "<polyline points='" & _points & "' fill='none' stroke='" & _colour
+			            & "' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'/></svg>" )
+			VAR _gear =
+			    "<svg viewBox='0 0 30 30' width='30' height='30' style='flex:0 0 auto'><g fill='" & _colour & "'><polygon points='25.7,11.7 29.7,12.0 29.7,18.0 25.7,18.3'/><polygon points='24.9,20.3 27.5,23.3 23.3,27.5 20.3,24.9'/><polygon points='18.3,25.7 18.0,29.7 12.0,29.7 11.7,25.7'/><polygon points='9.7,24.9 6.7,27.5 2.5,23.3 5.1,20.3'/><polygon points='4.3,18.3 0.3,18.0 0.3,12.0 4.3,11.7'/><polygon points='5.1,9.7 2.5,6.7 6.7,2.5 9.7,5.1'/><polygon points='11.7,4.3 12.0,0.3 18.0,0.3 18.3,4.3'/><polygon points='20.3,5.1 23.3,2.5 27.5,6.7 24.9,9.7'/></g><circle cx='15' cy='15' r='8.9' fill='none' stroke='" & _colour & "' stroke-width='5.7'/><g fill='#FFFFFF'><polygon points='0.0,5.6 24.4,30.0 30.0,24.4 5.6,0.0'/><circle cx='2.8' cy='2.8' r='6.2'/><circle cx='27.2' cy='27.2' r='6.2'/></g><g fill='" & _colour & "'><polygon points='1.2,4.4 25.6,28.8 28.8,25.6 4.4,1.2'/><circle cx='2.8' cy='2.8' r='4.5'/><circle cx='27.2' cy='27.2' r='4.5'/></g><g fill='#FFFFFF'><polygon points='-4.3,-1.0 -1.0,-4.3 2.7,2.7'/><polygon points='31.0,34.3 34.3,31.0 27.3,27.3'/></g></svg>"
+			RETURN
+			    "<div style=""box-sizing:border-box;width:100%;height:100%;background:#FFFFFF;"
+			        & "border:1px solid #E3E6EA;border-radius:12px;padding:18px 22px;"
+			        & "font-family:Segoe UI,Arial,sans-serif;display:flex;flex-direction:column;"
+			        & "justify-content:space-between"">"
+			        & "<div style=""display:flex;align-items:center;gap:10px"">"
+			            & _gear
+			            & "<span style=""font-size:18px;color:#5B6B80"">" & _label & "</span></div>"
+			        & "<div style=""display:flex;align-items:baseline;justify-content:space-between"">"
+			            & "<span style=""font-size:44px;font-weight:600;color:#16283F;line-height:1"">"
+			            & _valueText & "</span>"
+			            & "<span style=""font-size:16px;color:#5B6B80"">" & _targetLab & "</span></div>"
+			        & "<div style=""position:relative;height:14px;background:#E9EDF3;border-radius:4px"">"
+			            & "<div style=""position:absolute;left:0;top:0;height:14px;border-radius:4px;"
+			            & "width:" & FORMAT ( _pct, "0.0" ) & "%;background:" & _colour & """></div>"
+			            & "<div style=""position:absolute;top:-7px;height:28px;width:3px;background:#16283F;"
+			            & "left:calc(" & FORMAT ( _tpct, "0.0" ) & "% - 1px)""></div></div>"
+			        & "<div style=""display:flex;align-items:center;justify-content:space-between"">"
+			            & "<span style=""font-size:16px;font-weight:600;color:" & _colour & """>"
+			            & _delta & "</span>" & _spark & "</div>"
+			    & "</div>"
+		displayFolder: 01 Executive Overview
+		lineageTag: 9b4537ff-2ae0-4609-baad-064f1f038be6
 
 	column Column1
 		dataType: string

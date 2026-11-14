@@ -56,7 +56,8 @@
     ]
   },
   "publicCustomVisuals": [
-    "htmlContent443BE3AD55E043BF878BED274D3A6865"
+    "htmlContent443BE3AD55E043BF878BED274D3A6865",
+    "deneb7E15AEF80B9E4D4F8E12924291ECE89A"
   ],
   "resourcePackages": [
     {
@@ -75,8 +76,8 @@
       "type": "RegisteredResources",
       "items": [
         {
-          "name": "backlog_and_aging33104035473619.svg",
-          "path": "backlog_and_aging33104035473619.svg",
+          "name": "Compliance_Background34147409363647807.svg",
+          "path": "Compliance_Background34147409363647807.svg",
           "type": "Image"
         },
         {
@@ -85,13 +86,8 @@
           "type": "CustomTheme"
         },
         {
-          "name": "executive_overview5243013320214268.svg",
-          "path": "executive_overview5243013320214268.svg",
-          "type": "Image"
-        },
-        {
-          "name": "x-close-delete4564751698961327.svg",
-          "path": "x-close-delete4564751698961327.svg",
+          "name": "Executive_Background5986776229448382.svg",
+          "path": "Executive_Background5986776229448382.svg",
           "type": "Image"
         }
       ]

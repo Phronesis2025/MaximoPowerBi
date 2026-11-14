@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Where are we losing uptime - downtime hours by failure mode, ranked, with cumulative share line. DATASET: Mode (text), DowntimeHours (number). Rank, share and cumulative are computed here so the model needs no helper measures. NOTE ON THIS DATASET: the top three modes carry only 31.5% and 'Other' is ~40% - the tail is real, do not imply an 80/20.",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "axis": { "labelColor": "#5B6B80", "titleColor": "#5B6B80", "labelFontSize": 14, "titleFontSize": 14, "domainColor": "#D9DEE4", "tickColor": "#D9DEE4", "gridColor": "#EDF0F4" }
+  },
+  "width": 1000,
+  "height": 250,
+  "transform": [
+    { "filter": "isValid(datum.DowntimeHours) && datum.DowntimeHours > 0" },
+    { "window": [{ "op": "rank", "as": "Rank" }], "sort": [{ "field": "DowntimeHours", "order": "descending" }] },
+    { "joinaggregate": [{ "op": "sum", "field": "DowntimeHours", "as": "TotalHours" }] },
+    { "window": [{ "op": "sum", "field": "DowntimeHours", "as": "RunningHours" }], "sort": [{ "field": "DowntimeHours", "order": "descending" }] },
+    { "calculate": "datum.RunningHours / datum.TotalHours", "as": "CumShare" },
+    { "calculate": "datum.Rank <= 3 ? '#A32D2D' : datum.Rank <= 6 ? '#B87514' : '#7FB3D9'", "as": "BarColour" },
+    { "calculate": "format(datum.DowntimeHours, ',.0f') + ' h'", "as": "BarLabel" }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Mode",
+      "type": "nominal",
+      "sort": { "field": "DowntimeHours", "order": "descending" },
+      "axis": { "title": null, "labelAngle": 0, "labelLimit": 130 }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "bar", "cornerRadiusEnd": 3, "width": { "band": 0.62 }, "cursor": "pointer" },
+      "encoding": {
+        "y": {
+          "field": "DowntimeHours",
+          "type": "quantitative",
+          "axis": { "title": "downtime hours", "grid": true, "format": ",.0f" }
+        },
+        "color": { "field": "BarColour", "type": "nominal", "scale": null, "legend": null },
+        "opacity": {
+          "condition": { "test": "!datum['__selected__'] || datum['__selected__'] !== 'off'", "value": 1 },
+          "value": 0.3
+        },
+        "tooltip": [
+          { "field": "Mode", "type": "nominal", "title": "Failure mode" },
+          { "field": "DowntimeHours", "type": "quantitative", "format": ",.0f", "title": "Downtime hours" },
+          { "field": "CumShare", "type": "quantitative", "format": ".1%", "title": "Cumulative share" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "dy": -10, "fontSize": 14, "fontWeight": 600, "color": "#16283F" },
+      "encoding": {
+        "y": { "field": "DowntimeHours", "type": "quantitative" },
+        "text": { "field": "BarLabel", "type": "nominal" }
+      }
+    },
+    {
+      "mark": { "type": "line", "strokeWidth": 2.2, "strokeDash": [6, 4], "color": "#16283F", "point": { "size": 45, "filled": true, "color": "#16283F" } },
+      "encoding": {
+        "y": {
+          "field": "CumShare",
+          "type": "quantitative",
+          "scale": { "domain": [0, 1] },
+          "axis": { "title": "cumulative share", "format": "%", "grid": false, "orient": "right" }
+        }
+      }
+    }
+  ],
+  "resolve": { "scale": { "y": "independent" } }
+}

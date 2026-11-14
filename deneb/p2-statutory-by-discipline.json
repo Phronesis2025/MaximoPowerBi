@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Statutory compliance by discipline - grey rail to 100%, bar filled to the on-time share, count and late-count as text columns. The target is 100%, so any bar short of the rail is a breach. DATASET: Discipline (text - use DimAsset[ASSETTYPE] or a statutory-discipline column), Completed (number), OnTime (number). Late and share are computed here.",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "axis": { "labelColor": "#16283F", "labelFontSize": 16, "domain": false, "ticks": false, "grid": false, "title": null }
+  },
+  "width": 620,
+  "height": { "step": 40 },
+  "transform": [
+    { "filter": "isValid(datum.Completed) && datum.Completed > 0" },
+    { "calculate": "datum.Completed - datum.OnTime", "as": "Late" },
+    { "calculate": "datum.OnTime / datum.Completed", "as": "OnTimeShare" },
+    { "calculate": "datum.Late === 0 ? '#0A7A4B' : '#A32D2D'", "as": "BarColour" },
+    { "calculate": "format(datum.OnTime, ',.0f') + '/' + format(datum.Completed, ',.0f')", "as": "CountLabel" },
+    { "calculate": "datum.Late === 0 ? '' : format(datum.Late, ',.0f') + ' late'", "as": "LateLabel" }
+  ],
+  "encoding": {
+    "y": {
+      "field": "Discipline",
+      "type": "nominal",
+      "sort": { "field": "Completed", "order": "descending" },
+      "axis": { "labelPadding": 14, "labelLimit": 220 }
+    },
+    "x": { "type": "quantitative", "scale": { "domain": [0, 1.42] }, "axis": null }
+  },
+  "layer": [
+    {
+      "mark": { "type": "bar", "cornerRadius": 5, "height": 22, "color": "#E9EDF3" },
+      "encoding": { "x": { "datum": 0 }, "x2": { "datum": 1 } }
+    },
+    {
+      "mark": { "type": "bar", "cornerRadius": 5, "height": 22, "cursor": "pointer" },
+      "encoding": {
+        "x": { "datum": 0 },
+        "x2": { "field": "OnTimeShare" },
+        "color": { "field": "BarColour", "type": "nominal", "scale": null, "legend": null },
+        "tooltip": [
+          { "field": "Discipline", "type": "nominal" },
+          { "field": "Completed", "type": "quantitative", "format": ",.0f", "title": "Inspections completed" },
+          { "field": "OnTime", "type": "quantitative", "format": ",.0f", "title": "On time" },
+          { "field": "Late", "type": "quantitative", "format": ",.0f", "title": "Late" },
+          { "field": "OnTimeShare", "type": "quantitative", "format": ".1%", "title": "On-time share" }
+        ],
+        "opacity": {
+          "condition": { "test": "!datum['__selected__'] || datum['__selected__'] !== 'off'", "value": 1 },
+          "value": 0.3
+        }
+      }
+    },
+    {
+      "mark": { "type": "rule", "color": "#E8A33D", "strokeWidth": 2.5, "strokeDash": [8, 5] },
+      "encoding": { "x": { "datum": 1 } }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "fontSize": 17, "fontWeight": 600, "color": "#16283F" },
+      "encoding": { "x": { "datum": 1.04 }, "text": { "field": "CountLabel", "type": "nominal" } }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "fontSize": 16, "fontWeight": 600, "color": "#A32D2D" },
+      "encoding": { "x": { "datum": 1.24 }, "text": { "field": "LateLabel", "type": "nominal" } }
+    }
+  ]
+}

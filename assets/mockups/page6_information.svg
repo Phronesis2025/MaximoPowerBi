@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" font-family="Segoe UI, Arial, sans-serif">
+<rect x="0.0" y="0.0" width="1920.0" height="1080.0" rx="0" fill="#EEF1F6"/>
+<rect x="0.0" y="0.0" width="1920.0" height="64.0" rx="0" fill="#1B3A57"/>
+<polygon points="50.3,27.6 55.6,28.0 55.6,36.0 50.3,36.4" fill="#FFFFFF"/>
+<polygon points="49.2,39.0 52.7,43.0 47.0,48.7 43.0,45.2" fill="#FFFFFF"/>
+<polygon points="40.4,46.3 40.0,51.6 32.0,51.6 31.6,46.3" fill="#FFFFFF"/>
+<polygon points="29.0,45.2 25.0,48.7 19.3,43.0 22.8,39.0" fill="#FFFFFF"/>
+<polygon points="21.7,36.4 16.4,36.0 16.4,28.0 21.7,27.6" fill="#FFFFFF"/>
+<polygon points="22.8,25.0 19.3,21.0 25.0,15.3 29.0,18.8" fill="#FFFFFF"/>
+<polygon points="31.6,17.7 32.0,12.4 40.0,12.4 40.4,17.7" fill="#FFFFFF"/>
+<polygon points="43.0,18.8 47.0,15.3 52.7,21.0 49.2,25.0" fill="#FFFFFF"/>
+<circle cx="36.0" cy="32.0" r="11.8" fill="none" stroke="#FFFFFF" stroke-width="7.6"/>
+<polygon points="16.1,19.4 48.6,51.9 55.9,44.6 23.4,12.1" fill="#1B3A57"/>
+<circle cx="19.7" cy="15.7" r="8.2" fill="#1B3A57"/>
+<circle cx="52.3" cy="48.3" r="8.2" fill="#1B3A57"/>
+<polygon points="17.6,17.9 50.1,50.4 54.4,46.1 21.9,13.6" fill="#FFFFFF"/>
+<circle cx="19.7" cy="15.7" r="6.0" fill="#FFFFFF"/>
+<circle cx="52.3" cy="48.3" r="6.0" fill="#FFFFFF"/>
+<polygon points="10.3,10.7 14.7,6.3 19.7,15.7" fill="#1B3A57"/>
+<polygon points="57.3,57.7 61.7,53.3 52.3,48.3" fill="#1B3A57"/>
+<text x="66.0" y="41.0" font-size="26" fill="#FFFFFF" font-weight="600">Maximo Maintenance Analytics</text>
+<text x="474.0" y="40.0" font-size="19" fill="#8FA3C0" font-weight="600">Information</text>
+<text x="1130.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Site:</text>
+<rect x="1176.0" y="19.0" width="150.0" height="27.0" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1186.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<text x="1352.0" y="40.0" font-size="17" fill="#FFFFFF" font-weight="600">Year:</text>
+<rect x="1402.0" y="19.0" width="120.0" height="27.0" rx="4" fill="none" stroke="#8FA3C0" stroke-width="1.5"/>
+<text x="1412.0" y="39.0" font-size="16" fill="#D8E2F0">All</text>
+<text x="1570.0" y="40.0" font-size="18" fill="#FFFFFF" font-weight="600">29 Jul 2026</text>
+<polygon points="1882.5,27.0 1888.5,27.4 1888.5,36.6 1882.5,37.0" fill="#E8A33D"/>
+<polygon points="1881.2,40.1 1885.2,44.7 1878.7,51.2 1874.1,47.2" fill="#E8A33D"/>
+<polygon points="1871.0,48.5 1870.6,54.5 1861.4,54.5 1861.0,48.5" fill="#E8A33D"/>
+<polygon points="1857.9,47.2 1853.3,51.2 1846.8,44.7 1850.8,40.1" fill="#E8A33D"/>
+<polygon points="1849.5,37.0 1843.5,36.6 1843.5,27.4 1849.5,27.0" fill="#E8A33D"/>
+<polygon points="1850.8,23.9 1846.8,19.3 1853.3,12.8 1857.9,16.8" fill="#E8A33D"/>
+<polygon points="1861.0,15.5 1861.4,9.5 1870.6,9.5 1871.0,15.5" fill="#E8A33D"/>
+<polygon points="1874.1,16.8 1878.7,12.8 1885.2,19.3 1881.2,23.9" fill="#E8A33D"/>
+<circle cx="1866.0" cy="32.0" r="13.6" fill="none" stroke="#E8A33D" stroke-width="8.7"/>
+<polygon points="1843.1,17.5 1880.5,54.9 1888.9,46.5 1851.5,9.1" fill="#1B3A57"/>
+<circle cx="1847.3" cy="13.3" r="9.4" fill="#1B3A57"/>
+<circle cx="1884.7" cy="50.7" r="9.4" fill="#1B3A57"/>
+<polygon points="1844.9,15.7 1882.3,53.1 1887.1,48.3 1849.7,10.9" fill="#E8A33D"/>
+<circle cx="1847.3" cy="13.3" r="6.9" fill="#E8A33D"/>
+<circle cx="1884.7" cy="50.7" r="6.9" fill="#E8A33D"/>
+<polygon points="1836.5,7.5 1841.5,2.5 1847.2,13.2" fill="#1B3A57"/>
+<polygon points="1890.5,61.5 1895.5,56.5 1884.8,50.8" fill="#1B3A57"/>
+<rect x="0.0" y="1016.0" width="1920.0" height="64.0" rx="0" fill="#1B3A57"/>
+<circle cx="46.0" cy="1048.0" r="15.0" fill="none" stroke="#8FA3C0" stroke-width="2"/>
+<text x="46.0" y="1055.0" font-size="18" fill="#FFFFFF" font-weight="600" text-anchor="middle" font-style="italic">i</text>
+<text x="72.0" y="1054.0" font-size="15" fill="#8FA3C0">How to read this report</text>
+<text x="520.4" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Executive Overview</text>
+<text x="706.3" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">PM &amp; Compliance</text>
+<text x="862.1" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Reliability</text>
+<text x="987.8" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Planning</text>
+<text x="1117.8" y="1054.0" font-size="16" fill="#AEBDD4" text-anchor="middle">Asset Health</text>
+<rect x="1200.4" y="1028.0" width="120.6" height="40.0" rx="20" fill="#2C4E7A"/>
+<text x="1260.7" y="1054.0" font-size="16" fill="#FFFFFF" font-weight="600" text-anchor="middle">Information</text>
+<rect x="1214.4" y="1063.0" width="92.6" height="3.5" rx="1.75" fill="#E8A33D"/>
+<text x="1892.0" y="1054.0" font-size="14" fill="#8FA3C0" text-anchor="end">40,935 work orders · Jul 2023 – Jul 2026</text>
+<rect x="24.0" y="84.0" width="1872.0" height="926.0" rx="12" fill="#FFFFFF" stroke="#E3E6EA" stroke-width="1"/>
+<text x="52.0" y="128.0" font-size="28" fill="#16283F" font-weight="600">About this report</text>
+<text x="52.0" y="153.0" font-size="16" fill="#5B6B80">a synthetic Maximo dataset, a star schema built the hard way, and every number verified against source</text>
+<text x="54.0" y="190.0" font-size="22" fill="#16283F" font-weight="600">The premise</text>
+<text x="54.0" y="222.0" font-size="17" fill="#5B6B80">Every row is fabricated — three sites, 40,935 work orders, three years, generated by a deterministic Python script.</text>
+<text x="54.0" y="248.0" font-size="17" fill="#5B6B80">The data is deliberately OLTP-shaped, the way Maximo actually is — so building the star</text>
+<text x="54.0" y="274.0" font-size="17" fill="#5B6B80">schema is a real exercise rather than a pre-chewed one.</text>
+<text x="54.0" y="300.0" font-size="17" fill="#5B6B80">Each site has a distinct maintenance personality: Bedford mature, Houston under strain, Aurora improving.</text>
+<text x="54.0" y="330.0" font-size="22" fill="#16283F" font-weight="600">How the colours work</text>
+<text x="54.0" y="362.0" font-size="17" fill="#5B6B80">Every red, amber and green grades against a target stored in PerformanceTargets — not a number buried in a measure.</text>
+<rect x="54.0" y="386.0" width="130.0" height="26.0" rx="5" fill="#E7F3EC"/>
+<text x="119.0" y="404.0" font-size="15" fill="#0A7A4B" font-weight="600" text-anchor="middle">green</text>
+<text x="200.0" y="404.0" font-size="16" fill="#5B6B80">meeting the standard</text>
+<rect x="54.0" y="420.0" width="130.0" height="26.0" rx="5" fill="#FBF0DE"/>
+<text x="119.0" y="438.0" font-size="15" fill="#B87514" font-weight="600" text-anchor="middle">amber</text>
+<text x="200.0" y="438.0" font-size="16" fill="#5B6B80">inside the warning band</text>
+<rect x="54.0" y="454.0" width="130.0" height="26.0" rx="5" fill="#F7E4E4"/>
+<text x="119.0" y="472.0" font-size="15" fill="#A32D2D" font-weight="600" text-anchor="middle">red</text>
+<text x="200.0" y="472.0" font-size="16" fill="#5B6B80">missing the standard</text>
+<text x="54.0" y="530.0" font-size="22" fill="#16283F" font-weight="600">Targets and their sources</text>
+<text x="54.0" y="566.0" font-size="17" fill="#16283F">Statutory compliance</text>
+<text x="430.0" y="566.0" font-size="17" fill="#16283F" font-weight="600">100%</text>
+<text x="620.0" y="566.0" font-size="16" fill="#5B6B80">legal obligation</text>
+<text x="54.0" y="596.0" font-size="17" fill="#16283F">PM compliance</text>
+<text x="430.0" y="596.0" font-size="17" fill="#16283F" font-weight="600">90% (95% critical)</text>
+<text x="620.0" y="596.0" font-size="16" fill="#5B6B80">SMRP 6th ed.</text>
+<text x="54.0" y="626.0" font-size="17" fill="#16283F">Schedule compliance</text>
+<text x="430.0" y="626.0" font-size="17" fill="#16283F" font-weight="600">90%</text>
+<text x="620.0" y="626.0" font-size="16" fill="#5B6B80">SMRP 6th ed.</text>
+<text x="54.0" y="656.0" font-size="17" fill="#16283F">Reactive maintenance</text>
+<text x="430.0" y="656.0" font-size="17" fill="#16283F" font-weight="600">under 20%</text>
+<text x="620.0" y="656.0" font-size="16" fill="#5B6B80">SMRP 6th ed.</text>
+<text x="54.0" y="686.0" font-size="17" fill="#16283F">Asset availability</text>
+<text x="430.0" y="686.0" font-size="17" fill="#16283F" font-weight="600">98%</text>
+<text x="620.0" y="686.0" font-size="16" fill="#5B6B80">contract norm</text>
+<text x="54.0" y="716.0" font-size="17" fill="#16283F">Backlog</text>
+<text x="430.0" y="716.0" font-size="17" fill="#16283F" font-weight="600">4–6 weeks</text>
+<text x="620.0" y="716.0" font-size="16" fill="#5B6B80">SMRP 6th ed.</text>
+<text x="54.0" y="746.0" font-size="17" fill="#16283F">Cost % of RAV</text>
+<text x="430.0" y="746.0" font-size="17" fill="#16283F" font-weight="600">2–3% per year</text>
+<text x="620.0" y="746.0" font-size="16" fill="#5B6B80">SMRP 6th ed.</text>
+<text x="54.0" y="776.0" font-size="17" fill="#16283F">MTBF / MTTR</text>
+<text x="430.0" y="776.0" font-size="17" fill="#16283F" font-weight="600">trend only</text>
+<text x="620.0" y="776.0" font-size="16" fill="#5B6B80">no absolute benchmark exists</text>
+<text x="54.0" y="830.0" font-size="22" fill="#16283F" font-weight="600">What this model cannot do</text>
+<text x="54.0" y="862.0" font-size="17" fill="#5B6B80">No backlog by craft — craft lives on job plans and assignments in Maximo, not the work order header.</text>
+<text x="54.0" y="888.0" font-size="17" fill="#5B6B80">No wrench time — there is no attendance or non-productive time, so any ratio would use mismatched denominators.</text>
+<text x="54.0" y="914.0" font-size="17" fill="#5B6B80">No first-time-fix — no repeat-visit linkage exists.</text>
+<text x="54.0" y="940.0" font-size="17" fill="#5B6B80">No composite asset health score — buildable, deliberately omitted: unfalsifiable without published weights.</text>
+<line x1="980.0" y1="170.0" x2="980.0" y2="960.0" stroke="#E3E6EA" stroke-width="1.5"/>
+<text x="1020.0" y="190.0" font-size="22" fill="#16283F" font-weight="600">The pages</text>
+<text x="1020.0" y="232.0" font-size="18" fill="#16283F" font-weight="600">Executive Overview</text>
+<text x="1020.0" y="256.0" font-size="16" fill="#5B6B80">Are we meeting the standard, and where are we losing uptime?</text>
+<text x="1020.0" y="290.0" font-size="18" fill="#16283F" font-weight="600">PM &amp; Compliance</text>
+<text x="1020.0" y="314.0" font-size="16" fill="#5B6B80">Is the PM programme holding? Every statutory inspection, countable.</text>
+<text x="1020.0" y="348.0" font-size="18" fill="#16283F" font-weight="600">Reliability</text>
+<text x="1020.0" y="372.0" font-size="16" fill="#5B6B80">Did the condition data see it coming? MTBF, MTTR, bad actors.</text>
+<text x="1020.0" y="406.0" font-size="18" fill="#16283F" font-weight="600">Planning</text>
+<text x="1020.0" y="430.0" font-size="16" fill="#5B6B80">Is the backlog burning down, and can the crew absorb what is due?</text>
+<text x="1020.0" y="464.0" font-size="18" fill="#16283F" font-weight="600">Asset Health</text>
+<text x="1020.0" y="488.0" font-size="16" fill="#5B6B80">Which assets carry the risk, and where is the value concentrated?</text>
+<text x="1020.0" y="522.0" font-size="18" fill="#16283F" font-weight="600">Information</text>
+<text x="1020.0" y="546.0" font-size="16" fill="#5B6B80">Definitions, targets, assumptions, and the honest limits.</text>
+<text x="1020.0" y="610.0" font-size="22" fill="#16283F" font-weight="600">Verification</text>
+<text x="1020.0" y="642.0" font-size="17" fill="#5B6B80">verify_measures.py rebuilds this star schema in pandas from the raw</text>
+<text x="1020.0" y="668.0" font-size="17" fill="#5B6B80">CSVs and recomputes every headline measure independently.</text>
+<text x="1020.0" y="694.0" font-size="17" fill="#5B6B80">It also checks dimension key uniqueness and fact-to-dimension</text>
+<text x="1020.0" y="720.0" font-size="17" fill="#5B6B80">referential integrity. If a measure disagrees with the baseline,</text>
+<text x="1020.0" y="746.0" font-size="17" fill="#5B6B80">the measure is wrong — not the baseline.</text>
+<text x="1020.0" y="800.0" font-size="22" fill="#16283F" font-weight="600">The date-truncation trap</text>
+<text x="1020.0" y="832.0" font-size="17" fill="#5B6B80">Comparing ACTFINISH to TARGCOMPDATE at datetime precision instead of</text>
+<text x="1020.0" y="858.0" font-size="17" fill="#5B6B80">date precision understates PM compliance by 22.1 points on this dataset</text>
+<text x="1020.0" y="884.0" font-size="17" fill="#5B6B80">— 81.8% becomes 59.7%, misclassifying 4,290 work orders.</text>
+<text x="1020.0" y="910.0" font-size="17" fill="#5B6B80">It is the most common silent bug in Maximo compliance reporting.</text>
+</svg>

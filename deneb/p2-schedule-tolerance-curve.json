@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "How much tolerance does 90% actually need - schedule compliance as a function of the tolerance window, with the 90% target rule and a marker on the tolerance currently selected in ScheduleTolerance. DATASET: ToleranceDays (0..10 integer, from a small disconnected day table), Compliance (0-1). Verified on this dataset: 0d 21.6%, 2d 71.9%, 10d 90.3% - the window has to reach 10 days before the number clears target.",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "axis": { "labelColor": "#5B6B80", "titleColor": "#5B6B80", "labelFontSize": 15, "titleFontSize": 15, "domainColor": "#D9DEE4", "tickColor": "#D9DEE4", "gridColor": "#EDF0F4" }
+  },
+  "width": 900,
+  "height": 220,
+  "params": [
+    { "name": "SelectedTolerance", "value": 2, "bind": { "input": "range", "min": 0, "max": 10, "step": 1, "name": "Tolerance (days) " } }
+  ],
+  "transform": [
+    { "filter": "isValid(datum.Compliance)" },
+    { "calculate": "format(datum.Compliance, '.1%')", "as": "Label" },
+    { "calculate": "datum.ToleranceDays === SelectedTolerance", "as": "IsSelected" }
+  ],
+  "encoding": {
+    "x": {
+      "field": "ToleranceDays",
+      "type": "quantitative",
+      "scale": { "domain": [0, 10], "nice": false },
+      "axis": { "title": "tolerance window (days)", "tickCount": 11, "grid": false }
+    },
+    "y": {
+      "field": "Compliance",
+      "type": "quantitative",
+      "scale": { "domain": [0, 1] },
+      "axis": { "title": null, "format": "%", "grid": true }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rule", "color": "#E8A33D", "strokeWidth": 2.5, "strokeDash": [9, 6] },
+      "encoding": { "y": { "datum": 0.9 }, "x": null }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "baseline": "bottom", "dy": -8, "fontSize": 15, "fontWeight": 600, "color": "#9A6812" },
+      "encoding": { "y": { "datum": 0.9 }, "x": { "datum": 0 }, "text": { "value": "target 90%" } }
+    },
+    {
+      "mark": { "type": "line", "strokeWidth": 3.4, "color": "#2C6FAD", "interpolate": "monotone", "point": { "size": 55, "filled": true, "color": "#2C6FAD" } },
+      "encoding": {
+        "tooltip": [
+          { "field": "ToleranceDays", "type": "quantitative", "title": "Tolerance (days)" },
+          { "field": "Compliance", "type": "quantitative", "format": ".1%", "title": "Schedule compliance" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.IsSelected" }],
+      "mark": { "type": "rule", "color": "#A32D2D", "strokeWidth": 2.5 },
+      "encoding": { "y": { "datum": 0 }, "y2": { "datum": 1 } }
+    },
+    {
+      "transform": [{ "filter": "datum.IsSelected" }],
+      "mark": { "type": "text", "align": "left", "dx": 10, "dy": -96, "fontSize": 16, "fontWeight": 600, "color": "#A32D2D" },
+      "encoding": { "text": { "value": "selected tolerance" } }
+    },
+    {
+      "transform": [{ "filter": "datum.ToleranceDays === 0 || datum.ToleranceDays === 10 || datum.IsSelected" }],
+      "mark": { "type": "text", "align": "center", "baseline": "bottom", "dy": -14, "fontSize": 16, "fontWeight": 600, "color": "#16283F" },
+      "encoding": { "text": { "field": "Label", "type": "nominal" } }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Is the PM programme holding - PM compliance by month per site, measured on target completion date, against the 90% SMRP line with the world-class band shaded and end-of-line value labels. DATASET: Month (date), SiteName (text), PMCompliance (0-1 number). Feed with [PM Compliance % (by Due Date)] so the month a PM was DUE drives the axis, not the month it was raised.",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "axis": { "labelColor": "#5B6B80", "titleColor": "#5B6B80", "labelFontSize": 15, "domainColor": "#D9DEE4", "tickColor": "#D9DEE4", "gridColor": "#EDF0F4" },
+    "legend": { "labelFontSize": 16, "labelColor": "#16283F", "symbolStrokeWidth": 4, "symbolType": "stroke", "title": null, "orient": "top", "offset": 8 }
+  },
+  "width": 900,
+  "height": 250,
+  "transform": [
+    { "filter": "isValid(datum.PMCompliance)" },
+    { "joinaggregate": [{ "op": "max", "field": "Month", "as": "LastMonth" }] },
+    { "calculate": "format(datum.PMCompliance, '.1%')", "as": "EndLabel" }
+  ],
+  "encoding": {
+    "x": { "field": "Month", "type": "temporal", "axis": { "title": null, "format": "%b", "tickCount": 6, "grid": false } },
+    "y": {
+      "field": "PMCompliance",
+      "type": "quantitative",
+      "scale": { "domain": [0.6, 1.0] },
+      "axis": { "title": null, "format": "%", "grid": true }
+    },
+    "color": {
+      "field": "SiteName",
+      "type": "nominal",
+      "scale": { "range": ["#2C6FAD", "#1E3A5F", "#E8734A"] }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rect", "color": "#E7F3EC", "opacity": 0.6 },
+      "encoding": {
+        "y": { "datum": 1.0 }, "y2": { "datum": 0.9 },
+        "x": null, "color": null
+      }
+    },
+    {
+      "mark": { "type": "rule", "color": "#E8A33D", "strokeWidth": 2.5, "strokeDash": [9, 6] },
+      "encoding": { "y": { "datum": 0.9 }, "x": null, "color": null }
+    },
+    {
+      "mark": { "type": "text", "align": "right", "baseline": "bottom", "dy": -8, "fontSize": 15, "fontWeight": 600, "color": "#9A6812" },
+      "encoding": {
+        "y": { "datum": 0.9 },
+        "x": { "aggregate": "max", "field": "Month", "type": "temporal" },
+        "text": { "value": "target 90% · above is world-class" },
+        "color": null
+      }
+    },
+    {
+      "mark": { "type": "line", "strokeWidth": 3.2, "interpolate": "monotone", "point": { "size": 32, "filled": true } },
+      "encoding": {
+        "tooltip": [
+          { "field": "SiteName", "type": "nominal", "title": "Site" },
+          { "field": "Month", "type": "temporal", "format": "%b %Y" },
+          { "field": "PMCompliance", "type": "quantitative", "format": ".1%", "title": "PM compliance" }
+        ],
+        "opacity": {
+          "condition": { "test": "!datum['__selected__'] || datum['__selected__'] !== 'off'", "value": 1 },
+          "value": 0.25
+        }
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.Month === datum.LastMonth" }],
+      "mark": { "type": "text", "align": "left", "dx": 10, "fontSize": 18, "fontWeight": 600 },
+      "encoding": { "text": { "field": "EndLabel", "type": "nominal" } }
+    }
+  ]
+}

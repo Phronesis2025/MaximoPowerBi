@@ -1,0 +1,601 @@
+{
+  "downtime_by_mode": [
+    [
+      "Degraded",
+      10973.9
+    ],
+    [
+      "Not Operating",
+      10452.4
+    ],
+    [
+      "Leak",
+      10393.4
+    ],
+    [
+      "Alarm",
+      9832.3
+    ],
+    [
+      "Bearing Noise",
+      4912.4
+    ],
+    [
+      "Overheat",
+      3970.0
+    ],
+    [
+      "Seat Leak",
+      3474.1
+    ],
+    [
+      "Vibration",
+      3224.0
+    ],
+    [
+      "Seal Leak",
+      3144.0
+    ],
+    [
+      "Other",
+      40609.5
+    ]
+  ],
+  "downtime_total": 100986.0,
+  "downtime_top3_share": 31.5,
+  "bad_actors": [
+    {
+      "asset": "VALVE-00387",
+      "failures": 107,
+      "downtime": 1232.3,
+      "mtbf": 252,
+      "crit": 3,
+      "rav": 13626,
+      "site": "HOUSTON",
+      "atype": "VALVE"
+    },
+    {
+      "asset": "ANALYZER-00532",
+      "failures": 99,
+      "downtime": 1001.9,
+      "mtbf": 273,
+      "crit": 1,
+      "rav": 79708,
+      "site": "HOUSTON",
+      "atype": "ANALYZER"
+    },
+    {
+      "asset": "MOTOR-00349",
+      "failures": 81,
+      "downtime": 971.3,
+      "mtbf": 333,
+      "crit": 3,
+      "rav": 14766,
+      "site": "HOUSTON",
+      "atype": "MOTOR"
+    },
+    {
+      "asset": "MIXER-00392",
+      "failures": 81,
+      "downtime": 873.3,
+      "mtbf": 333,
+      "crit": 2,
+      "rav": 126656,
+      "site": "HOUSTON",
+      "atype": "MIXER"
+    },
+    {
+      "asset": "BOILER-00409",
+      "failures": 80,
+      "downtime": 965.9,
+      "mtbf": 338,
+      "crit": 2,
+      "rav": 968606,
+      "site": "HOUSTON",
+      "atype": "BOILER"
+    },
+    {
+      "asset": "ANALYZER-00453",
+      "failures": 79,
+      "downtime": 962.2,
+      "mtbf": 342,
+      "crit": 3,
+      "rav": 83467,
+      "site": "HOUSTON",
+      "atype": "ANALYZER"
+    },
+    {
+      "asset": "PUMP-00499",
+      "failures": 76,
+      "downtime": 813.6,
+      "mtbf": 355,
+      "crit": 3,
+      "rav": 45418,
+      "site": "HOUSTON",
+      "atype": "PUMP"
+    },
+    {
+      "asset": "PUMP-00595",
+      "failures": 70,
+      "downtime": 758.9,
+      "mtbf": 386,
+      "crit": 3,
+      "rav": 43364,
+      "site": "HOUSTON",
+      "atype": "PUMP"
+    },
+    {
+      "asset": "PUMP-00347",
+      "failures": 69,
+      "downtime": 747.5,
+      "mtbf": 391,
+      "crit": 3,
+      "rav": 39854,
+      "site": "HOUSTON",
+      "atype": "PUMP"
+    },
+    {
+      "asset": "PUMP-00525",
+      "failures": 68,
+      "downtime": 0.0,
+      "mtbf": 397,
+      "crit": 4,
+      "rav": 29256,
+      "site": "HOUSTON",
+      "atype": "PUMP"
+    }
+  ],
+  "bad_actor_count": 266,
+  "pm_monthly": {
+    "AURORA": [
+      88.7,
+      84.1,
+      89.9,
+      82.3,
+      91.6,
+      89.5,
+      91.9,
+      90.3,
+      89.8,
+      85.8,
+      85.9,
+      98.7
+    ],
+    "BEDFORD": [
+      91.6,
+      93.8,
+      95.2,
+      92.9,
+      95.7,
+      91.0,
+      94.2,
+      93.2,
+      94.2,
+      94.0,
+      97.5,
+      98.3
+    ],
+    "HOUSTON": [
+      66.7,
+      74.3,
+      66.5,
+      66.3,
+      69.3,
+      71.4,
+      67.8,
+      65.9,
+      65.2,
+      69.7,
+      75.7,
+      89.3
+    ]
+  },
+  "pm_months": [
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+  ],
+  "sched_by_tolerance": [
+    [
+      0,
+      21.6
+    ],
+    [
+      1,
+      47.8
+    ],
+    [
+      2,
+      71.9
+    ],
+    [
+      3,
+      76.7
+    ],
+    [
+      4,
+      80.4
+    ],
+    [
+      5,
+      84.2
+    ],
+    [
+      6,
+      85.7
+    ],
+    [
+      7,
+      87.0
+    ],
+    [
+      8,
+      88.3
+    ],
+    [
+      9,
+      89.5
+    ],
+    [
+      10,
+      90.3
+    ]
+  ],
+  "pm_due_vs_report": {
+    "months": [
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07"
+    ],
+    "due": [
+      81.1,
+      83.4,
+      82.7,
+      79.6,
+      84.2,
+      83.0,
+      83.4,
+      81.7,
+      82.0,
+      83.2,
+      88.0,
+      97.3
+    ],
+    "report": [
+      81.1,
+      83.2,
+      82.6,
+      80.8,
+      84.3,
+      81.9,
+      83.0,
+      82.6,
+      81.1,
+      84.5,
+      91.8,
+      98.7
+    ]
+  },
+  "statutory": {
+    "total": 2336,
+    "ontime": 1856,
+    "late": 480,
+    "pct": 79.5
+  },
+  "statutory_by_assettype": [
+    {
+      "assettype": "(no asset)",
+      "total": 665,
+      "late": 136
+    },
+    {
+      "assettype": "PUMP",
+      "total": 143,
+      "late": 32
+    },
+    {
+      "assettype": "MOTOR",
+      "total": 135,
+      "late": 36
+    },
+    {
+      "assettype": "FORKLIFT",
+      "total": 116,
+      "late": 18
+    },
+    {
+      "assettype": "CONVEYOR",
+      "total": 95,
+      "late": 10
+    },
+    {
+      "assettype": "MIXER",
+      "total": 95,
+      "late": 26
+    },
+    {
+      "assettype": "HEATEXCH",
+      "total": 92,
+      "late": 20
+    },
+    {
+      "assettype": "COMPRESSOR",
+      "total": 91,
+      "late": 25
+    }
+  ],
+  "statutory_worst": [
+    {
+      "wonum": "1023510",
+      "asset": "FORKLIFT-00324",
+      "due": "2025-07-28",
+      "days": 45
+    },
+    {
+      "wonum": "1023918",
+      "asset": "PANEL-00087",
+      "due": "2026-01-27",
+      "days": 45
+    },
+    {
+      "wonum": "1031697",
+      "asset": "MIXER-00520",
+      "due": "2025-08-12",
+      "days": 45
+    },
+    {
+      "wonum": "1032476",
+      "asset": "PUMP-00510",
+      "due": "2025-10-05",
+      "days": 45
+    },
+    {
+      "wonum": "1034239",
+      "asset": "ANALYZER-00532",
+      "due": "2026-02-22",
+      "days": 45
+    },
+    {
+      "wonum": "1034525",
+      "asset": "MOTOR-00568",
+      "due": "2026-04-07",
+      "days": 45
+    }
+  ],
+  "meter_drift_candidates": [
+    {
+      "asset": "VALVE-00387",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.09,
+      "end": 0.35,
+      "rise_pct": 289.5,
+      "readings": 80,
+      "failures": 107
+    },
+    {
+      "asset": "ANALYZER-00453",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.09,
+      "end": 0.36,
+      "rise_pct": 280.8,
+      "readings": 80,
+      "failures": 79
+    },
+    {
+      "asset": "BOILER-00409",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.1,
+      "end": 0.36,
+      "rise_pct": 272.6,
+      "readings": 80,
+      "failures": 80
+    },
+    {
+      "asset": "VALVE-00470",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.08,
+      "end": 0.14,
+      "rise_pct": 70.8,
+      "readings": 80,
+      "failures": 53
+    },
+    {
+      "asset": "ANALYZER-00543",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.08,
+      "end": 0.14,
+      "rise_pct": 68.1,
+      "readings": 81,
+      "failures": 52
+    },
+    {
+      "asset": "COMPRESSOR-00415",
+      "meter": "VIBRATION",
+      "unit": "IN/S",
+      "start": 0.08,
+      "end": 0.14,
+      "rise_pct": 63.7,
+      "readings": 81,
+      "failures": 57
+    },
+    {
+      "asset": "CONVEYOR-00765",
+      "meter": "RUNHOURS",
+      "unit": "HOURS",
+      "start": 46316.0,
+      "end": 63644.33,
+      "rise_pct": 37.4,
+      "readings": 38,
+      "failures": 52
+    },
+    {
+      "asset": "VALVE-00486",
+      "meter": "RUNHOURS",
+      "unit": "HOURS",
+      "start": 47678.17,
+      "end": 65434.83,
+      "rise_pct": 37.2,
+      "readings": 38,
+      "failures": 60
+    }
+  ],
+  "mttr": {
+    "AURORA": {
+      "mean": 10.82,
+      "p10": 3.84,
+      "p25": 5.46,
+      "median": 8.42,
+      "p75": 14.86,
+      "p90": 21.56,
+      "p95": 25.02,
+      "events": 1741
+    },
+    "BEDFORD": {
+      "mean": 9.04,
+      "p10": 3.27,
+      "p25": 4.89,
+      "median": 7.14,
+      "p75": 12.35,
+      "p90": 17.6,
+      "p95": 20.49,
+      "events": 1157
+    },
+    "HOUSTON": {
+      "mean": 15.56,
+      "p10": 5.44,
+      "p25": 8.05,
+      "median": 12.2,
+      "p75": 21.12,
+      "p90": 30.73,
+      "p95": 36.37,
+      "events": 4608
+    }
+  },
+  "by_criticality": [
+    {
+      "crit": 1,
+      "rav_m": 12.1,
+      "downtime_pct": 10.5
+    },
+    {
+      "crit": 2,
+      "rav_m": 25.6,
+      "downtime_pct": 21.9
+    },
+    {
+      "crit": 3,
+      "rav_m": 77.9,
+      "downtime_pct": 67.7
+    },
+    {
+      "crit": 4,
+      "rav_m": 40.2,
+      "downtime_pct": 0.0
+    }
+  ],
+  "age_profile": [
+    0,
+    41,
+    152,
+    185,
+    183,
+    125,
+    75,
+    57,
+    26,
+    25,
+    18,
+    7,
+    6,
+    0
+  ],
+  "age_median": 8.8,
+  "age_over_18": 56,
+  "intake_vs_completion": {
+    "months": [
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07"
+    ],
+    "raised": [
+      1315,
+      1264,
+      1093,
+      1013,
+      1011,
+      1087,
+      982,
+      1025,
+      977,
+      1008,
+      1036,
+      1288
+    ],
+    "completed": [
+      1307,
+      1296,
+      1173,
+      1034,
+      1025,
+      1043,
+      977,
+      1063,
+      947,
+      851,
+      615,
+      514
+    ]
+  },
+  "capacity": {
+    "AURORA": {
+      "capacity": 720,
+      "committed": 3203.2
+    },
+    "BEDFORD": {
+      "capacity": 1040,
+      "committed": 2860.6
+    },
+    "HOUSTON": {
+      "capacity": 960,
+      "committed": 9739.1
+    }
+  },
+  "pm_due_14d": {
+    "AURORA": 74,
+    "BEDFORD": 74,
+    "HOUSTON": 108
+  },
+  "pm_due_14d_total": 256
+}

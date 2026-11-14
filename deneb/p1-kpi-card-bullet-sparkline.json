@@ -1,0 +1,103 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Executive KPI card - metric name, value, target, bullet bar with target tick, delta text and 12-month sparkline. One card per Deneb visual. DATASET: one row per month, with the scalar fields repeated on every row. Fields: Month (date), Series (number), Metric, ValueLabel, TargetLabel, DeltaLabel (text), Actual, Target, ScaleMax (number), StatusColour (hex text).",
+  "data": { "name": "dataset" },
+  "config": {
+    "background": null,
+    "font": "Segoe UI",
+    "view": { "stroke": null },
+    "concat": { "spacing": 6 }
+  },
+  "padding": { "left": 24, "top": 16, "right": 24, "bottom": 16 },
+  "transform": [
+    { "joinaggregate": [{ "op": "max", "field": "Month", "as": "LastMonth" }] },
+    { "calculate": "isValid(datum.ScaleMax) ? datum.ScaleMax : 100", "as": "Max" },
+    { "calculate": "min(datum.Actual / datum.Max, 1)", "as": "ActualPct" },
+    { "calculate": "min(datum.Target / datum.Max, 1)", "as": "TargetPct" },
+    { "calculate": "datum.Month === datum.LastMonth", "as": "IsLast" }
+  ],
+  "vconcat": [
+    {
+      "width": 400, "height": 26,
+      "transform": [{ "filter": "datum.IsLast" }],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "fontSize": 18, "color": "#5B6B80" },
+      "encoding": { "x": { "value": 0 }, "y": { "value": 13 }, "text": { "field": "Metric", "type": "nominal" } }
+    },
+    {
+      "width": 400, "height": 52,
+      "transform": [{ "filter": "datum.IsLast" }],
+      "layer": [
+        {
+          "mark": { "type": "text", "align": "left", "baseline": "middle", "fontSize": 44, "fontWeight": 600, "color": "#16283F" },
+          "encoding": { "x": { "value": 0 }, "y": { "value": 26 }, "text": { "field": "ValueLabel", "type": "nominal" } }
+        },
+        {
+          "mark": { "type": "text", "align": "right", "baseline": "middle", "fontSize": 16, "color": "#5B6B80" },
+          "encoding": { "x": { "value": 400 }, "y": { "value": 34 }, "text": { "field": "TargetLabel", "type": "nominal" } }
+        }
+      ]
+    },
+    {
+      "width": 400, "height": 20,
+      "transform": [{ "filter": "datum.IsLast" }],
+      "encoding": {
+        "x": { "type": "quantitative", "scale": { "domain": [0, 1] }, "axis": null }
+      },
+      "layer": [
+        {
+          "mark": { "type": "bar", "cornerRadius": 4, "color": "#E9EDF3", "height": 14 },
+          "encoding": { "x": { "datum": 0 }, "x2": { "datum": 1 } }
+        },
+        {
+          "mark": { "type": "bar", "cornerRadius": 4, "height": 14 },
+          "encoding": {
+            "x": { "datum": 0 },
+            "x2": { "field": "ActualPct" },
+            "color": { "field": "StatusColour", "type": "nominal", "scale": null, "legend": null }
+          }
+        },
+        {
+          "mark": { "type": "tick", "thickness": 3, "size": 28, "color": "#16283F" },
+          "encoding": { "x": { "field": "TargetPct" } }
+        }
+      ]
+    },
+    {
+      "spacing": 10,
+      "hconcat": [
+        {
+          "width": 250, "height": 30,
+          "transform": [{ "filter": "datum.IsLast" }],
+          "mark": { "type": "text", "align": "left", "baseline": "middle", "fontSize": 16, "fontWeight": 600 },
+          "encoding": {
+            "x": { "value": 0 }, "y": { "value": 15 },
+            "text": { "field": "DeltaLabel", "type": "nominal" },
+            "color": { "field": "StatusColour", "type": "nominal", "scale": null, "legend": null }
+          }
+        },
+        {
+          "width": 130, "height": 30,
+          "layer": [
+            {
+              "mark": { "type": "line", "strokeWidth": 2.4, "interpolate": "monotone" },
+              "encoding": {
+                "x": { "field": "Month", "type": "temporal", "axis": null },
+                "y": { "field": "Series", "type": "quantitative", "axis": null, "scale": { "zero": false, "nice": false } },
+                "color": { "field": "StatusColour", "type": "nominal", "scale": null, "legend": null }
+              }
+            },
+            {
+              "transform": [{ "filter": "datum.IsLast" }],
+              "mark": { "type": "point", "filled": true, "size": 60 },
+              "encoding": {
+                "x": { "field": "Month", "type": "temporal", "axis": null },
+                "y": { "field": "Series", "type": "quantitative", "axis": null, "scale": { "zero": false, "nice": false } },
+                "color": { "field": "StatusColour", "type": "nominal", "scale": null, "legend": null }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

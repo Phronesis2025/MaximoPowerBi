@@ -699,7 +699,7 @@ table _Measures
 
 	/// Top bar of the Overview page: page name with icon on the left, data cut-off on the right.
 	measure 'HTML Top Bar Overview' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Overview</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
@@ -708,7 +708,7 @@ table _Measures
 
 	/// Top bar of the PM & Compliance page: page name with icon on the left, data cut-off on the right.
 	measure 'HTML Top Bar PM' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>PM &amp; Compliance</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
@@ -717,7 +717,7 @@ table _Measures
 
 	/// Page list in the sidebar, Overview highlighted. Transparent buttons on top do the navigating.
 	measure 'HTML Nav Overview' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block;max-height:100vh'>" &
 			"<rect x='0.5' y='0.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
 			"<g transform='translate(11,10)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Overview</text>" &
@@ -735,7 +735,7 @@ table _Measures
 
 	/// Page list in the sidebar, PM & Compliance highlighted. Transparent buttons on top do the navigating.
 	measure 'HTML Nav PM' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
 			"<rect x='0.5' y='40.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
@@ -777,7 +777,7 @@ table _Measures
 			    )
 			VAR _Rest = IF ( NOT ISEMPTY ( _Best ), " " & MAXX ( _Best, [@n] ) & " shows it can be won back." )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Maintenance portfolio" &
 			"<tspan fill='#6E6E78'> " & _N & IF ( _N = 1, " site", " sites" ) & " &#183; " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
@@ -823,7 +823,7 @@ table _Measures
 			VAR _Legend =
 			    _Named & IF ( _Bench <> "", IF ( _Named <> "", " &#183; " ) & _Bench & IF ( COUNTROWS ( FILTER ( _Sites, [@gap] <= 0 ) ) = 1, " is", " are" ) & " the benchmark" )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Spend above our own benchmark</text>" &
 			"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>$" & FORMAT ( _Gap / 1e6, "0.0", "en-US" ) & "M<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>/yr</tspan></text>" &
 			"<rect x='20' y='129' width='422.6' height='10' rx='3' fill='#222227'/>" & _Bars &
@@ -840,7 +840,7 @@ table _Measures
 			VAR _G = IF ( _V <= 0.03, "&#10003;", IF ( _V <= 0.04, "&#9679;", "&#9650;" ) )
 			VAR _FillW = MIN ( 1, MAX ( 0, _V / 0.10 ) ) * _PW
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Annual maintenance spend</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>$" & FORMAT ( [Annual Maintenance Spend] / 1e6, "0.0", "en-US" ) & "M</text>" &
 			"<rect x='20' y='102' width='224.4' height='4' rx='2' fill='#222227'/>" &
@@ -859,7 +859,7 @@ table _Measures
 			VAR _R = [Cost per Reactive Job]
 			VAR _P = [Cost per PM]
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Spent on unplanned work</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Reactive Cost Share], "0%", "en-US" ) & "</text>" &
 			"<text x='20' y='111' font-family='Consolas' font-size='12' fill='#A1A1AA'>$" & FORMAT ( _R, "#,0", "en-US" ) & " per reactive job</text>" &
@@ -877,7 +877,7 @@ table _Measures
 			VAR _Ok = COUNTROWS ( FILTER ( _Sites, [Statutory Finished Late] = 0 ) ) + 0
 			VAR _C = IF ( _Ok = _N, "#4ADE80", "#F87171" )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory inspections late</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Statutory Finished Late], "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='111' font-family='Consolas' font-size='12' fill='#A1A1AA'>regulatory &amp; safety exposure</text>" &
@@ -900,7 +900,7 @@ table _Measures
 			VAR _Rows =
 			    ADDCOLUMNS ( _Sites, "@y", VAR _o = [@o] RETURN 70 + 24 * COUNTROWS ( FILTER ( _Sites, [@o] < _o ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Reactive work, year on year</text>" &
 			CONCATENATEX (
 			    _Rows,
@@ -968,7 +968,7 @@ table _Measures
 			        "", [@tot], DESC
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is the money going?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>annual maintenance spend by site &#183; white tick = spend at Bedford&#8217;s cost rate</text>" &
 			_Grid & _Bars &
@@ -1026,7 +1026,7 @@ table _Measures
 			        "", [@tot], ASC
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which sites need intervention?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>bubble size = annual spend &#183; green zone = &lt; 20% reactive and &#8804; 3% of asset value</text>" &
 			"<rect x='68' y='223.3' width='271.2' height='72.7' fill='#4ADE80' fill-opacity='0.10'/>" &
@@ -1166,7 +1166,7 @@ table _Measures
 			        "", [@o], ASC
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 322' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 322' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Is it getting better?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>reactive work orders by month &#183; solid = last 12 complete months &#183; dashed = same month a year earlier</text>" &
 			_Body & "</svg>"
@@ -1187,7 +1187,7 @@ table _Measures
 			VAR _Max = MAX ( MAXX ( _T, [@late] ), 1 )
 			VAR _Rows = ADDCOLUMNS ( _T, "@k", VAR _l = [@late] VAR _n = [@n] RETURN COUNTROWS ( FILTER ( _T, [@late] > _l || ( [@late] = _l && [@n] < _n ) ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 322' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 322' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is our compliance risk?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>statutory inspections finished late &#183; target 0</text>" &
 			CONCATENATEX (
@@ -1232,7 +1232,7 @@ table _Measures
 			        "No statutory jobs are overdue today." )
 			VAR _Rest = IF ( _N > 0, " The oldest (" & MAXX ( _Old, [@t] ) & ") is " & MAXX ( _Old, [@d] ) & " days late and " & _Status & "." )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>PM &amp; Compliance" &
 			"<tspan fill='#6E6E78'> open work as of " & FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
@@ -1261,7 +1261,7 @@ table _Measures
 			        "@first", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _Pos, [@o] < _o ) ) = 0
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory jobs overdue today</text>" &
 			"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _Tot, "#,0", "en-US" ) & "</text>" &
 			"<rect x='20' y='129' width='422.6' height='10' rx='3' fill='#222227'/>" &
@@ -1285,7 +1285,7 @@ table _Measures
 			VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [Statutory Due Next 30 Days] ), [@v], DESC, DimSite[SITEID], ASC )
 			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory due in next 30 days</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Statutory Due Next 30 Days], "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
@@ -1298,7 +1298,7 @@ table _Measures
 			VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [PMs Overdue Today] ), [@v], DESC, DimSite[SITEID], ASC )
 			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>PMs overdue today</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [PMs Overdue Today], "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
@@ -1313,7 +1313,7 @@ table _Measures
 			VAR _G = IF ( _V >= 1, "&#10003;", IF ( _V >= 0.95, "&#9679;", "&#9650;" ) )
 			VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 223.3
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory on time</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
 			"<rect x='20' y='102' width='224.3' height='4' rx='2' fill='#222227'/>" &
@@ -1334,7 +1334,7 @@ table _Measures
 			VAR _Pts = ( _V - 0.9 ) * 100
 			VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 224.4
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>PM compliance</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
 			"<rect x='20' y='102' width='224.4' height='4' rx='2' fill='#222227'/>" &
@@ -1366,7 +1366,7 @@ table _Measures
 			VAR _Max = MAX ( MAXX ( _Rows, [@d] ), 1 )
 			VAR _K = ADDCOLUMNS ( _Rows, "@k", VAR _d = [@d] VAR _w = [@wo] RETURN COUNTROWS ( FILTER ( _Rows, [@d] > _d || ( [@d] = _d && [@wo] < _w ) ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>What statutory work is overdue right now?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>open inspection + safety jobs past target date &#183; oldest first</text>" &
 			"<text x='1070' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>All " & _N & " &#8594;</text>" &
@@ -1415,7 +1415,7 @@ table _Measures
 			VAR _Max = MAX ( MAXX ( _T, [@v] ), 1 )
 			VAR _Rows = ADDCOLUMNS ( _T, "@k", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _T, [@o] < _o ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is it piling up?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>statutory jobs overdue today vs due in the next 30 days</text>" &
 			"<text x='364' y='83' text-anchor='end' font-family='Consolas' font-size='12' fill='#A1A1AA'>overdue</text>" &
@@ -1564,7 +1564,7 @@ table _Measures
 			        ""
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Is statutory compliance improving?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>inspection + safety jobs finished on time, by quarter</text>" &
 			_Grid &
@@ -1594,7 +1594,7 @@ table _Measures
 			VAR _K = ADDCOLUMNS ( _Top, "@k", VAR _r = [@r] VAR _p = FactWorkOrder[PMNUM] RETURN COUNTROWS ( FILTER ( _Top, [@r] < _r || ( [@r] = _r && FactWorkOrder[PMNUM] < _p ) ) ) )
 			VAR _OneSite = IF ( COUNTROWS ( DISTINCT ( SELECTCOLUMNS ( _Top, "s", [@site] ) ) ) = 1, MAXX ( _Top, [@site] ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which PM schedules keep slipping?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>schedules with 12+ runs" & IF ( _OneSite <> "", " &#183; all at " & UPPER ( LEFT ( _OneSite, 1 ) ) & LOWER ( MID ( _OneSite, 2, 50 ) ) ) & "</text>" &
 			"<text x='448' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>" & _Below & " below 80% &#8594;</text>" &
@@ -1621,7 +1621,7 @@ table _Measures
 
 	/// Top bar of the Reliability page: page name with icon on the left, data cut-off on the right.
 	measure 'HTML Top Bar Reliability' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Reliability</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
@@ -1630,7 +1630,7 @@ table _Measures
 
 	/// Top bar of the Planning page: page name with icon on the left, data cut-off on the right.
 	measure 'HTML Top Bar Planning' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Planning</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
@@ -1639,7 +1639,7 @@ table _Measures
 
 	/// Top bar of the Information page: page name with icon on the left, data cut-off on the right.
 	measure 'HTML Top Bar Information' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Information</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
@@ -1648,7 +1648,7 @@ table _Measures
 
 	/// Page list in the sidebar, Reliability highlighted. Transparent buttons on top do the navigating.
 	measure 'HTML Nav Reliability' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
 			"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
@@ -1666,7 +1666,7 @@ table _Measures
 
 	/// Page list in the sidebar, Planning highlighted. Transparent buttons on top do the navigating.
 	measure 'HTML Nav Planning' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
 			"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
@@ -1684,7 +1684,7 @@ table _Measures
 
 	/// Page list in the sidebar, Information highlighted. Transparent buttons on top do the navigating.
 	measure 'HTML Nav Information' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block;max-height:100vh'>" &
 			"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
 			"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
@@ -1712,7 +1712,7 @@ table _Measures
 			VAR _Share = DIVIDE ( SUMX ( TOPN ( _K, _F, [@f], DESC, FactFailure[ASSETNUM], ASC ), [@f] ), COUNTROWS ( FactFailure ) )
 			VAR _Drift = [Bad Actor Meter Drift %]
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Reliability" &
 			"<tspan fill='#6E6E78'> " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _K & " assets cause " & FORMAT ( _Share, "0%", "en-US" ) & " of failures</tspan>" &
@@ -1769,7 +1769,7 @@ table _Measures
 			VAR _Share = DIVIDE ( SUMX ( TOPN ( _K, _F, [@f], DESC, FactFailure[ASSETNUM], ASC ), [@f] ), COUNTROWS ( FactFailure ) )
 			VAR _W = MIN ( 1, MAX ( 0, _Share ) ) * 422.6
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Failures from the worst 5% of assets</text>" &
 			"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _Share * 100, "0.0", "en-US" ) & "%</text>" &
 			"<rect x='20' y='129' width='422.6' height='10' rx='5' fill='#222227'/>" &
@@ -1794,7 +1794,7 @@ table _Measures
 			VAR _All = SUMX ( _C, [@c] )
 			VAR _Yrs = ROUND ( [Analysis Years], 0 )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Reactive cost, worst " & _K & "</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>$" & FORMAT ( _Top / 1e6, "0.0", "en-US" ) & "M</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _Top, _All ), "0%", "en-US" ) & " of reactive cost</text>" &
@@ -1808,7 +1808,7 @@ table _Measures
 			VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [MTTR (Hours)] ), [@v], DESC, DimSite[SITEID], ASC )
 			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTTR</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTTR (Hours)], "0.0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & FORMAT ( MAXX ( _Top, [@v] ), "0.0", "en-US" ) & " h</text></svg>"
@@ -1823,7 +1823,7 @@ table _Measures
 			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
 			VAR _Yrs = ROUND ( [Analysis Years], 0 )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Downtime</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" &
 			    IF ( _All >= 10000, FORMAT ( _All / 1000, "0", "en-US" ) & "k", FORMAT ( _All, "#,0", "en-US" ) ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
@@ -1835,7 +1835,7 @@ table _Measures
 	/// KPI 5: mean time between failures. Marked provisional (see the Information page).
 	/// Expected: "1,643h"
 	measure 'HTML REL KPI MTBF' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTBF</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTBF (Hours)], "#,0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>provisional</text></svg>"
@@ -1926,7 +1926,7 @@ table _Measures
 			VAR _lb = IF ( _yb <= _yo, MIN ( _yb, _yo - 18 ), MAX ( _yb, _yo + 18 ) )
 			VAR _Y100 = 68 + ( _Hi - 100 ) / ( _Hi - _Lo ) * 204
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Can we see failures coming?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>condition meter readings, indexed &#183; " & _NBad & " metered bad actors vs " & _NRest & " other assets</text>" &
 			CONCATENATEX (
@@ -1971,7 +1971,7 @@ table _Measures
 			VAR _CW = 456 / MAX ( _N, 1 )
 			VAR _K = ADDCOLUMNS ( _R, "@k", VAR _cr = DimAsset[CRITICALITY] RETURN COUNTROWS ( FILTER ( _R, DimAsset[CRITICALITY] < _cr ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Does criticality predict failure? <tspan fill='" & IF ( _Flat, "#F87171'>No.", "#4ADE80'>Yes." ) & "</tspan></text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>failures per asset &#183; " & IF ( _Flat, "every level fails about as often", "levels fail at different rates" ) & "</text>" &
 			CONCATENATEX (
@@ -2006,7 +2006,7 @@ table _Measures
 			VAR _K = ADDCOLUMNS ( _P, "@k", VAR _n = [@n] VAR _c = FactFailure[PROBLEMCODE] RETURN COUNTROWS ( FILTER ( _P, [@n] > _n || ( [@n] = _n && FactFailure[PROBLEMCODE] < _c ) ) ) )
 			VAR _AllSites = COUNTROWS ( VALUES ( DimSite[SITEID] ) ) = COUNTROWS ( ALL ( DimSite[SITEID] ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>What fails?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>failure reports by problem code, " &
 			    IF ( _AllSites, "all sites", CONCATENATEX ( VALUES ( DimSite[SITEID] ), UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ), ", " ) ) & "</text>" &
@@ -2044,7 +2044,7 @@ table _Measures
 			VAR _One = IF ( COUNTROWS ( _Sites ) = 1, MAXX ( _Sites, [s] ) )
 			VAR _Yrs = ROUND ( [Analysis Years], 0 )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 666' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 666' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Top 10 bad actors</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>" & IF ( _One <> "", "all ten at " & UPPER ( LEFT ( _One, 1 ) ) & LOWER ( MID ( _One, 2, 50 ) ) & " &#183; " ) & _Yrs & IF ( _Yrs = 1, " yr", " yrs" ) & "</text>" &
 			"<text x='448' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>All " & _K & " &#8594;</text>" &
@@ -2095,7 +2095,7 @@ table _Measures
 			VAR _Name = UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) )
 			VAR _Wait = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Planning" &
 			"<tspan fill='#6E6E78'> open work as of " & FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Name &
@@ -2116,7 +2116,7 @@ table _Measures
 			            IF ( _V < 5.5, "&#10003; inside the healthy band", "&#9679; top of the healthy band" ) ) )
 			VAR _FillW = MIN ( 1, MAX ( 0, _V / 12 ) ) * _PW
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 463.8 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 463.8 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Backlog</text>" &
 			"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _V, "0.0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>wks</tspan></text>" &
 			"<rect x='20' y='129' width='423.8' height='4' rx='2' fill='#222227'/>" &
@@ -2139,7 +2139,7 @@ table _Measures
 			VAR _Id = MAXX ( _Worst, DimSite[SITEID] )
 			VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 225
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Jobs started on schedule</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
 			"<rect x='20' y='102' width='225' height='4' rx='2' fill='#222227'/>" &
@@ -2157,7 +2157,7 @@ table _Measures
 			VAR _N = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "APPR", REMOVEFILTERS ( DimDate ) ) + 0
 			VAR _H = CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "APPR", REMOVEFILTERS ( DimDate ) ) + 0
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Ready to schedule</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( _H, "#,0", "en-US" ) & " h of work</text>" &
@@ -2171,7 +2171,7 @@ table _Measures
 			VAR _N = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
 			VAR _H = CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Waiting for approval</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & FORMAT ( _H, "#,0", "en-US" ) & " h stuck</text></svg>"
@@ -2184,7 +2184,7 @@ table _Measures
 			VAR _A = [Aged Over 90 Days] + 0
 			VAR _O = [Open Work Orders] + 0
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Open over 90 days</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _A, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _A, _O ) * 100, "0.0", "en-US" ) & "% of backlog</text>" &
@@ -2210,7 +2210,7 @@ table _Measures
 			    )
 			VAR _R = ADDCOLUMNS ( _T, "@k", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _T, [@o] < _o ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>How many weeks of work is waiting &#8212; and is it ready?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>open estimated hours &#247; crew capacity (assumed) &#183; healthy band 4&#8211;6 weeks</text>" &
 			CONCATENATEX (
@@ -2311,7 +2311,7 @@ table _Measures
 			        "<circle cx='" & _ex & "' cy='" & _ey & "' r='4' fill='" & _c & "'/>",
 			        "" )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Are we starting work when we planned?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>planned jobs started within 2 days of scheduled start &#183; 3-month rolling average</text>" &
 			CONCATENATEX (
@@ -2358,7 +2358,7 @@ table _Measures
 			            "OPER", "operators", "HVAC", "HVAC techs", "LUBE", "lube techs", "INSTR", "instrument techs", "MILLWR", "millwrights", LOWER ( DimLabor[CRAFT] ) ),
 			        " and ", DimLabor[CRAFT], ASC )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 666' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 666' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which crafts are the bottleneck?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>" &
 			    IF ( _AllSites, "all sites", CONCATENATEX ( _Sites, UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ), ", " ) ) & "</text>" &
@@ -2391,7 +2391,7 @@ table _Measures
 
 	/// Page title.
 	measure 'HTML INFO Title' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>How to read this report</text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'>Definitions, targets and the data&#8217;s known limits.</text></svg>"
 		displayFolder: Report Cards\5 Information
@@ -2399,7 +2399,7 @@ table _Measures
 
 	/// Card: what the status colours mean.
 	measure 'HTML INFO Status' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Status</text>" &
 			"<text x='22' y='73' font-family='Segoe UI' font-size='15'><tspan fill='#4ADE80'>&#10003;</tspan><tspan fill='#A1A1AA'> on target</tspan></text>" &
 			"<circle cx='131' cy='68' r='3' fill='#FBBF24'/><text x='138' y='73' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>near</text>" &
@@ -2410,7 +2410,7 @@ table _Measures
 
 	/// Card: what the site colours mean.
 	measure 'HTML INFO Sites' =
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Sites</text>" &
 			CONCATENATEX (
 			    ADDCOLUMNS ( ALL ( DimSite[SITEID] ),
@@ -2432,7 +2432,7 @@ table _Measures
 			VAR _A = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", REMOVEFILTERS () )
 			VAR _S = COUNTROWS ( ALL ( DimSite[SITEID] ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Data window</text>" &
 			"<text x='22' y='77' font-family='Segoe UI' font-size='22' font-weight='500' fill='#EDEDEF'>" & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( [Data As Of Date], "mmm yyyy", "en-US" ) & "</text>" &
 			"<text x='22' y='100' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & FORMAT ( _WO, "#,0", "en-US" ) & " work orders &#183; " & FORMAT ( _A, "#,0", "en-US" ) & " assets &#183; " & _S & " sites</text></svg>"
@@ -2456,7 +2456,7 @@ table _Measures
 			        }
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 728 694' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 728 694' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>KPI definitions</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>as implemented in the semantic model</text>" &
 			"<g font-family='Consolas' font-size='10.5' letter-spacing='0.4' fill='#5C5C66'><text x='22' y='82'>KPI</text><text x='236' y='82'>DEFINITION</text><text x='706' y='82' text-anchor='end'>TARGET</text></g>" &
@@ -2480,7 +2480,7 @@ table _Measures
 	measure 'HTML INFO Work Types' =
 			VAR _T = ADDCOLUMNS ( ALL ( DimWorkType[WORKTYPE], DimWorkType[WorkTypeName], DimWorkType[WorkTypeGroup], DimWorkType[SortOrder] ), "@k", VAR _so = DimWorkType[SortOrder] RETURN COUNTROWS ( FILTER ( ALL ( DimWorkType[SortOrder] ), DimWorkType[SortOrder] < _so ) ) )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 694' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 694' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Work types</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>reactive = unplanned; drives Reactive %</text>" &
 			CONCATENATEX (
@@ -2516,7 +2516,7 @@ table _Measures
 			        }
 			    )
 			RETURN
-			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 694' width='100%' style='display:block'>" &
+			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 694' width='100%' style='display:block;max-height:100vh'>" &
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Read before you quote a number</text>" &
 			CONCATENATEX (
 			    _Notes,

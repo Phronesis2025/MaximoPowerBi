@@ -117,10 +117,15 @@ class Page:
 
     def html(self, frame, m):
         """HTML Content visual showing one SVG measure, sized to the card frame.
-        2px taller than the SVG so a rounding pixel never brings up a scrollbar."""
+        2px taller than the SVG so a rounding pixel never brings up a scrollbar. Container
+        padding is zeroed: Power BI's default (~5px a side) shrinks the visual's viewport
+        below the SVG's height, so every card scrolled by a pixel or two."""
         x, y, w, h = frame
-        n = self.add(HTML_VISUAL, x, y, w, h + 2, roles={"content": [proj(measure(m))]})
-        self.visuals[-1]["visual"]["visualContainerObjects"]["visualTooltip"] = [obj({"show": False})]
+        n = self.add(HTML_VISUAL, x, y, w, h + 2, roles={"content": [proj(measure(m))]},
+                     objects={"compatibility": obj({"legacyRendering": True})})  # Desktop adds it on open
+        vco = self.visuals[-1]["visual"]["visualContainerObjects"]
+        vco["visualTooltip"] = [obj({"show": False})]
+        vco["padding"] = [obj({"top": 0, "bottom": 0, "left": 0, "right": 0})]
         return n
 
     def write(self):

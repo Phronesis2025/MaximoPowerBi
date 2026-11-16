@@ -12,6 +12,28 @@ expression pCulture = "en-US" meta [IsParameterQuery=true, Type="Text", IsParame
 
 	annotation PBI_ResultType = Text
 
+expression fnLoadCsv =
+		/* ============================================================================
+		   QUERY: fnLoadCsv                (function)
+		   ============================================================================ */
+		let
+		    fnLoadCsv = (fileName as text) as table =>
+		        let
+		            Source = Csv.Document(
+		                File.Contents(pSourceFolder & "\" & fileName),
+		                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+		            ),
+		            Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true])
+		        in
+		            Promoted
+		in
+		    fnLoadCsv
+	lineageTag: 8193499b-4aae-4942-990f-b728fdcefcce
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
 expression stgWorkOrderKeys =
 		/* ============================================================================
 		   QUERY: stgWorkOrderKeys        (staging, not loaded)
@@ -35,26 +57,4 @@ expression stgWorkOrderKeys =
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-
-expression fnLoadCsv =
-		/* ============================================================================
-		   QUERY: fnLoadCsv                (function)
-		   ============================================================================ */
-		let
-		    fnLoadCsv = (fileName as text) as table =>
-		        let
-		            Source = Csv.Document(
-		                File.Contents(pSourceFolder & "\" & fileName),
-		                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
-		            ),
-		            Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true])
-		        in
-		            Promoted
-		in
-		    fnLoadCsv
-	lineageTag: 8193499b-4aae-4942-990f-b728fdcefcce
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Function
 

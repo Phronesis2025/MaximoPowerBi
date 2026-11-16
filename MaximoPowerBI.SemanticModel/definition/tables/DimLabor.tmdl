@@ -83,7 +83,7 @@ table DimLabor
 				    Source = fnLoadCsv("LABOR.csv"),
 				    Typed = Table.TransformColumnTypes(
 				        Source,
-				        {{"LABORCODE", type text}, {"PERSONID", type text}, {"DISPLAYNAME", type text},
+				        {{"LABORCODE", type text}, {"DISPLAYNAME", type text},
 				         {"CRAFT", type text}, {"SITEID", type text}, {"STATUS", type text},
 				         {"HIREDATE", type date}, {"PAYRATE", type number}},
 				        pCulture

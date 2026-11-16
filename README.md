@@ -6,7 +6,7 @@ the CSVs in this repo, and every KPI has a test case.
 
 ![Overview page](docs/images/overview.png)
 
-**Power BI project (PBIP)** · **5 report pages** · **17-table star schema** · **153 DAX measures**
+**Power BI project (PBIP)** · **5 report pages** · **17-table star schema** · **102 DAX measures**
 · **40,935 work orders, 3 sites, Jul 2023 – Jul 2026** · **no real data of any kind**
 
 ---
@@ -488,7 +488,7 @@ The generator enforces twelve integrity checks:
 | Path | What it is |
 |---|---|
 | `MaximoPowerBI.pbip` | Open this in Power BI Desktop |
-| `MaximoPowerBI.SemanticModel/` | The model as TMDL text: tables, relationships, all 153 measures |
+| `MaximoPowerBI.SemanticModel/` | The model as TMDL text: tables, relationships, all 102 measures |
 | `MaximoPowerBI.Report/` | The report as PBIR JSON: pages, visuals, theme, backgrounds |
 | `model/queries/*.pq` | Every Power Query query, numbered in load order |
 | `dax-measures*.dax` | Readable source of the measures, with expected values inline |

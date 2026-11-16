@@ -76,16 +76,16 @@ table FactDowntime
 				    Typed = Table.TransformColumnTypes(
 				        Source,
 				        {{"ASSETNUM", type text}, {"WONUM", type text}, {"SITEID", type text},
-				         {"DOWNTIMESTART", type datetime}, {"DOWNTIMEEND", type datetime},
+				         {"DOWNTIMESTART", type datetime},
 				         {"DOWNTIME", type number}, {"TYPE", type text}, {"PROBLEMCODE", type text}},
 				        pCulture
 				    ),
 				    Kept = Table.SelectColumns(Typed,
-				        {"ASSETNUM", "WONUM", "SITEID", "DOWNTIMESTART", "DOWNTIMEEND",
+				        {"ASSETNUM", "WONUM", "SITEID", "DOWNTIMESTART",
 				         "DOWNTIME", "TYPE", "PROBLEMCODE"}),
 				    DateCol = Table.AddColumn(Kept, "DowntimeStartDate",
 				        each Date.From([DOWNTIMESTART]), type date),
-				    Final = Table.RemoveColumns(DateCol, {"DOWNTIMESTART", "DOWNTIMEEND"})
+				    Final = Table.RemoveColumns(DateCol, {"DOWNTIMESTART"})
 				in
 				    Final
 

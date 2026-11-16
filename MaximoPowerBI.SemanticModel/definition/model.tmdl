@@ -12,7 +12,7 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["pSourceFolder","pCulture","fnLoadCsv","DimDate","DimAsset","DimLocation","DimSite","DimWorkType","DimStatus","DimCraft","DimLabor","DimItem","DimFailureCode","ScheduleTolerance","FactWorkOrder","FactLabour","FactMaterial","FactDowntime","FactFailure","FactMeterReading","KPIDefinitions","_Measures"]
+annotation PBI_QueryOrder = ["pSourceFolder","pCulture","fnLoadCsv","stgWorkOrderKeys","DimDate","DimAsset","DimLocation","DimSite","DimWorkType","DimStatus","DimCraft","DimLabor","DimItem","DimFailureCode","ScheduleTolerance","FactWorkOrder","FactLabour","FactMaterial","FactDowntime","FactFailure","FactMeterReading","_Measures"]
 
 ref table DimDate
 ref table DimAsset
@@ -31,7 +31,6 @@ ref table FactMaterial
 ref table FactDowntime
 ref table FactFailure
 ref table FactMeterReading
-ref table KPIDefinitions
 ref table _Measures
 
 ref cultureInfo en-US

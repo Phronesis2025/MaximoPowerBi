@@ -128,7 +128,7 @@ table FactMaterial
 				         "UNITCOST", "LINECOST", "TRANSDATE", "ISSUETYPE"}),
 				    TransDate = Table.AddColumn(Kept, "TransDate",
 				        each Date.From([TRANSDATE]), type date),
-				    Joined = Table.NestedJoin(TransDate, {"WONUM"}, FactWorkOrder, {"WONUM"},
+				    Joined = Table.NestedJoin(TransDate, {"WONUM"}, stgWorkOrderKeys, {"WONUM"},
 				        "wo", JoinKind.LeftOuter),
 				    Expanded = Table.ExpandTableColumn(Joined, "wo",
 				        {"WORKTYPE", "ASSETNUM"}, {"WORKTYPE", "ASSETNUM"}),

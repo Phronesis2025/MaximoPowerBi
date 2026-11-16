@@ -12,6 +12,30 @@ expression pCulture = "en-US" meta [IsParameterQuery=true, Type="Text", IsParame
 
 	annotation PBI_ResultType = Text
 
+expression stgWorkOrderKeys =
+		/* ============================================================================
+		   QUERY: stgWorkOrderKeys        (staging, not loaded)
+		   The two work-order attributes FactLabour and FactMaterial denormalise.
+		   Reads WORKORDER.csv for three columns only, so those facts no longer
+		   re-run the whole FactWorkOrder query (every flag, date and aging step)
+		   just to look up WORKTYPE and ASSETNUM. The "(none)" rule matches
+		   FactWorkOrder's FixAsset step so the joined ASSETNUM is identical.
+		   ============================================================================ */
+		let
+		    Source = fnLoadCsv("WORKORDER.csv"),
+		    Kept = Table.SelectColumns(Source, {"WONUM", "WORKTYPE", "ASSETNUM"}),
+		    Typed = Table.TransformColumnTypes(Kept,
+		        {{"WONUM", type text}, {"WORKTYPE", type text}, {"ASSETNUM", type text}}, pCulture),
+		    FixAsset = Table.TransformColumns(Typed,
+		        {{"ASSETNUM", each if _ = null or _ = "" then "(none)" else _, type text}})
+		in
+		    FixAsset
+	lineageTag: 5c0b7a1e-3d2f-4e8a-9b61-0f4d2c7e8a13
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
 expression fnLoadCsv =
 		/* ============================================================================
 		   QUERY: fnLoadCsv                (function)

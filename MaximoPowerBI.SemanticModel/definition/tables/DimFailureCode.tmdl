@@ -29,8 +29,7 @@ table DimFailureCode
 				    Source = fnLoadCsv("FAILURECODE.csv"),
 				    Typed = Table.TransformColumnTypes(
 				        Source,
-				        {{"FAILURECODE", type text}, {"DESCRIPTION", type text},
-				         {"PARENT", type text}, {"TYPE", type text}},
+				        {{"FAILURECODE", type text}, {"DESCRIPTION", type text}, {"TYPE", type text}},
 				        pCulture
 				    ),
 				    Problems = Table.SelectRows(Typed, each [TYPE] = "PROBLEM"),

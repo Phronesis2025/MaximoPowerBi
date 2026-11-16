@@ -153,7 +153,7 @@ table FactLabour
 				    TotalHrs = Table.AddColumn(TransDate, "TotalHours",
 				        each [REGULARHRS] + [PREMIUMPAYHOURS], type number),
 				    // denormalise the work-order classification
-				    Joined = Table.NestedJoin(TotalHrs, {"WONUM"}, FactWorkOrder, {"WONUM"},
+				    Joined = Table.NestedJoin(TotalHrs, {"WONUM"}, stgWorkOrderKeys, {"WONUM"},
 				        "wo", JoinKind.LeftOuter),
 				    Expanded = Table.ExpandTableColumn(Joined, "wo",
 				        {"WORKTYPE", "ASSETNUM"}, {"WORKTYPE", "ASSETNUM"}),

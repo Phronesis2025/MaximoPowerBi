@@ -78,7 +78,7 @@ table FactFailure
 				    Source = fnLoadCsv("FAILUREREPORT.csv"),
 				    Typed = Table.TransformColumnTypes(
 				        Source,
-				        {{"WONUM", type text}, {"ASSETNUM", type text}, {"LOCATION", type text},
+				        {{"WONUM", type text}, {"ASSETNUM", type text},
 				         {"SITEID", type text}, {"FAILURECODE", type text}, {"PROBLEMCODE", type text},
 				         {"CAUSECODE", type text}, {"REMEDYCODE", type text},
 				         {"REPORTDATE", type datetime}},

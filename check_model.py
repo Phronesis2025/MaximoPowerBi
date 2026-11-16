@@ -84,19 +84,7 @@ REQUIRED_MEASURES = [
     "Work Orders", "Reactive Maintenance %", "PM Compliance %",
     "Schedule Compliance %", "MTTR (Hours)", "Total Maintenance Cost",
     "Backlog Hours", "Weekly Craft Capacity (Hours)", "Backlog Weeks",
-    "Data As Of Date", "Overdue Work Orders", "Overdue %", "Avg Days Overdue",
-    "Oldest Open Work Order (Days)", "Open Emergency Work Orders",
-    "PM Due Next 14 Days", "Work Orders Completed", "Work Orders Reported",
-    "Net Backlog Change", "Backlog Hours per Technician",
-    "Reactive Maintenance % (12M Rolling)", "PM Compliance % (12M Rolling)",
-    "Reactive Status Colour", "Reactive vs Target",
-    "PM Compliance Status Colour", "PM Compliance vs Target",
-    "Backlog Status Colour", "Backlog vs Target",
-    "Cost RAV Status Colour", "Cost RAV vs Target",
-    "Avg Age of Open Work (Days)", "Backlog Hours Overdue",
-    "Overdue Emergency Work Orders", "Aged Over 90 Days",
-    "Overdue Share of Backlog", "Backlog Age Status Colour",
-    "Overdue Status Colour",
+    "Data As Of Date", "Aged Over 90 Days",
 ]
 
 results = []

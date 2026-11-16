@@ -47,7 +47,7 @@ table DimCraft
 				    Source = fnLoadCsv("CRAFT.csv"),
 				    Typed = Table.TransformColumnTypes(
 				        Source,
-				        {{"CRAFT", type text}, {"DESCRIPTION", type text}, {"ORGID", type text},
+				        {{"CRAFT", type text}, {"DESCRIPTION", type text},
 				         {"STDRATE", type number}, {"PREMIUMRATE", type number}},
 				        pCulture
 				    ),

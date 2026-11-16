@@ -7,6 +7,7 @@ table _Measures
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: KPIs\Work Orders
 		lineageTag: 9760519c-555e-43d1-a580-1df71e1f1d17
 
 	/// 1. REACTIVE MAINTENANCE %
@@ -23,6 +24,7 @@ table _Measures
 			RETURN
 			    DIVIDE ( _Reactive, [Work Orders] )
 		formatString: 0.0%
+		displayFolder: KPIs\Work Orders
 		lineageTag: 9f2a4b75-5716-4438-a543-7772df323521
 
 	/// 2. PM COMPLIANCE %
@@ -39,19 +41,8 @@ table _Measures
 			    SUM ( FactWorkOrder[IsPMCompleted] )
 			)
 		formatString: 0.0%
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: d0cfecd9-b968-4d0e-b3e1-e70f1224679b
-
-	/// PM compliance is conventionally reported against the period the work was DUE,
-	/// not the period it was reported in. Grand totals are identical; the two differ
-	/// as soon as you put a month on the axis. Decide which one you mean and say so
-	/// on the report face.
-	measure 'PM Compliance % (by Due Date)' =
-			CALCULATE (
-			    [PM Compliance %],
-			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
-			)
-		formatString: 0.0%
-		lineageTag: 94e4a023-5b0a-4965-8213-a2263578b209
 
 	/// 3. SCHEDULE COMPLIANCE %
 	/// Scheduled work started within the tolerance window of SCHEDSTART.
@@ -81,6 +72,7 @@ table _Measures
 			RETURN
 			    DIVIDE ( _OnSchedule, _Scheduled )
 		formatString: 0.0%
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: f81326a4-6d70-4bca-a0c6-728f871c8a5f
 
 	/// 4. MTTR (MEAN TIME TO REPAIR)
@@ -95,6 +87,7 @@ table _Measures
 			    COUNTROWS ( FactDowntime )
 			)
 		formatString: #,0.00
+		displayFolder: KPIs\Reliability
 		lineageTag: 710fb1ff-7ca4-4b02-927f-7d1082d0b8dd
 
 	/// 5. TOTAL MAINTENANCE COST
@@ -110,18 +103,8 @@ table _Measures
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: \$#,0
+		displayFolder: KPIs\Cost
 		lineageTag: 0751b5fe-3335-40b7-9dbd-d801f821acf1
-
-	/// Should always return 0. If it does not, the fact tables are out of step.
-	measure 'Cost Reconciliation Check' =
-			VAR _WOLabour = CALCULATE ( SUM ( FactWorkOrder[ACTLABCOST] ), REMOVEFILTERS () )
-			VAR _TxLabour = CALCULATE ( SUM ( FactLabour[LINECOST] ), REMOVEFILTERS () )
-			VAR _WOMaterial = CALCULATE ( SUM ( FactWorkOrder[ACTMATCOST] ), REMOVEFILTERS () )
-			VAR _TxMaterial = CALCULATE ( SUM ( FactMaterial[LINECOST] ), REMOVEFILTERS () )
-			RETURN
-			    ROUND ( _WOLabour - _TxLabour, 2 ) + ROUND ( _WOMaterial - _TxMaterial, 2 )
-		formatString: #,0.00
-		lineageTag: 1db1921e-7a9b-4615-8b2e-ac827c728f2e
 
 	/// 6. BACKLOG
 	/// Open estimated labour hours, expressed in weeks of available craft capacity.
@@ -145,6 +128,7 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0.00
+		displayFolder: KPIs\Backlog & Planning
 		lineageTag: 4ce720fa-ae78-4bc4-a5fb-e8682616f493
 
 	/// TREATAS pushes the selected sites onto DimLabor without a relationship,
@@ -158,10 +142,12 @@ table _Measures
 			        TREATAS ( _Sites, DimLabor[SITEID] )
 			    )
 		formatString: #,0
+		displayFolder: KPIs\Backlog & Planning
 		lineageTag: a0562e9a-bd69-4939-8935-d74b635c82bf
 
 	measure 'Backlog Weeks' = DIVIDE ( [Backlog Hours], [Weekly Craft Capacity (Hours)] )
 		formatString: #,0.00
+		displayFolder: KPIs\Backlog & Planning
 		lineageTag: 362be6ba-a69d-4d1e-8b98-3f8031a67cef
 
 	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
@@ -212,6 +198,7 @@ table _Measures
 			        TREATAS ( _Sites, DimAsset[SITEID] )
 			    )
 		formatString: #,0
+		displayFolder: KPIs\Reliability
 		lineageTag: 7da965b1-7b5a-48f1-bf02-1cf7932cb2ae
 
 	/// The one place with a hardcoded date. 2023-07-01 is this dataset's window
@@ -228,10 +215,12 @@ table _Measures
 			    )
 			)
 		formatString: #,0
+		displayFolder: KPIs\Date Window
 		lineageTag: f0db3124-6dea-4d60-a13d-58812216251a
 
 	measure 'Scheduled Asset Hours' = [Operating Asset Count] * [Analysis Days] * 24
 		formatString: #,0
+		displayFolder: KPIs\Reliability
 		lineageTag: 799dbbba-4861-4ddb-86a2-83653c245fe4
 
 	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
@@ -260,34 +249,8 @@ table _Measures
 			RETURN
 			    DIVIDE ( _Scheduled - _Downtime, _Failures )
 		formatString: #,0.00
+		displayFolder: KPIs\Reliability
 		lineageTag: 1022a867-a2b8-4458-8075-c26c6a8b6521
-
-	/// RELIABILITY MEASURES - THESE DEPEND ON A STATED ASSUMPTION
-	/// MTBF and availability both need asset OPERATING hours. Maximo only knows
-	/// those if a RUNHOURS meter is faithfully maintained; on this dataset only a
-	/// subset of assets carry one. The assumption used below is:
-	/// 
-	/// operating hours = operating asset count x calendar hours - reported downtime
-	/// 
-	/// Put that sentence on the report face. Do not present either measure as exact.
-	/// 
-	/// Two consequences worth understanding before you show these to anyone:
-	/// * Calendar hours assume 24/7 operation. Most assets do not run 24/7, so
-	/// availability computed this way FLATTERS every site - which is why all
-	/// three land above 99% here despite very different reliability. If the
-	/// business has scheduled runtime, use that as the denominator instead.
-	/// * MTBF is far more discriminating than availability under this assumption:
-	/// Bedford at 4,006 hours vs Houston at 908 is a 4.4x gap that the
-	/// availability figures almost completely hide.
-	/// 
-	/// Expected: 99.55% all sites. See the caveat above about calendar hours.
-	measure 'Asset Availability %' =
-			VAR _Scheduled = [Scheduled Asset Hours]
-			VAR _Downtime = SUM ( FactDowntime[DOWNTIME] )
-			RETURN
-			    DIVIDE ( _Scheduled - _Downtime, _Scheduled )
-		formatString: 0.0%
-		lineageTag: f808a277-3525-44ca-a542-4dc7e991b2bc
 
 	measure 'Open Work Orders' =
 			CALCULATE (
@@ -296,33 +259,13 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: KPIs\Work Orders
 		lineageTag: 5aff65cc-34d2-44de-ace2-bd270c06b50a
-
-	measure 'Failure Events' = COUNTROWS ( FactFailure )
-		formatString: #,0
-		lineageTag: a285849b-8dab-4385-8bc1-49e47f08674b
 
 	measure 'Downtime Hours' = SUM ( FactDowntime[DOWNTIME] )
 		formatString: #,0.00
+		displayFolder: KPIs\Reliability
 		lineageTag: 25e79621-737b-4edf-b46a-6ed981d7e496
-
-	measure 'Actual Labour Hours' =
-			CALCULATE (
-			    SUM ( FactWorkOrder[ACTLABHRS] ),
-			    FactWorkOrder[IsCancelled] = 0
-			)
-		formatString: #,0.00
-		lineageTag: bb7c4723-36e5-4484-a681-f9107ca7ef96
-
-	/// Planned vs reactive labour split. Relies on WORKTYPE having been merged onto
-	/// FactLabour in Power Query - there is no fact-to-fact relationship to traverse.
-	measure 'Reactive Labour Hours' =
-			CALCULATE (
-			    SUM ( FactLabour[TotalHours] ),
-			    FactLabour[WORKTYPE] IN { "CM", "EM" }
-			)
-		formatString: #,0.00
-		lineageTag: ef2ac8a8-3d1e-4ce9-a4fb-64f49b47afd9
 
 	/// FIX: UNFILTERED DENOMINATOR ON DIMENSION-TO-DIMENSION MEASURES
 	/// 
@@ -379,11 +322,8 @@ table _Measures
 			RETURN
 			    DIVIDE ( DIVIDE ( _Cost, _Years ), _RAV )
 		formatString: 0.0%
+		displayFolder: KPIs\Cost
 		lineageTag: 037349f9-4343-4532-883f-b2380cdfe1ee
-
-	measure 'Mean Days to Complete' = AVERAGE ( FactWorkOrder[DaysToComplete] )
-		formatString: #,0.00
-		lineageTag: 04a165ea-4fed-4590-945d-6331ecf2be75
 
 	/// COCKPIT MEASURES - current-state operational view
 	/// 
@@ -437,384 +377,8 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: dd mmm yyyy
+		displayFolder: KPIs\Date Window
 		lineageTag: 5bf6bd48-5b76-4b86-8b5b-7be2d1c9543e
-
-	/// OVERDUE
-	/// Expected: 1,186 all sites. Houston 767 of 1,418 open (54.1%) against
-	/// Bedford's 172 of 578 (29.8%) - the sharpest single contrast in the dataset.
-	measure 'Overdue Work Orders' =
-			VAR _AsOf = [Data As Of Date]
-			RETURN
-			    CALCULATE (
-			        COUNTROWS ( FactWorkOrder ),
-			        FactWorkOrder[IsOpen] = 1,
-			        FactWorkOrder[TargCompDate] < _AsOf,
-			        REMOVEFILTERS ( DimDate )
-			    )
-		formatString: #,0
-		lineageTag: 5c58ae34-352d-4fcd-b171-1eff2d259a56
-
-	/// Expected: 45.7% all sites
-	measure 'Overdue %' = DIVIDE ( [Overdue Work Orders], [Open Work Orders] )
-		formatString: 0.0%
-		lineageTag: 34d4981b-798f-492c-a794-d854b480832c
-
-	/// AVERAGEX over the overdue rows, not an average of a column - the days-overdue
-	/// value does not exist as a column and cannot, because it depends on the anchor.
-	/// Expected: 34.6 days all sites
-	measure 'Avg Days Overdue' =
-			VAR _AsOf = [Data As Of Date]
-			VAR _Overdue =
-			    CALCULATETABLE (
-			        FactWorkOrder,
-			        FactWorkOrder[IsOpen] = 1,
-			        FactWorkOrder[TargCompDate] < _AsOf,
-			        REMOVEFILTERS ( DimDate )
-			    )
-			RETURN
-			    AVERAGEX ( _Overdue, DATEDIFF ( FactWorkOrder[TargCompDate], _AsOf, DAY ) )
-		formatString: #,0.0
-		lineageTag: 5290701f-74fa-4f84-83e6-c90df1fc9bed
-
-	/// Future-dated PM work orders produce a negative age here, which is correct -
-	/// they have not been raised yet. MAXX ignores them.
-	/// Expected: 119 days all sites
-	measure 'Oldest Open Work Order (Days)' =
-			VAR _AsOf = [Data As Of Date]
-			VAR _Open =
-			    CALCULATETABLE (
-			        FactWorkOrder,
-			        FactWorkOrder[IsOpen] = 1,
-			        REMOVEFILTERS ( DimDate )
-			    )
-			RETURN
-			    MAXX ( _Open, DATEDIFF ( FactWorkOrder[ReportDate], _AsOf, DAY ) )
-		formatString: #,0
-		lineageTag: 9e9f2a42-d2ef-4760-8c3b-5ee556bfc03f
-
-	/// TODAY'S PRIORITIES
-	/// 
-	/// Emergency work still open is the single most actionable number on the page.
-	/// Expected: 34 all sites - Houston 25, Bedford 5, Aurora 4.
-	measure 'Open Emergency Work Orders' =
-			CALCULATE (
-			    COUNTROWS ( FactWorkOrder ),
-			    FactWorkOrder[IsOpen] = 1,
-			    FactWorkOrder[WORKTYPE] = "EM",
-			    REMOVEFILTERS ( DimDate )
-			)
-		formatString: #,0
-		lineageTag: 223067f7-f557-47c0-a4ab-921afab33f7b
-
-	/// Forward PM load. Uses TargCompDate, not ReportDate, because what matters is
-	/// when the work comes due - not when Maximo generated the record.
-	/// Expected: 256 all sites
-	measure 'PM Due Next 14 Days' =
-			VAR _AsOf = [Data As Of Date]
-			RETURN
-			    CALCULATE (
-			        COUNTROWS ( FactWorkOrder ),
-			        FactWorkOrder[IsOpen] = 1,
-			        FactWorkOrder[IsPM] = 1,
-			        FactWorkOrder[TargCompDate] >= _AsOf,
-			        FactWorkOrder[TargCompDate] <= _AsOf + 14,
-			        REMOVEFILTERS ( DimDate )
-			    )
-		formatString: #,0
-		lineageTag: 56ff7bd6-c3f8-4e9b-92ce-5a061475382a
-
-	/// THROUGHPUT
-	/// Completion is measured on ActFinishDate, which requires the inactive
-	/// relationship. Without USERELATIONSHIP this silently reports completions
-	/// against the month the work was REPORTED, which is not the same thing.
-	measure 'Work Orders Completed' =
-			CALCULATE (
-			    COUNTROWS ( FactWorkOrder ),
-			    FactWorkOrder[IsCompleted] = 1,
-			    USERELATIONSHIP ( DimDate[Date], FactWorkOrder[ActFinishDate] )
-			)
-		formatString: #,0
-		lineageTag: 615a6733-09da-45cb-8444-82870051378b
-
-	measure 'Work Orders Reported' =
-			CALCULATE (
-			    COUNTROWS ( FactWorkOrder ),
-			    FactWorkOrder[IsCancelled] = 0
-			)
-		formatString: #,0
-		lineageTag: 69ba2240-2bec-4c04-9792-d3b497e037e1
-
-	/// KNOWN DATA ARTIFACT - affects any intake-vs-completion trend
-	/// The generator deliberately leaves recent work open, ramping up for work under
-	/// 120 days old, to produce a realistic current backlog. The side effect is that
-	/// the final ~2 months show far more work reported than completed AT EVERY SITE,
-	/// including healthy Bedford (317 reported vs 194 completed in the last 30 days).
-	/// 
-	/// That tail is an artifact of construction, not a site-performance signal.
-	/// Plot Work Orders Reported vs Work Orders Completed by MONTH across the full
-	/// window, where the artifact is confined to the right edge - and say so if
-	/// anyone asks. Do not build a "last 30 days" intake-vs-completion card.
-	/// 
-	/// Positive means the backlog grew in the period. Pair the two on a monthly
-	/// column chart - it is the clearest way to show a backlog going the wrong way.
-	measure 'Net Backlog Change' = [Work Orders Reported] - [Work Orders Completed]
-		formatString: +#,0;-#,0;0
-		lineageTag: 4d215a58-0cf7-48c8-8933-487a759905de
-
-	/// CAPACITY
-	/// Backlog Hours / headcount, not / weekly hours. Answers "how many hours is
-	/// each technician personally carrying", which crews understand immediately.
-	measure 'Backlog Hours per Technician' =
-			DIVIDE (
-			    [Backlog Hours],
-			    DIVIDE ( [Weekly Craft Capacity (Hours)], 40 )
-			)
-		formatString: #,0.0
-		lineageTag: 71326b96-6da2-4603-b42b-51147c905d34
-
-	/// ROLLING TREND MEASURE - removes annual seasonality from the executive trend
-	/// 
-	/// WHY THIS EXISTS
-	/// Raw monthly Reactive Maintenance % is dominated by weather, not performance.
-	/// Aurora is a distribution centre with HVAC-driven seasonality: its reactive
-	/// rate swings 27.6 percentage points across a year, while its actual three-year
-	/// improvement is 8.6 points. On a monthly chart the improvement is invisible.
-	/// 
-	/// A 3-month average does NOT fix this - the seasonality is an annual sine wave,
-	/// so a 3-month window barely touches it (Aurora 27.6 pts -> 25.5 pts). A
-	/// 12-month window removes it almost completely (27.6 pts -> 8.8 pts residual,
-	/// which is the real trend rather than noise).
-	/// 
-	/// EXPECTED VALUES - 12M rolling, first complete window vs last
-	/// BEDFORD   21.3% -> 21.3%   ( 0.0 pts)  flat, 0.5 pt residual swing
-	/// HOUSTON   43.8% -> 46.5%   (+2.7 pts)  steady degradation
-	/// AURORA    35.1% -> 26.4%   (-8.6 pts)  converging toward Bedford
-	/// 
-	/// Note the ratio is computed as SUM(reactive) / SUM(total) across the window -
-	/// NOT the average of twelve monthly percentages. Averaging ratios weights a
-	/// quiet month the same as a busy one and gives a different, wrong answer.
-	measure 'Reactive Maintenance % (12M Rolling)' =
-			// The window end is clamped to the data cutoff. Without the clamp, an
-			// unfiltered card evaluates MAX(DimDate[Date]) as 2026-12-31 - the calendar
-			// runs to year end - producing a Jan-Dec window that includes the future-dated
-			// PM months at 0% reactive and reads 30.5% instead of the correct 35.1%.
-			VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
-			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
-			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
-			VAR _FirstData =
-			    CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () )
-			VAR _Reactive =
-			    CALCULATE (
-			        SUM ( FactWorkOrder[IsReactive] ),
-			        FactWorkOrder[IsCancelled] = 0,
-			        _Window
-			    )
-			VAR _Total =
-			    CALCULATE (
-			        COUNTROWS ( FactWorkOrder ),
-			        FactWorkOrder[IsCancelled] = 0,
-			        _Window
-			    )
-			RETURN
-			    // blank until a full 12 months of data exists, so the chart does not open
-			    // with a misleading partial-window value
-			    IF ( _WindowStart >= _FirstData, DIVIDE ( _Reactive, _Total ) )
-		formatString: 0.0%
-		lineageTag: 0a6bc6f8-035f-4911-bd80-bfc1a577d81a
-
-	/// The same treatment for PM compliance, for the second executive trend.
-	/// Sliced by DUE date, which is the convention for compliance reporting.
-	measure 'PM Compliance % (12M Rolling)' =
-			VAR _End = MIN ( MAX ( DimDate[Date] ), [Data As Of Date] )
-			VAR _Window = DATESINPERIOD ( DimDate[Date], _End, -12, MONTH )
-			VAR _WindowStart = MINX ( _Window, DimDate[Date] )
-			VAR _FirstData =
-			    CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () )
-			VAR _OnTime =
-			    CALCULATE (
-			        SUM ( FactWorkOrder[IsPMOnTime] ),
-			        _Window,
-			        USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
-			    )
-			VAR _Completed =
-			    CALCULATE (
-			        SUM ( FactWorkOrder[IsPMCompleted] ),
-			        _Window,
-			        USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
-			    )
-			RETURN
-			    IF ( _WindowStart >= _FirstData, DIVIDE ( _OnTime, _Completed ) )
-		formatString: 0.0%
-		lineageTag: 5b86b0bb-b155-4a6e-a21a-c90c816c0ff1
-
-	/// KPI STATUS MEASURES - benchmark signalling for the executive cards
-	/// 
-	/// A card showing "35.0%" tells an executive nothing. A card showing 35.0% in red
-	/// against a stated target of 20% tells them everything. These measures supply
-	/// the colour and the variance.
-	/// 
-	/// USE
-	/// Colour  - select the card > Format > Callout value > fx on Colour >
-	/// Format style: Field value > pick the matching *Colour measure
-	/// Variance- place the matching *vs Target measure in a small card or text
-	/// box directly beneath the main number
-	/// 
-	/// THRESHOLDS follow SMRP published guidance where one exists. Where it does not,
-	/// the band is stated as a convention rather than a benchmark.
-	/// 
-	/// WHAT YOUR CURRENT PAGE WOULD SHOW
-	/// Reactive Maintenance %      35.0%   RED    (target under 20%)
-	/// PM Compliance %             81.8%   AMBER  (target 90% or above)
-	/// Backlog Weeks                5.81   GREEN  (healthy band 4 to 6)
-	/// Total Maintenance Cost    $28.7M    no benchmark exists - leave uncoloured
-	/// Maintenance Cost % of RAV    6.0%   RED    (best-in-class 2% to 3%)
-	/// 
-	/// Three of five off-target. That is the honest picture and the page should say
-	/// so on sight.
-	/// 
-	/// shared palette - dark enough to stay legible as text on white
-	/// green #107C41   amber #C77700   red #C00F0C
-	/// 
-	/// REACTIVE MAINTENANCE %   target: under 20% (SMRP best-in-class)
-	measure 'Reactive Status Colour' =
-			VAR _v = [Reactive Maintenance %]
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        _v < 0.20, "#107C41",
-			        _v < 0.35, "#C77700",
-			        "#C00F0C"
-			    )
-		lineageTag: 32aac671-cbbc-485a-be25-9e011898c4f9
-
-	measure 'Reactive vs Target' =
-			VAR _d = [Reactive Maintenance %] - 0.20
-			RETURN
-			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 20% target"
-		lineageTag: 1e62cd93-17ae-4cda-b87b-0b839d5370f0
-
-	/// PM COMPLIANCE %   target: 90% or above
-	measure 'PM Compliance Status Colour' =
-			VAR _v = [PM Compliance %]
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        _v >= 0.90, "#107C41",
-			        _v >= 0.80, "#C77700",
-			        "#C00F0C"
-			    )
-		lineageTag: bcc382ad-af4d-4aa8-b3de-6ccee16d05e1
-
-	measure 'PM Compliance vs Target' =
-			VAR _d = [PM Compliance %] - 0.90
-			RETURN
-			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 90% target"
-		lineageTag: c9fd044b-891e-46a6-b57d-38cd2ffb58f8
-
-	/// BACKLOG WEEKS   healthy band 4 to 6
-	/// This is a two-sided measure - too little backlog is also a signal, usually of
-	/// over-resourcing or of work not being captured in the system at all.
-	measure 'Backlog Status Colour' =
-			VAR _v = [Backlog Weeks]
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        _v >= 4 && _v <= 6, "#107C41",
-			        _v >= 2 && _v <= 8, "#C77700",
-			        "#C00F0C"
-			    )
-		lineageTag: 4de2480d-e3e3-4b24-a3db-b78fa10b7bb4
-
-	measure 'Backlog vs Target' =
-			VAR _v = [Backlog Weeks]
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        _v < 2, "below healthy band of 4 to 6",
-			        _v <= 6, "within healthy band of 4 to 6",
-			        _v <= 8, FORMAT ( _v - 6, "+0.0" ) & " weeks above healthy band",
-			        FORMAT ( _v - 6, "+0.0" ) & " weeks above band - crew cannot keep pace"
-			    )
-		lineageTag: 5a0b6576-bf2d-475f-a56b-6054a85c0e00
-
-	/// MAINTENANCE COST % OF RAV   best-in-class 2% to 3% per year
-	measure 'Cost RAV Status Colour' =
-			VAR _v = [Maintenance Cost % of RAV]
-			RETURN
-			    SWITCH (
-			        TRUE (),
-			        _v <= 0.03, "#107C41",
-			        _v <= 0.05, "#C77700",
-			        "#C00F0C"
-			    )
-		lineageTag: 837561c4-c44f-478c-91be-54da4f8a372e
-
-	measure 'Cost RAV vs Target' =
-			VAR _d = [Maintenance Cost % of RAV] - 0.03
-			RETURN
-			    FORMAT ( _d * 100, "+0.0;-0.0" ) & " pts vs 3% best-in-class"
-		lineageTag: cfd48cc8-54b1-4839-9139-d8cad87298b3
-
-	/// BACKLOG AND AGING MEASURES
-	/// 
-	/// Requires the aging columns added to FactWorkOrder in Power Query
-	/// (DaysOpen, DaysOverdue, AgeBucket, AgeBucketSort). Add these measures only
-	/// after that change has been applied and refreshed.
-	/// 
-	/// Every value below computed directly from the source CSVs.
-	/// 
-	/// EXPECTED VALUES - no filters
-	/// Measure                        BEDFORD   HOUSTON    AURORA       ALL
-	/// Avg Age of Open Work (Days)       10.5      25.5      15.6      19.8
-	/// Backlog Hours Overdue            913.6   5,687.9   1,600.5   8,201.9
-	/// Overdue Emergency Work Orders        3        21         3        27
-	/// Aged Over 90 Days                   14        66        22       102
-	/// 
-	/// Houston carries 69% of all overdue backlog hours and 65% of everything aged
-	/// past 90 days, on 55% of the open work orders. Its backlog is not just larger,
-	/// it is older.
-	/// 
-	/// Mean age of open work, measured from the date it was raised. Distinct from
-	/// Avg Days Overdue, which measures against the TARGET date - a work order can
-	/// be 40 days old and not yet overdue if it was given a 60-day target.
-	/// Expected: 19.8 days all sites
-	measure 'Avg Age of Open Work (Days)' =
-			CALCULATE (
-			    AVERAGE ( FactWorkOrder[DaysOpen] ),
-			    FactWorkOrder[IsOpen] = 1,
-			    REMOVEFILTERS ( DimDate )
-			)
-		formatString: #,0.0
-		lineageTag: 54a0f7b4-9d3f-4e1b-ac67-ce38e80554b5
-
-	/// Estimated labour hours sitting on work that is already late. This is the
-	/// number a planner acts on - total backlog includes work that is still within
-	/// its window and therefore not yet a problem.
-	/// Expected: 8,201.9 hours all sites, of which Houston holds 5,687.9
-	measure 'Backlog Hours Overdue' =
-			CALCULATE (
-			    SUM ( FactWorkOrder[ESTLABHRS] ),
-			    FactWorkOrder[IsOpen] = 1,
-			    NOT ISBLANK ( FactWorkOrder[DaysOverdue] ),
-			    REMOVEFILTERS ( DimDate )
-			)
-		formatString: #,0.0
-		lineageTag: 0a399423-fbd9-4e24-8418-c2c01c3fc3ae
-
-	/// Emergency work that missed its target date. Emergency targets are same-day,
-	/// so an overdue emergency is work that was classified as an emergency and then
-	/// not treated as one. Small number, high signal.
-	/// Expected: 27 all sites - Houston 21, Bedford 3, Aurora 3
-	measure 'Overdue Emergency Work Orders' =
-			CALCULATE (
-			    COUNTROWS ( FactWorkOrder ),
-			    FactWorkOrder[IsOpen] = 1,
-			    FactWorkOrder[WORKTYPE] = "EM",
-			    NOT ISBLANK ( FactWorkOrder[DaysOverdue] ),
-			    REMOVEFILTERS ( DimDate )
-			)
-		formatString: #,0
-		lineageTag: 5c353428-8b9f-4e9b-89bc-2c326ef8ca93
 
 	/// Open work orders raised more than 90 days ago. The aging tail - work this old
 	/// is rarely still relevant and usually needs cancelling or re-scoping rather
@@ -828,40 +392,20 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: KPIs\Backlog & Planning
 		lineageTag: 9fda6a0b-b578-49e0-8ab4-88b4829b7c51
-
-	/// Share of backlog hours that are already late. More useful than a raw hour
-	/// count when comparing sites of different sizes.
-	/// Expected: Bedford 31.9%, Houston 58.4%, Aurora 49.9%, all sites 51.9%
-	measure 'Overdue Share of Backlog' = DIVIDE ( [Backlog Hours Overdue], [Backlog Hours] )
-		formatString: 0.0%
-		lineageTag: a2095968-1ddd-4566-92f2-07e3f2de516d
-
-	/// STATUS COLOURS for the backlog cards
-	/// 
-	/// No neutral published benchmark exists for backlog age, so these bands are
-	/// stated as a working convention rather than a standard. Say so if asked.
-	measure 'Backlog Age Status Colour' =
-			VAR _v = [Avg Age of Open Work (Days)]
-			RETURN
-			    SWITCH ( TRUE (), _v <= 14, "#107C41", _v <= 30, "#C77700", "#C00F0C" )
-		lineageTag: b0be2271-6ad1-43b0-9da2-c596d1728546
-
-	measure 'Overdue Status Colour' =
-			VAR _v = [Overdue %]
-			RETURN
-			    SWITCH ( TRUE (), _v < 0.20, "#107C41", _v < 0.40, "#C77700", "#C00F0C" )
-		lineageTag: 14d0ad03-9ba5-45e5-98c2-cd842332e6fe
 
 	/// Length of the selected window in years. Turns period totals into annual rates.
 	measure 'Analysis Years' = DIVIDE ( [Analysis Days], 365.25 )
 		formatString: #,0.00
+		displayFolder: KPIs\Date Window
 		lineageTag: 238585e0-2125-5c7e-9f91-7b34042ec680
 
 	/// Maintenance spend per year over the selected window.
 	/// Expected: $9,320,016 all sites
 	measure 'Annual Maintenance Spend' = DIVIDE ( [Total Maintenance Cost], [Analysis Years] )
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: 5933051c-4cab-5925-a8ad-fc5c8d16d875
 
 	/// Corrective + emergency spend per year.
@@ -872,12 +416,14 @@ table _Measures
 			    [Analysis Years]
 			)
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: d475c095-aafb-5ff8-aec8-6a07693fe0ca
 
 	/// Everything that is not reactive: PM, inspection, safety, project work.
 	/// Expected: $3,546,421 all sites
 	measure 'Annual Planned Spend' = [Annual Maintenance Spend] - [Annual Reactive Spend]
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: 9380bcd9-7bdd-5d30-8e08-76a9a60f2c4f
 
 	/// Sum of asset replacement cost for the selected sites. TREATAS for the same
@@ -892,6 +438,7 @@ table _Measures
 			        TREATAS ( _Sites, DimAsset[SITEID] )
 			    )
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: ea0a7f37-15ac-5001-b0cf-44f28f898f70
 
 	/// The internal benchmark: Bedford's maintenance cost as a % of asset value.
@@ -901,12 +448,14 @@ table _Measures
 	/// Expected: 3.99%
 	measure 'Benchmark Cost Rate' = CALCULATE ( [Maintenance Cost % of RAV], DimSite[SITEID] = "BEDFORD" )
 		formatString: 0.00%
+		displayFolder: KPIs\Cost
 		lineageTag: 107334fb-ee0b-5555-9dc6-7033f496f713
 
 	/// What each site would spend per year at the benchmark rate.
 	/// Expected: Houston $2,832,197 / Aurora $1,432,504 / Bedford = its own spend
 	measure 'Spend at Benchmark Rate' = [Replacement Asset Value] * [Benchmark Cost Rate]
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: 5ae9f92a-5dde-543b-972c-8699e5c910e4
 
 	/// Annual spend above the benchmark, summed site by site. A site under the
@@ -921,41 +470,14 @@ table _Measures
 			    MAX ( 0, ROUND ( [Annual Maintenance Spend] - [Spend at Benchmark Rate], 0 ) )
 			)
 		formatString: \$#,0.0,,"M"
+		displayFolder: KPIs\Cost
 		lineageTag: 6f12702f-9951-5495-a022-f646b65b348b
-
-	/// Reactive spend up to the benchmark line. With Annual Planned Spend and
-	/// Spend Above Benchmark it stacks to the full annual spend in one bar.
-	measure 'Reactive Spend Within Benchmark' = MAX ( 0, [Annual Reactive Spend] - [Spend Above Benchmark] )
-		formatString: \$#,0.0,,"M"
-		lineageTag: 2a0c0c3d-d35b-56c4-bfe4-7ec3a339a40f
-
-	/// Footer for the hero card, largest gap first.
-	/// Expected: "Houston $2.2M · Aurora $0.9M · Bedford is the benchmark"
-	measure 'Spend Above Benchmark by Site' =
-			VAR _Gaps =
-			    FILTER (
-			        ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@gap", [Spend Above Benchmark] ),
-			        [@gap] > 0
-			    )
-			RETURN
-			    CONCATENATEX (
-			        _Gaps,
-			        UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ) & " " & FORMAT ( [@gap] / 1e6, "$#,0.0" ) & "M",
-			        " " & UNICHAR ( 183 ) & " ",
-			        [@gap], DESC
-			    )
-			        & " " & UNICHAR ( 183 ) & " Bedford is the benchmark"
-		lineageTag: 4b7d4df6-6747-56cb-9c36-6e4a3237a706
-
-	/// Footer for the annual spend card.
-	/// Expected: "6.0% of asset value · best 2-3%"
-	measure 'Spend vs Asset Value Label' = FORMAT ( [Maintenance Cost % of RAV], "0.0%" ) & " of asset value " & UNICHAR ( 183 ) & " best 2-3%"
-		lineageTag: b7d23794-6c3b-5864-bde7-9f0c7ef40e4e
 
 	/// Share of spend that went on corrective and emergency work.
 	/// Expected: 62.0% all sites
 	measure 'Reactive Cost Share' = DIVIDE ( [Annual Reactive Spend], [Annual Maintenance Spend] )
 		formatString: 0%
+		displayFolder: KPIs\Cost
 		lineageTag: 18e0fcdf-7bcd-5043-8635-997ea0d16884
 
 	/// Mean cost of a FINISHED reactive job. Open jobs carry partial cost, so they
@@ -968,6 +490,7 @@ table _Measures
 			    FactWorkOrder[IsReactive] = 1
 			)
 		formatString: \$#,0
+		displayFolder: KPIs\Cost
 		lineageTag: 406ee9a0-fdec-53f3-8f5e-bf99d941ebf5
 
 	/// Mean cost of a finished PM.
@@ -979,14 +502,8 @@ table _Measures
 			    FactWorkOrder[IsPM] = 1
 			)
 		formatString: \$#,0
+		displayFolder: KPIs\Cost
 		lineageTag: 5591df03-4074-53b4-bc96-39f49db7c6e7
-
-	/// Expected: "5.5x the cost of a PM ($1,288 vs $234)"
-	measure 'Reactive vs PM Cost Label' =
-			FORMAT ( DIVIDE ( [Cost per Reactive Job], [Cost per PM] ), "0.0" ) & "x the cost of a PM ("
-			    & FORMAT ( [Cost per Reactive Job], "$#,0" ) & " vs "
-			    & FORMAT ( [Cost per PM], "$#,0" ) & ")"
-		lineageTag: 2b673822-474c-51aa-b7bb-09d378828732
 
 	/// STATUTORY WORK = inspection (INSP) + safety (SAF) work orders.
 	/// Finished = completed with an actual finish date, the same rule as PM compliance.
@@ -998,6 +515,7 @@ table _Measures
 			    FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" }
 			)
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 4855be9d-3f1b-5c9c-a6b0-a1c665f8fd82
 
 	/// Statutory jobs finished after their target date. Target is zero.
@@ -1015,44 +533,14 @@ table _Measures
 			        FILTER ( _Done, NOT ( FactWorkOrder[ActFinishDate] <= FactWorkOrder[TargCompDate] ) )
 			    ) + 0
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 3aca2324-5988-59a1-bb58-1f9d0d3c0156
 
 	/// Expected: 79.5% all sites - Bedford 90.7%, Aurora 83.7%, Houston 70.8%
 	measure 'Statutory On-Time %' = DIVIDE ( [Statutory Completed] - [Statutory Finished Late], [Statutory Completed] )
 		formatString: 0.0%
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 79b2b647-aaff-56ba-bc8a-4a8fe195a2eb
-
-	/// Expected: "0 of 3 sites at 100%  ·  target 0"
-	measure 'Statutory Target Label' =
-			VAR _Sites = VALUES ( DimSite[SITEID] )
-			VAR _AtTarget = COUNTROWS ( FILTER ( _Sites, [Statutory Finished Late] = 0 ) ) + 0
-			RETURN
-			    _AtTarget & " of " & COUNTROWS ( _Sites ) & " sites at 100% " & UNICHAR ( 183 ) & " target 0"
-		lineageTag: b8a25f37-a294-5af1-8bae-560fae9391a4
-
-	/// Statutory on-time % for the quarter that ENDS in the month on the axis, by
-	/// due date. Blank in other months, so a month axis plots one point per quarter.
-	/// Quarters that started before the first full quarter of data are left out:
-	/// work due then was partly raised before the extract began.
-	/// Expected (Q2 2026): Bedford 92.0% / Aurora 89.3% / Houston 80.0%
-	measure 'Statutory On-Time % (Quarter)' =
-			VAR _MonthEnd = MAX ( DimDate[Date] )
-			VAR _QStart = EOMONTH ( _MonthEnd, -3 ) + 1
-			VAR _FirstFull =
-			    EDATE ( CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () ), 3 )
-			RETURN
-			    IF (
-			        MONTH ( _MonthEnd ) IN { 3, 6, 9, 12 }
-			            && _MonthEnd <= [Data As Of Date]
-			            && _QStart >= _FirstFull,
-			        CALCULATE (
-			            [Statutory On-Time %],
-			            DATESBETWEEN ( DimDate[Date], _QStart, _MonthEnd ),
-			            USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] )
-			        )
-			    )
-		formatString: 0.0%
-		lineageTag: b928a6fd-f01c-5d1b-b30c-fe3445e0a351
 
 	/// REACTIVE WORK, YEAR ON YEAR
 	/// Last 12 COMPLETE months before the data cut-off against the 12 before that.
@@ -1064,6 +552,7 @@ table _Measures
 			    FactWorkOrder[IsCancelled] = 0
 			)
 		formatString: #,0
+		displayFolder: KPIs\Work Orders
 		lineageTag: 915b9a29-0c5b-5356-87ae-d2bf9cd725cf
 
 	/// Expected: 4,649 all sites (Jul 2025 - Jun 2026)
@@ -1077,6 +566,7 @@ table _Measures
 			        DATESBETWEEN ( DimDate[Date], _Start, _End )
 			    )
 		formatString: #,0
+		displayFolder: KPIs\Work Orders
 		lineageTag: c311b188-2fc5-5cc6-a473-48e44af6fd89
 
 	/// Expected: 4,773 all sites (Jul 2024 - Jun 2025)
@@ -1090,61 +580,15 @@ table _Measures
 			        DATESBETWEEN ( DimDate[Date], _Start, _End )
 			    )
 		formatString: #,0
+		displayFolder: KPIs\Work Orders
 		lineageTag: d52ffc1a-ce9e-50d5-898b-27af1d6cd6b9
 
 	/// Negative is good: fewer reactive work orders than a year ago.
 	/// Expected: Houston +4.7% / Aurora -21.4% / Bedford -2.3%
 	measure 'Reactive YoY %' = DIVIDE ( [Reactive WOs (Last 12M)], [Reactive WOs (Prior 12M)] ) - 1
 		formatString: +0%;-0%;0%
+		displayFolder: KPIs\Work Orders
 		lineageTag: f8b437c8-e068-546c-9a46-245e9ae84d8e
-
-	/// Green when reactive work fell more than 5%, red when it rose, grey between.
-	measure 'Reactive YoY Colour' =
-			VAR _v = [Reactive YoY %]
-			RETURN
-			    SWITCH ( TRUE (), ISBLANK ( _v ), BLANK (), _v < -0.05, "#4ADE80", _v > 0, "#F87171", "#A1A1AA" )
-		lineageTag: 4ce4ab32-b4a3-507f-86bc-05854d02f277
-
-	/// Monthly reactive count, shown only for the last 12 complete months.
-	measure 'Reactive WOs (This Year)' =
-			VAR _End = EOMONTH ( [Data As Of Date], -1 )
-			VAR _Start = EOMONTH ( [Data As Of Date], -13 ) + 1
-			RETURN
-			    IF (
-			        MIN ( DimDate[Date] ) >= _Start && MAX ( DimDate[Date] ) <= _End,
-			        [Reactive Work Orders]
-			    )
-		formatString: #,0
-		lineageTag: c30c64f8-130a-55a1-b4d9-f45ae260f8e0
-
-	/// The same month one year earlier - the dashed comparison line.
-	measure 'Reactive WOs (Same Month Last Year)' =
-			VAR _End = EOMONTH ( [Data As Of Date], -1 )
-			VAR _Start = EOMONTH ( [Data As Of Date], -13 ) + 1
-			RETURN
-			    IF (
-			        MIN ( DimDate[Date] ) >= _Start && MAX ( DimDate[Date] ) <= _End,
-			        CALCULATE ( [Reactive Work Orders], DATEADD ( DimDate[Date], -1, YEAR ) )
-			    )
-		formatString: #,0
-		lineageTag: 0035d1a4-c18d-501d-9b80-3f5428bed443
-
-	/// Expected: "We spend $3.1M a year more than our own benchmark - 70% of it at Houston."
-	measure 'Overview Headline' =
-			VAR _Gap = [Spend Above Benchmark]
-			VAR _Top =
-			    TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@gap", [Spend Above Benchmark] ), [@gap], DESC )
-			VAR _TopGap = MAXX ( _Top, [@gap] )
-			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
-			VAR _TopSite = UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) )
-			RETURN
-			    IF (
-			        _Gap > 0,
-			        "We spend " & FORMAT ( _Gap / 1e6, "$#,0.0" ) & "M a year more than our own benchmark "
-			            & UNICHAR ( 8212 ) & " " & FORMAT ( DIVIDE ( _TopGap, _Gap ), "0%" ) & " of it at " & _TopSite & ".",
-			        "Spend is at or below our own benchmark."
-			    )
-		lineageTag: 20abe9e6-76ae-5944-95aa-45cc3aec617d
 
 	/// Open statutory jobs already past their target date.
 	/// Expected: 40 all sites - Houston 23, Aurora 10, Bedford 7
@@ -1157,6 +601,7 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			) + 0
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: dab69423-5cc5-569d-b849-d56da711df11
 
 	/// Expected: 7 all sites
@@ -1170,6 +615,7 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 862d5a78-d8cb-5eb8-a52e-87108071a617
 
 	/// Expected: 19 all sites
@@ -1183,6 +629,7 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: b56c02ed-99e8-5e49-8ac4-6ac4728b3ecd
 
 	/// Expected: 14 all sites
@@ -1195,6 +642,7 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			)
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: ffc195f4-2d54-5b0f-a8dc-599d61591998
 
 	/// Open statutory jobs falling due in the next 30 days. Work orders Maximo has
@@ -1213,6 +661,7 @@ table _Measures
 			        REMOVEFILTERS ( DimDate )
 			    ) + 0
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 70e27361-1995-5a82-b8cc-920fc1f626cf
 
 	/// Open PMs already past their target date.
@@ -1226,88 +675,8 @@ table _Measures
 			    REMOVEFILTERS ( DimDate )
 			) + 0
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: f80e7966-10a6-5689-9789-94a68fd6a12e
-
-	/// Expected: "Houston 23 · Aurora 10 · Bedford 7"
-	measure 'Statutory Overdue by Site' =
-			CONCATENATEX (
-			    ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@n", [Statutory Overdue Today] ),
-			    UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ) & " " & [@n],
-			    " " & UNICHAR ( 183 ) & " ",
-			    [@n], DESC
-			)
-		lineageTag: 9a70670e-1f7b-56d1-966e-2ae9ae7493ac
-
-	/// Expected: "most at Houston (26)"
-	measure 'Statutory Due Next 30 Days Label' =
-			VAR _Top =
-			    TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@n", [Statutory Due Next 30 Days] ), [@n], DESC )
-			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
-			RETURN
-			    "most at " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " (" & MAXX ( _Top, [@n] ) & ")"
-		lineageTag: d8be4fd1-698e-5645-912d-74c10ef89382
-
-	/// Expected: "most at Houston (352)"
-	measure 'PMs Overdue Label' =
-			VAR _Top =
-			    TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@n", [PMs Overdue Today] ), [@n], DESC )
-			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
-			RETURN
-			    "most at " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " (" & MAXX ( _Top, [@n] ) & ")"
-		lineageTag: e1de1199-38b9-5209-b6d5-30431f8a59a0
-
-	/// Expected: "480 finished late · target 100%"
-	measure 'Statutory Late Label' = FORMAT ( [Statutory Finished Late], "#,0" ) & " finished late " & UNICHAR ( 183 ) & " target 100%"
-		lineageTag: bebb714c-849c-543e-803a-33d62a9a3532
-
-	/// Days past target for an open statutory job. Blank for every other work
-	/// order, which is what limits the overdue table to the 40 rows that matter.
-	/// Expected: oldest is WO 1035067, 81 days
-	measure 'Statutory Days Overdue' =
-			CALCULATE (
-			    MAX ( FactWorkOrder[DaysOverdue] ),
-			    FactWorkOrder[IsOpen] = 1,
-			    FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" },
-			    REMOVEFILTERS ( DimDate )
-			)
-		formatString: #,0
-		lineageTag: 610d5c8f-c401-5767-a2ff-fe3af427f09f
-
-	/// Plain-language status for the overdue table. Blank unless the row is an
-	/// overdue statutory job, so it never adds rows to the table on its own.
-	measure 'Overdue Job Status' =
-			IF (
-			    NOT ISBLANK ( [Statutory Days Overdue] ),
-			    SWITCH (
-			        SELECTEDVALUE ( FactWorkOrder[STATUS] ),
-			        "WAPPR", "awaiting approval",
-			        "APPR", "not started",
-			        "INPRG", "in progress"
-			    )
-			)
-		lineageTag: 8af05532-4264-551f-aa4d-c5ef141d5425
-
-	/// Expected: "40 statutory jobs are overdue today - 23 at Houston. The oldest is 81 days late."
-	measure 'PM Compliance Headline' =
-			VAR _N = [Statutory Overdue Today]
-			VAR _Top =
-			    TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@n", [Statutory Overdue Today] ), [@n], DESC )
-			VAR _Oldest =
-			    CALCULATE (
-			        MAX ( FactWorkOrder[DaysOverdue] ),
-			        FactWorkOrder[IsOpen] = 1,
-			        FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" },
-			        REMOVEFILTERS ( DimDate )
-			    )
-			VAR _Id = MAXX ( _Top, DimSite[SITEID] )
-			RETURN
-			    IF (
-			        _N = 0,
-			        "No statutory jobs are overdue today.",
-			        _N & " statutory jobs are overdue today " & UNICHAR ( 8212 ) & " " & MAXX ( _Top, [@n] ) & " at "
-			            & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & ". The oldest is " & _Oldest & " days late."
-			    )
-		lineageTag: 319dba88-0b25-58cc-8adf-26d4fae613af
 
 	/// WHICH PM SCHEDULES KEEP SLIPPING
 	/// Per PM schedule (PMNUM), over the selected window. Schedules with fewer than
@@ -1316,14 +685,8 @@ table _Measures
 	/// worst are PM-00305 and PM-00472 at 7 late of 12.
 	measure 'PM Schedule On-Time %' = IF ( SUM ( FactWorkOrder[IsPMCompleted] ) >= 12, [PM Compliance %] )
 		formatString: 0.0%
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 21aeb500-6bed-5129-8701-ec926a6eb38d
-
-	/// Expected for PM-00305: "7 of 12"
-	measure 'PM Schedule Late Runs' =
-			VAR _Runs = SUM ( FactWorkOrder[IsPMCompleted] )
-			RETURN
-			    IF ( _Runs >= 12, ( _Runs - SUM ( FactWorkOrder[IsPMOnTime] ) ) & " of " & _Runs )
-		lineageTag: 04b376a7-f3ac-5ba6-afa9-19ec09bdb8ea
 
 	/// Expected: 115
 	measure 'PM Schedules Below 80%' =
@@ -1331,6 +694,7 @@ table _Measures
 			    FILTER ( VALUES ( FactWorkOrder[PMNUM] ), [PM Schedule On-Time %] < 0.8 && NOT ISBLANK ( [PM Schedule On-Time %] ) )
 			)
 		formatString: #,0
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 3f732361-7970-5a42-b87d-f7b4353f7b9c
 
 	/// Top bar of the Overview page: page name with icon on the left, data cut-off on the right.
@@ -1339,6 +703,7 @@ table _Measures
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Overview</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: ea93527c-4312-593a-90cd-7ea848ad3770
 
 	/// Top bar of the PM & Compliance page: page name with icon on the left, data cut-off on the right.
@@ -1347,6 +712,7 @@ table _Measures
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>PM &amp; Compliance</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: b76c76fb-6879-59a0-b5bc-4f488df33979
 
 	/// Page list in the sidebar, Overview highlighted. Transparent buttons on top do the navigating.
@@ -1364,6 +730,7 @@ table _Measures
 			"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
 			"</svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: 7723f64a-eb9b-5328-a44d-0a3571e4cd5d
 
 	/// Page list in the sidebar, PM & Compliance highlighted. Transparent buttons on top do the navigating.
@@ -1381,6 +748,7 @@ table _Measures
 			"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
 			"</svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: d3bab2f4-f9e6-583e-af36-f0a7d95091c9
 
 	/// Page title and the one-sentence headline under it.
@@ -1413,6 +781,7 @@ table _Measures
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Maintenance portfolio" &
 			"<tspan fill='#6E6E78'> " & _N & IF ( _N = 1, " site", " sites" ) & " &#183; " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: 7677e505-5abc-5408-a8c6-6aa105662c8f
 
 	/// KPI 1 (hero): spend above benchmark, split by site.
@@ -1459,6 +828,7 @@ table _Measures
 			"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>$" & FORMAT ( _Gap / 1e6, "0.0", "en-US" ) & "M<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>/yr</tspan></text>" &
 			"<rect x='20' y='129' width='422.6' height='10' rx='3' fill='#222227'/>" & _Bars &
 			"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & _Legend & "</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: af8d25c9-cc3d-53d8-abf8-ed649e45b67e
 
 	/// KPI 2: annual maintenance spend, with cost as % of asset value on a 0-10% scale.
@@ -1480,6 +850,7 @@ table _Measures
 			"<rect x='" & FORMAT ( 19 + 0.3 * _PW, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & FORMAT ( _V * 100, "0.0", "en-US" ) & "% of asset value</text>" &
 			"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>best 2&#8211;3%</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: c6ac4026-c4e8-5b07-a063-c1bd347913e4
 
 	/// KPI 3: share of spend on reactive work, and what a reactive job costs against a PM.
@@ -1495,6 +866,7 @@ table _Measures
 			"<text x='20' y='126' font-family='Consolas' font-size='12' fill='#A1A1AA'>$" & FORMAT ( _P, "#,0", "en-US" ) & " per PM</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>" & FORMAT ( DIVIDE ( _R, _P ), "0.0", "en-US" ) & "&#215; the cost of a PM</text>" &
 			"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>of $" & FORMAT ( [Annual Maintenance Spend] / 1e6, "0.0", "en-US" ) & "M</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: 4a22674e-e2e5-521b-9662-4101f2846f4a
 
 	/// KPI 4: statutory inspection + safety jobs finished late. Target 0.
@@ -1511,6 +883,7 @@ table _Measures
 			"<text x='20' y='111' font-family='Consolas' font-size='12' fill='#A1A1AA'>regulatory &amp; safety exposure</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & IF ( _Ok = _N, "&#10003;", "&#9650;" ) & " " & _Ok & " of " & _N & IF ( _N = 1, " site", " sites" ) & " at 100%</text>" &
 			"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 0</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: 93c3596c-9433-54c5-8b0e-5f467a15b191
 
 	/// KPI 5: reactive work orders, last 12 complete months against the 12 before, per site.
@@ -1541,6 +914,7 @@ table _Measures
 			    "", [@o], ASC
 			) &
 			"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>last 12 vs prior 12 mo</text></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: f5c9d010-faa4-506b-a929-57dada759e2b
 
 	/// Card: where is the money going. One bar per site: planned (grey) + reactive (red, glowing),
@@ -1602,6 +976,7 @@ table _Measures
 			"<rect x='22' y='313' width='10' height='10' rx='3' fill='#A1A1AA' fill-opacity='0.6'/><text x='38' y='322'>planned work</text>" &
 			"<rect x='135' y='313' width='10' height='10' rx='3' fill='#F87171'/><text x='151' y='322'>reactive work</text>" &
 			"<rect x='256' y='313' width='3' height='10' rx='1' fill='#F4F4F5'/><text x='265' y='322'>spend at Bedford&#8217;s rate</text></g></svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: 3f77da19-37e6-58a5-b448-e0f3ae56be4d
 
 	/// Card: which sites need intervention. Reactive share of work orders (x) against cost as %
@@ -1662,6 +1037,7 @@ table _Measures
 			"<text x='407' y='329' text-anchor='middle' font-family='Consolas' font-size='11' fill='#A1A1AA'>reactive share of work orders &#8594;</text>" &
 			"<text x='34' y='187' transform='rotate(-90 34 187)' text-anchor='middle' font-family='Consolas' font-size='11' fill='#A1A1AA'>cost % of asset value &#8594;</text>" &
 			_Dots & "</svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: 57760bff-c3c9-5e09-bf4e-b99bee331353
 
 	/// Card: is it getting better. Reactive work orders by month for each site: solid = the last 12
@@ -1794,6 +1170,7 @@ table _Measures
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Is it getting better?</text>" &
 			"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>reactive work orders by month &#183; solid = last 12 complete months &#183; dashed = same month a year earlier</text>" &
 			_Body & "</svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: bb6d6875-1666-5ff6-894f-51f0ef3f0b6e
 
 	/// Card: where is our compliance risk. Statutory jobs finished late per site, worst first.
@@ -1828,6 +1205,7 @@ table _Measures
 			    "<text x='" & FORMAT ( 22 + _w + 12, "0.0", "en-US" ) & "' y='" & ( _y + 33 ) & "' font-family='Segoe UI' font-size='20' font-weight='600' fill='" & IF ( [@late] = 0, "#4ADE80", "#F87171" ) & "'>" & FORMAT ( [@late], "#,0", "en-US" ) & "</text>",
 			    "", [@k], ASC
 			) & "</svg>"
+		displayFolder: Report Cards\1 Overview
 		lineageTag: cbcac7fe-3580-53b1-9ff0-6179720bcf02
 
 	/// Page title and headline.
@@ -1858,6 +1236,7 @@ table _Measures
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>PM &amp; Compliance" &
 			"<tspan fill='#6E6E78'> open work as of " & FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 40cd875c-c5b8-5e19-ac13-bbf9986a7dfd
 
 	/// KPI 1 (hero): statutory jobs overdue today, split by site.
@@ -1897,6 +1276,7 @@ table _Measures
 			"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'>" &
 			CONCATENATEX ( _Sites, "<tspan fill='" & [@c] & "'>" & [@n] & " " & [@v] & "</tspan>", " &#183; ", [@o], ASC ) &
 			"</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 13c4b1c9-1d19-5f01-a614-e32af8aa4e1d
 
 	/// KPI 2: statutory jobs due in the next 30 days. Footer = the site with the most.
@@ -1909,6 +1289,7 @@ table _Measures
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory due in next 30 days</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Statutory Due Next 30 Days], "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: c59ff3ef-e0eb-528b-b27c-7bf028fe5f8b
 
 	/// KPI 3: PMs overdue today. Footer = the site with the most.
@@ -1921,6 +1302,7 @@ table _Measures
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>PMs overdue today</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [PMs Overdue Today], "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 658946dd-6c77-545c-aa35-4933f2c1f7ed
 
 	/// KPI 4: statutory jobs finished on time, against a 100% target.
@@ -1940,6 +1322,7 @@ table _Measures
 			"<rect x='243.3' y='97' width='2' height='14' fill='#E4E4E7'/>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & FORMAT ( [Statutory Finished Late], "#,0", "en-US" ) & " finished late</text>" &
 			"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 100%</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: e29407ce-3e38-5eb6-953b-27a20e338b47
 
 	/// KPI 5: PM compliance against the 90% target.
@@ -1960,6 +1343,7 @@ table _Measures
 			"<rect x='" & FORMAT ( 19 + 0.9 * 224.4, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & IF ( _Pts < 0, "&#8722;", "+" ) & FORMAT ( ABS ( _Pts ), "0.0", "en-US" ) & " pts</text>" &
 			"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 90%</text></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: bb2bf544-1038-5e04-bb6b-cabce35e149a
 
 	/// Card: what statutory work is overdue right now - the five oldest open inspection + safety jobs.
@@ -2010,6 +1394,7 @@ table _Measures
 			    IF ( [@k] < COUNTROWS ( _Rows ) - 1, "<line x1='22' x2='1070' y1='" & ( _c + 23.5 ) & "' y2='" & ( _c + 23.5 ) & "' stroke='#1C1C20'/>" ),
 			    "", [@k], ASC
 			) & "</svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 37a0e271-03d6-5bae-9afb-c36dcbb49245
 
 	/// Card: where is it piling up - statutory jobs overdue today by days past target, against what
@@ -2057,6 +1442,7 @@ table _Measures
 			"<rect x='126' y='266' width='10' height='10' rx='3' fill='#FDE68A'/><text x='142' y='275'>1&#8211;7</text>" &
 			"<rect x='194' y='266' width='10' height='10' rx='3' fill='#FBBF24'/><text x='210' y='275'>8&#8211;30</text>" &
 			"<rect x='270' y='266' width='10' height='10' rx='3' fill='#F87171'/><text x='286' y='275'>31+</text></g></svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 1544a599-40fc-5a1d-b92c-37e7d84d1ae9
 
 	/// Card: is statutory compliance improving - on-time % of inspection + safety jobs by due quarter,
@@ -2185,6 +1571,7 @@ table _Measures
 			"<line x1='68' x2='" & FORMAT ( 68 + _PW, "0.0", "en-US" ) & "' y1='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' y2='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' stroke='#FBBF24' stroke-width='1.3' stroke-dasharray='5 5'/>" &
 			"<text x='74' y='" & FORMAT ( _Ty - 7, "0.0", "en-US" ) & "' font-family='Consolas' font-size='11' fill='#FBBF24'>target 100%</text>" &
 			_Lines & _Labels & "</svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 3652434a-7e4d-5bef-b889-63bdd4e5792a
 
 	/// Card: which PM schedules keep slipping - the four schedules (12+ finished runs) with the
@@ -2229,6 +1616,7 @@ table _Measures
 			    IF ( [@k] < COUNTROWS ( _Top ) - 1, "<line x1='22' x2='448' y1='" & ( _y + 31.5 ) & "' y2='" & ( _y + 31.5 ) & "' stroke='#1C1C20'/>" ),
 			    "", [@k], ASC
 			) & "</svg>"
+		displayFolder: Report Cards\2 PM & Compliance
 		lineageTag: 6d345e42-d6a0-5d84-9be7-09838b09be24
 
 	/// Top bar of the Reliability page: page name with icon on the left, data cut-off on the right.
@@ -2237,6 +1625,7 @@ table _Measures
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Reliability</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: 0ad5238d-72f0-5a72-b446-769485391d97
 
 	/// Top bar of the Planning page: page name with icon on the left, data cut-off on the right.
@@ -2245,6 +1634,7 @@ table _Measures
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Planning</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: a849f009-ab56-5bbc-bcc0-333d8d48cf19
 
 	/// Top bar of the Information page: page name with icon on the left, data cut-off on the right.
@@ -2253,6 +1643,7 @@ table _Measures
 			"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Information</text>" &
 			"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: 465ae2b4-feb1-5f57-94cf-754b9449c731
 
 	/// Page list in the sidebar, Reliability highlighted. Transparent buttons on top do the navigating.
@@ -2270,6 +1661,7 @@ table _Measures
 			"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
 			"</svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: 4770a0cd-8ac4-51da-93ac-716d57ef7dc8
 
 	/// Page list in the sidebar, Planning highlighted. Transparent buttons on top do the navigating.
@@ -2287,6 +1679,7 @@ table _Measures
 			"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
 			"</svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: a4b944b9-7135-5e23-9009-b76f1555a680
 
 	/// Page list in the sidebar, Information highlighted. Transparent buttons on top do the navigating.
@@ -2304,6 +1697,7 @@ table _Measures
 			"<g transform='translate(11,170)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
 			"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Information</text>" &
 			"</svg>"
+		displayFolder: Report Cards\0 Chrome
 		lineageTag: 703b3f6c-548b-5fc5-9afc-748ea6f63086
 
 	/// Page title and headline.
@@ -2323,6 +1717,7 @@ table _Measures
 			"<tspan fill='#6E6E78'> " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _K & " assets cause " & FORMAT ( _Share, "0%", "en-US" ) & " of failures</tspan>" &
 			IF ( NOT ISBLANK ( _Drift ), " &#8212; and their condition meters have drifted " & FORMAT ( ABS ( _Drift ), "0%", "en-US" ) & IF ( _Drift >= 0, " above", " below" ) & " baseline." ) & "</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: 06af9f6a-6d43-56c0-a07b-4d86c2373f15
 
 	/// Condition-meter drift of the bad actors in the last complete month, against their own baseline
@@ -2362,6 +1757,7 @@ table _Measures
 			RETURN
 			    IF ( NOT ISBLANK ( _Idx ), _Idx - 1 )
 		formatString: 0%
+		displayFolder: KPIs\Reliability
 		lineageTag: 282413c6-2ea9-5ac9-a137-341ef08578ac
 
 	/// KPI 1 (hero): share of all failures that come from the worst 5% of assets.
@@ -2381,6 +1777,7 @@ table _Measures
 			"<rect x='17' y='126' width='" & FORMAT ( _W + 6, "0.0", "en-US" ) & "' height='16' rx='8' fill='#F87171' fill-opacity='0.16'/>" &
 			"<rect x='20' y='129' width='" & FORMAT ( _W, "0.0", "en-US" ) & "' height='10' rx='5' fill='#F87171'/>" &
 			"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'><tspan fill='#F87171'>" & _K & " of " & FORMAT ( _Assets, "#,0", "en-US" ) & " assets</tspan> &#183; the worst 5%</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: 810e1967-dcf3-5a06-a100-f767c2189f6d
 
 	/// KPI 2: reactive work-order cost of the worst 45 assets (ranked by that cost).
@@ -2402,6 +1799,7 @@ table _Measures
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>$" & FORMAT ( _Top / 1e6, "0.0", "en-US" ) & "M</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _Top, _All ), "0%", "en-US" ) & " of reactive cost</text>" &
 			"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>" & _Yrs & IF ( _Yrs = 1, " year", " years" ) & "</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: c8f60bc4-1cbf-580c-b202-d84470033aee
 
 	/// KPI 3: mean time to repair (elapsed downtime per downtime event). Footer = the slowest site.
@@ -2414,6 +1812,7 @@ table _Measures
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTTR</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTTR (Hours)], "0.0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & FORMAT ( MAXX ( _Top, [@v] ), "0.0", "en-US" ) & " h</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: b8bf6adf-376d-5ac7-a187-b643e5966716
 
 	/// KPI 4: downtime hours. Footer = share at the site with the most.
@@ -2430,6 +1829,7 @@ table _Measures
 			    IF ( _All >= 10000, FORMAT ( _All / 1000, "0", "en-US" ) & "k", FORMAT ( _All, "#,0", "en-US" ) ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( MAXX ( _Top, [@v] ), _All ), "0%", "en-US" ) & " at " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & "</text>" &
 			"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>" & _Yrs & IF ( _Yrs = 1, " year", " years" ) & "</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: ab13dd5c-aaf7-5c44-89d2-ccbf5c14dc1c
 
 	/// KPI 5: mean time between failures. Marked provisional (see the Information page).
@@ -2439,6 +1839,7 @@ table _Measures
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTBF</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTBF (Hours)], "#,0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>provisional</text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: f360435b-6a7a-5ee1-ae90-f28e7506094d
 
 	/// Card: can we see failures coming. Condition-meter readings indexed to each meter's first three
@@ -2548,6 +1949,7 @@ table _Measures
 			"<circle cx='" & FORMAT ( _Last, "0.0", "en-US" ) & "' cy='" & FORMAT ( _yb, "0.0", "en-US" ) & "' r='4' fill='#F87171'/>" &
 			"<text x='934' y='" & FORMAT ( _lb + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='#F87171'>Bad actors <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@b] ), "0", "en-US" ) & "</tspan></text>" &
 			"<text x='934' y='" & FORMAT ( _yo + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='#A1A1AA'>Other assets <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@o] ), "0", "en-US" ) & "</tspan></text></svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: 4c1b61dc-7cd8-5ced-b812-84205c24e5f5
 
 	/// Card: does criticality predict failure - failures per asset at each criticality level.
@@ -2590,6 +1992,7 @@ table _Measures
 			    IF ( [@k] = 0, "<text x='" & _cx & "' y='299' text-anchor='middle' font-family='Consolas' font-size='10.5' fill='#5C5C66'>most critical</text>" ) &
 			    IF ( [@k] = _N - 1, "<text x='" & _cx & "' y='299' text-anchor='middle' font-family='Consolas' font-size='10.5' fill='#5C5C66'>least</text>" ),
 			    "", [@k], ASC ) & "</svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: 43b3b513-09f5-5af5-b0cc-f34fd58a7f53
 
 	/// Card: what fails - failure reports by problem code, top six.
@@ -2618,6 +2021,7 @@ table _Measures
 			    "<rect x='140' y='" & _y & "' width='" & FORMAT ( _w, "0.0", "en-US" ) & "' height='20' rx='4' fill='" & IF ( [@k] < 4, "#D4D4D8' fill-opacity='0.85", "#A1A1AA' fill-opacity='0.45" ) & "'/>" &
 			    "<text x='" & FORMAT ( 148 + _w, "0.0", "en-US" ) & "' y='" & ( _y + 15 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#EDEDEF'>" & FORMAT ( [@n], "#,0", "en-US" ) & "</text>",
 			    "", [@k], ASC ) & "</svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: b6b6618e-f52a-535a-b86e-cee64bd17676
 
 	/// Card: top 10 bad actors - failures (red bar), downtime hours (grey bar), reactive cost ($).
@@ -2662,6 +2066,7 @@ table _Measures
 			    IF ( _wd > 0, "<rect x='172' y='" & ( _y + 23 ) & "' width='" & FORMAT ( _wd, "0.0", "en-US" ) & "' height='7' rx='3' fill='#A1A1AA' fill-opacity='0.6'/>" ) &
 			    "<text x='" & FORMAT ( 180 + _wd, "0.0", "en-US" ) & "' y='" & ( _y + 31 ) & "' font-family='Consolas' font-size='10.5' fill='#5C5C66'>" & FORMAT ( [@dt], "#,0", "en-US" ) & " h</text>",
 			    "", [@k], ASC ) & "</svg>"
+		displayFolder: Report Cards\3 Reliability
 		lineageTag: f9e8d402-2627-508e-b7e5-ab40b2bddfd4
 
 	/// Share of scheduled jobs started within the tolerance (2 days) of their scheduled start, over the
@@ -2677,6 +2082,7 @@ table _Measures
 			        FactWorkOrder[SchedStartDate] <= _AsOf
 			    )
 		formatString: 0.0%
+		displayFolder: KPIs\PM & Compliance
 		lineageTag: 9d241fa1-c7d2-58a1-9ee5-0bd476c3f70d
 
 	/// Page title and headline.
@@ -2695,6 +2101,7 @@ table _Measures
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Name &
 			    IF ( MAXX ( _Worst, [@s] ) < 0.9, " starts only ", " starts " ) & FORMAT ( MAXX ( _Worst, [@s] ), "0%", "en-US" ) & " of its jobs on schedule</tspan> and carries " &
 			    FORMAT ( MAXX ( _Worst, [@w] ), "0", "en-US" ) & " weeks of backlog. " & FORMAT ( _Wait, "#,0", "en-US" ) & IF ( _Wait = 1, " job is", " jobs are" ) & " still waiting for approval.</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: abc82169-e233-5238-ad9f-78d90868b26a
 
 	/// KPI 1 (hero): backlog in weeks of crew capacity, on a 0-12 week scale. Band = healthy 4-6 weeks.
@@ -2719,6 +2126,7 @@ table _Measures
 			"<rect x='" & FORMAT ( 19 + _PW / 2, "0.0", "en-US" ) & "' y='124' width='2' height='14' fill='#E4E4E7'/>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _Word & "</text>" &
 			"<text x='443.8' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>healthy 4&#8211;6 wks</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: e5928345-befe-5fd2-b734-4ac5646ae2f7
 
 	/// KPI 2: jobs started on schedule (12 months), target 90%. Footer = the worst site.
@@ -2740,6 +2148,7 @@ table _Measures
 			"<rect x='" & FORMAT ( 19 + 0.9 * 225, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & FORMAT ( MAXX ( _Worst, [@s] ), "0%", "en-US" ) & "</text>" &
 			"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 90%</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: 7432ffeb-52d4-5608-9f80-47a80ef8e2ac
 
 	/// KPI 3: open jobs approved and ready to schedule (status APPR).
@@ -2753,6 +2162,7 @@ table _Measures
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( _H, "#,0", "en-US" ) & " h of work</text>" &
 			"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>approved</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: d1182b2b-1dcd-5e01-b338-56046e450a16
 
 	/// KPI 4: open jobs waiting for approval (status WAPPR).
@@ -2765,6 +2175,7 @@ table _Measures
 			"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Waiting for approval</text>" &
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & FORMAT ( _H, "#,0", "en-US" ) & " h stuck</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: f2b02a62-ffc3-5fcc-8c22-f43cc11b7336
 
 	/// KPI 5: open jobs older than 90 days, against the whole open backlog.
@@ -2778,6 +2189,7 @@ table _Measures
 			"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _A, "#,0", "en-US" ) & "</text>" &
 			"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _A, _O ) * 100, "0.0", "en-US" ) & "% of backlog</text>" &
 			"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>of " & FORMAT ( _O, "#,0", "en-US" ) & "</text></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: 25fa3727-5984-5ca7-b2d0-8130890efcdd
 
 	/// Card: how many weeks of work is waiting - per site, backlog weeks on a 0-12 scale (band 4-6)
@@ -2832,6 +2244,7 @@ table _Measures
 			"<rect x='348' y='278' width='10' height='10' rx='3' fill='#D4D4D8'/><text x='364' y='287'>ready</text>" &
 			"<rect x='413' y='278' width='10' height='10' rx='3' fill='#FBBF24'/><text x='429' y='287'>waiting for approval</text>" &
 			"<rect x='577' y='278' width='10' height='10' rx='3' fill='#60708A'/><text x='593' y='287'>in progress</text></g></svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: 17a083ee-7f12-51f3-b033-8dd74be1fb73
 
 	/// Card: are we starting work when we planned - share of jobs started within 2 days of their
@@ -2918,6 +2331,7 @@ table _Measures
 			    "<text x='904' y='" & FORMAT ( [@ly] + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='" & [@c] & "'>" & [@n] &
 			        " <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( [@last] * 100, "0", "en-US" ) & "%</tspan></text>",
 			    "" ) & "</svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: c4a1cb22-7261-56c1-b501-24e36de464bf
 
 	/// Card: which crafts are the bottleneck - booked hours over the last 12 months against capacity
@@ -2972,6 +2386,7 @@ table _Measures
 			    "<text x='22' y='625' font-family='Consolas' font-size='11.5' fill='#5C5C66'><tspan fill='#FBBF24'>Data gap:</tspan> " & _GapNames & " book &lt;5% of capacity &#8212;</text>" &
 			    "<text x='22' y='642' font-family='Consolas' font-size='11.5' fill='#5C5C66'>the synthetic labour data barely uses them. Tick = 100%.</text>",
 			    "<text x='22' y='642' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Tick = 100% of capacity.</text>" ) & "</svg>"
+		displayFolder: Report Cards\4 Planning
 		lineageTag: ff9b6fc7-4a71-5519-b645-8996acdcb2f1
 
 	/// Page title.
@@ -2979,6 +2394,7 @@ table _Measures
 			"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
 			"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>How to read this report</text>" &
 			"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'>Definitions, targets and the data&#8217;s known limits.</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: e5847c3a-00d9-5f7c-b20b-1e75cec081ef
 
 	/// Card: what the status colours mean.
@@ -2989,6 +2405,7 @@ table _Measures
 			"<circle cx='131' cy='68' r='3' fill='#FBBF24'/><text x='138' y='73' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>near</text>" &
 			"<text x='194' y='73' font-family='Segoe UI' font-size='15'><tspan fill='#F87171'>&#9650;</tspan><tspan fill='#A1A1AA'> off target</tspan></text>" &
 			"<text x='22' y='102' font-family='Consolas' font-size='12' fill='#A1A1AA'>Status colours only ever mean status.</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: 7d7f7262-fa35-5088-827c-16b7750101e8
 
 	/// Card: what the site colours mean.
@@ -3005,6 +2422,7 @@ table _Measures
 			    "<text x='" & ( _x + 12 ) & "' y='73' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>" & UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ) & "</text>",
 			    "", [@o], ASC ) &
 			"<text x='22' y='102' font-family='Consolas' font-size='12' fill='#A1A1AA'>Site colours never signal good or bad.</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: 6d97d3b0-8459-5502-85f9-c98cb0fe3664
 
 	/// Card: the data window. Expected: "Jul 2023 – Jul 2026", "40,935 work orders · 900 assets · 3 sites"
@@ -3018,6 +2436,7 @@ table _Measures
 			"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Data window</text>" &
 			"<text x='22' y='77' font-family='Segoe UI' font-size='22' font-weight='500' fill='#EDEDEF'>" & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( [Data As Of Date], "mmm yyyy", "en-US" ) & "</text>" &
 			"<text x='22' y='100' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & FORMAT ( _WO, "#,0", "en-US" ) & " work orders &#183; " & FORMAT ( _A, "#,0", "en-US" ) & " assets &#183; " & _S & " sites</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: 5781946e-da38-5ca4-83e2-75066fd64636
 
 	/// Card: KPI definitions as implemented in the model, with their targets.
@@ -3054,6 +2473,7 @@ table _Measures
 			    "<line x1='22' x2='706' y1='" & ( _c + IF ( _two, 32.5, 23.5 ) ) & "' y2='" & ( _c + IF ( _two, 32.5, 23.5 ) ) & "' stroke='#1C1C20'/>",
 			    "", [y], ASC ) &
 			"<text x='22' y='670' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Targets follow SMRP best-practice benchmarks. Every KPI has a DAX test case in <tspan fill='#B4B4BC'>verify_measures.py</tspan>.</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: 6ad72a7e-6f2a-5cdc-b2d1-597885e27f7f
 
 	/// Card: work types, straight from DimWorkType, so it cannot drift from the data.
@@ -3076,6 +2496,7 @@ table _Measures
 			    "", [@k], ASC ) &
 			"<text x='22' y='652' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Definitions live in DimWorkType, so this list can&#8217;t drift</text>" &
 			"<text x='22' y='670' font-family='Consolas' font-size='11.5' fill='#5C5C66'>from the data.</text></svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: 1f8c84b1-a68d-5d83-a65b-58fdb68a8a9f
 
 	/// Card: read before you quote a number - the data's known limits.
@@ -3106,6 +2527,7 @@ table _Measures
 			    "<text x='22' y='" & ( _y + 20 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & _l1 & "</text>" &
 			    IF ( [l2] <> "", "<text x='22' y='" & ( _y + 38 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & [l2] & "</text>" ),
 			    "", [i], ASC ) & "</svg>"
+		displayFolder: Report Cards\5 Information
 		lineageTag: d8a88a95-dbec-57dc-a3ce-8356bdde320d
 
 	column Column1

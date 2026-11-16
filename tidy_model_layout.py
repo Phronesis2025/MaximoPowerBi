@@ -60,7 +60,7 @@ PRIVATE = {
 
 # Tables deliberately unrelated to everything. Parked well clear of the star so
 # nobody mistakes a missing relationship for a mistake.
-PARKED = ["ScheduleTolerance"]
+PARKED = ["_Measures", "ScheduleTolerance"]
 
 # Focused diagrams. Keys become diagram names; numeric prefixes keep them ordered.
 FOCUSED = {
@@ -242,7 +242,9 @@ def main():
                  "script expects. Nothing written. Send me the file and I will "
                  "adjust the parser.")
 
-    base = doc[dkey][0]
+    # re-runs: start from the all-tables diagram, not whichever focused one is first
+    base = next((d for d in doc[dkey]
+                 if d.get("name", d.get("Name")) == ALL_DIAGRAM_NAME), doc[dkey][0])
     nkey, nodes = find_nodes(base)
     if not nodes:
         sys.exit("Could not locate the node list inside the first diagram. "

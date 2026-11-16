@@ -395,7 +395,6 @@ table FactWorkOrder
 				            {"PMNUM", type text},
 				            {"WOPRIORITY", Int64.Type},
 				            {"REPORTDATE", type datetime},
-				            {"TARGSTARTDATE", type datetime},
 				            {"TARGCOMPDATE", type datetime},
 				            {"SCHEDSTART", type datetime},
 				            {"ACTSTART", type datetime},
@@ -415,7 +414,7 @@ table FactWorkOrder
 				
 				    Kept = Table.SelectColumns(Typed,
 				        {"WONUM", "DESCRIPTION", "SITEID", "WORKTYPE", "STATUS", "ASSETNUM",
-				         "LOCATION", "PMNUM", "WOPRIORITY", "REPORTDATE", "TARGSTARTDATE",
+				         "LOCATION", "PMNUM", "WOPRIORITY", "REPORTDATE",
 				         "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH", "ESTLABHRS",
 				         "ACTLABHRS", "ACTLABCOST", "ACTMATCOST", "ACTTOOLCOST", "ACTSERVCOST",
 				         "PROBLEMCODE", "SUPERVISOR", "CREWID"}),
@@ -517,7 +516,7 @@ table FactWorkOrder
 				        Int64.Type ),
 				
 				    Final = Table.RemoveColumns(BucketSort,
-				        {"REPORTDATE", "TARGSTARTDATE", "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH"})
+				        {"REPORTDATE", "TARGCOMPDATE", "SCHEDSTART", "ACTSTART", "ACTFINISH"})
 				in
 				    Final
 

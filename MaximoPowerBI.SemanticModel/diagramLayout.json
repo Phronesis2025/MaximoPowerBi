@@ -101,7 +101,7 @@
         }
       ],
       "name": "01 Work Order Core",
-      "zoomValue": 18.086898379399049,
+      "zoomValue": 80,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -207,7 +207,7 @@
         }
       ],
       "name": "02 Cost and Labour",
-      "zoomValue": 25.490465416828538,
+      "zoomValue": 80,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -313,7 +313,7 @@
         }
       ],
       "name": "03 Reliability",
-      "zoomValue": 32.042043779906571,
+      "zoomValue": 80,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -537,7 +537,7 @@
         {
           "location": {
             "x": 2340,
-            "y": 0
+            "y": 460
           },
           "nodeIndex": "ScheduleTolerance",
           "nodeLineageTag": "fe5b4e82-c18a-4c4f-b1fa-88adbf8ef8a4",
@@ -549,23 +549,14 @@
         },
         {
           "location": {
-            "x": 2630,
-            "y": 872
+            "x": 2340,
+            "y": 0
           },
-          "nodeIndex": "KPIDefinitions",
-          "size": {
-            "height": 176,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "_Measures",
           "nodeLineageTag": "8001dd72-0476-4f50-bb57-db8f42fc8bf0",
           "size": {
-            "height": 300,
-            "width": 234
+            "height": 280,
+            "width": 240
           },
           "zIndex": 0
         }
@@ -578,6 +569,6 @@
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "01 Work Order Core",
+  "selectedDiagram": "99 All Tables",
   "defaultDiagram": "99 All Tables"
 }

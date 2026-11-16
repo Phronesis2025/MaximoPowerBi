@@ -150,8 +150,11 @@ the caveats to read before quoting a number.
 
 **Filters.**
 
-- **Site list:** filters every card on every page.
-- **Year buttons:** filter the spend, cost, compliance and reliability cards.
+- **Site list:** filters every card on Overview, PM & Compliance, Reliability and Planning.
+- **Year buttons:** filter the spend, cost, compliance and reliability cards. They appear
+  only on Overview, PM & Compliance and Reliability: Planning is entirely "as of today"
+  or fixed rolling windows, so a year has nothing to filter there.
+- **Information** is reference text and has no slicers.
 - **Cards that always show "now" or a fixed window** state it in their subtitle:
   - "today" counts (overdue, due next 30 days, backlog);
   - year-on-year;
@@ -183,10 +186,10 @@ support, and internet access the first time you open it. The report uses the fre
 
 ```mermaid
 flowchart LR
-    Z[maximo-sample-data-csv.zip<br/>23 Maximo tables] --> PQ[Power Query<br/>model/queries/*.pq]
+    Z[maximo-sample-data-csv.zip<br/>23 Maximo tables] --> PQ[Power Query<br/>table partitions in TMDL]
     PQ --> SM[Star schema<br/>17 tables, 26 relationships]
-    SM --> KM[KPI measures<br/>dax-measures*.dax]
-    KM --> HM[HTML card measures<br/>dax-measures-html-cards.dax]
+    SM --> KM[KPI measures<br/>_Measures: KPIs folder]
+    KM --> HM[HTML card measures<br/>_Measures: Report Cards folder]
     HM --> V[HTML Content visuals<br/>one per card]
     BG[Page backgrounds<br/>assets/backgrounds/dark] --> P[Report pages]
     V --> P
@@ -198,18 +201,19 @@ the single marked date table, with `ReportDate` active and `TargCompDate` /
 `ActFinishDate` reached through `USERELATIONSHIP`. Model and report are saved as PBIP
 text (TMDL + PBIR JSON), so every change is diffable.
 
-**Measures in three layers.**
+**Measures in two layers,** all in the `_Measures` table
+(`MaximoPowerBI.SemanticModel/definition/tables/_Measures.tmdl`), grouped by display folder:
 
-1. **Core KPIs** (`dax-measures.dax`, plus rolling, status and backlog files):
-   reactive %, PM compliance, schedule compliance, MTTR, MTBF, backlog, cost % of RAV.
-   Each is checked against `VALIDATION.txt`.
-2. **Page measures** (`dax-measures-overview-pm.dax`):
+1. **KPIs** (`KPIs\…` folders: Work Orders, PM & Compliance, Reliability,
+   Backlog & Planning, Cost, Date Window):
+   - reactive %, PM compliance, schedule compliance, MTTR, MTBF, backlog, cost % of RAV,
+     each checked against `VALIDATION.txt`;
    - the benchmark logic (spend above Bedford's cost rate);
    - statutory compliance (`WORKTYPE` INSP + SAF);
    - overdue buckets;
    - year-on-year windows fixed to the cut-off.
-3. **Card measures** (`dax-measures-html-cards.dax`): one measure per card, returning
-   an SVG drawing of that card built from the layer-1 and layer-2 numbers.
+2. **Card measures** (`Report Cards\…` folders, one per page): one measure per card,
+   returning an SVG drawing of that card built from the KPI measures.
 
 **Why the cards are SVG.** Native visuals cannot draw the design: rounded bars, glow,
 shaded areas under smooth lines, inline labels. Each card measure returns one
@@ -232,15 +236,17 @@ them**, because Desktop overwrites PBIP files it has open.
 
 | To change… | Edit | Then run |
 |---|---|---|
-| A number or a card's drawing | `dax-measures-overview-pm.dax` or `dax-measures-html-cards.dax` | `py -3 scripts/add_measures.py <file>.dax` |
+| A number or a card's drawing | the measure in Power BI Desktop, or in `_Measures.tmdl` with Desktop closed | `py -3 check_model.py MaximoPowerBI.SemanticModel` |
+| A Power Query step | the table's query in Desktop, or its `partition` block in `tables/<Table>.tmdl` | Refresh in Desktop, then `py -3 verify_measures.py` |
 | Which card sits where, slicers, page buttons | `scripts/build_report_pages.py` (the `PAGES` table) | `py -3 scripts/build_report_pages.py` |
 | A page background | `assets/backgrounds/dark/<page>.svg` (e.g. in Figma), export the PNG at 3840 × 2160 | `py -3 scripts/build_report_pages.py` |
 | Backgrounds from the mockups | `assets/mockups/*.html` | `py -3 assets/backgrounds/build_dark_backgrounds.py` |
 | The mockups themselves | `scripts/mockups/gen_*.py` | `py -3 scripts/mockups/render.py` |
 
-The `.dax` files are the readable source. `add_measures.py` copies each block into
-`_Measures.tmdl`, replacing a measure in place if it exists. Comment lines become the
-measure's description, and `// @format` lines become its format string.
+The TMDL files are the single source: every measure and query lives once, in the model.
+To paste in several measures drafted in a `.dax` file, `scripts/add_measures.py <file>.dax`
+copies each block into `_Measures.tmdl`, replacing a measure in place if it exists. Comment
+lines become the measure's description, and `// @format` lines become its format string.
 `build_report_pages.py` rewrites the five page folders from scratch and registers the
 theme and backgrounds; it never touches other pages.
 
@@ -490,9 +496,8 @@ The generator enforces twelve integrity checks:
 | `MaximoPowerBI.pbip` | Open this in Power BI Desktop |
 | `MaximoPowerBI.SemanticModel/` | The model as TMDL text: tables, relationships, all 102 measures |
 | `MaximoPowerBI.Report/` | The report as PBIR JSON: pages, visuals, theme, backgrounds |
-| `model/queries/*.pq` | Every Power Query query, numbered in load order |
-| `dax-measures*.dax` | Readable source of the measures, with expected values inline |
-| `scripts/add_measures.py` | Copies a `.dax` file's measures into the model |
+| `MaximoPowerBI.SemanticModel/definition/tables/` | One file per table: its Power Query and columns; `_Measures.tmdl` holds every measure, with expected values in the descriptions |
+| `scripts/add_measures.py` | Copies measures drafted in a `.dax` file into the model |
 | `scripts/build_report_pages.py` | Builds the five report pages |
 | `scripts/mockups/` | Mockup generators, the figures behind them, and the renderer |
 | `assets/mockups/` | Design mockups (HTML + PNG), every version |

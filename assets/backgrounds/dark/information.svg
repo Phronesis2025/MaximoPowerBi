@@ -9,7 +9,6 @@
     <text id="label-1" x="60" y="42" font-family="&quot;Segoe UI&quot;, system-ui, sans-serif" font-size="18px" font-weight="600" fill="rgb(237, 237, 239)" xml:space="preserve">Maximo </text>
     <text id="label-2" x="136.5" y="41" font-family="&quot;Segoe UI&quot;, system-ui, sans-serif" font-size="15px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve">Analytics</text>
     <text id="label-3" x="26" y="89" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(92, 92, 102)" xml:space="preserve">Pages</text>
-    <text id="label-4" x="26" y="366" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(92, 92, 102)" xml:space="preserve">Sites</text>
     <text id="label-5" x="26" y="938.4" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(74, 222, 128)" xml:space="preserve">✓</text>
     <text id="label-6" x="35" y="938.4" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve"> on target</text>
     <text id="label-7" x="26" y="961.2" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(251, 191, 36)" xml:space="preserve">●</text>

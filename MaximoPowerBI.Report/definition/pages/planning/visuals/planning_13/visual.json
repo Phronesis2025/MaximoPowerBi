@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "planning_13",
   "position": {
-    "x": 1339.9,
+    "x": 1619,
     "y": 179,
     "z": 14000,
     "height": 186,
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML PLAN KPI Waiting"
+                  "Property": "HTML PLAN KPI Aged"
                 }
               },
-              "queryRef": "_Measures.HTML PLAN KPI Waiting",
-              "nativeQueryRef": "HTML PLAN KPI Waiting"
+              "queryRef": "_Measures.HTML PLAN KPI Aged",
+              "nativeQueryRef": "HTML PLAN KPI Aged"
             }
           ]
         }

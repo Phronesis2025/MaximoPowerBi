@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "information_12",
   "position": {
-    "x": 1368,
-    "y": 179,
+    "x": 1050,
+    "y": 343,
     "z": 13000,
-    "height": 152,
-    "width": 516,
+    "height": 696,
+    "width": 420,
     "tabOrder": 13000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML INFO Window"
+                  "Property": "HTML INFO Work Types"
                 }
               },
-              "queryRef": "_Measures.HTML INFO Window",
-              "nativeQueryRef": "HTML INFO Window"
+              "queryRef": "_Measures.HTML INFO Work Types",
+              "nativeQueryRef": "HTML INFO Work Types"
             }
           ]
         }

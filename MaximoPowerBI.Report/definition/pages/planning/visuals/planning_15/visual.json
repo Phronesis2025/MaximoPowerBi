@@ -3,7 +3,7 @@
   "name": "planning_15",
   "position": {
     "x": 304,
-    "y": 377,
+    "y": 717,
     "z": 16000,
     "height": 328,
     "width": 1046,
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML PLAN Weeks"
+                  "Property": "HTML PLAN Schedule"
                 }
               },
-              "queryRef": "_Measures.HTML PLAN Weeks",
-              "nativeQueryRef": "HTML PLAN Weeks"
+              "queryRef": "_Measures.HTML PLAN Schedule",
+              "nativeQueryRef": "HTML PLAN Schedule"
             }
           ]
         }

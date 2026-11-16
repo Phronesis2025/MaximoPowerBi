@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "planning_09",
   "position": {
-    "x": 296,
-    "y": 80,
+    "x": 304,
+    "y": 179,
     "z": 10000,
-    "height": 90,
-    "width": 1590,
+    "height": 186,
+    "width": 463.8,
     "tabOrder": 10000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML PLAN Title"
+                  "Property": "HTML PLAN KPI Backlog"
                 }
               },
-              "queryRef": "_Measures.HTML PLAN Title",
-              "nativeQueryRef": "HTML PLAN Title"
+              "queryRef": "_Measures.HTML PLAN KPI Backlog",
+              "nativeQueryRef": "HTML PLAN KPI Backlog"
             }
           ]
         }

@@ -14,14 +14,13 @@ of the page order; existing pages are left as they are.
 
 Visual positions come from the same measurement the backgrounds use
 (assets/backgrounds/build_dark_backgrounds.py), so visuals sit inside the card frames.
-Every card is an HTML Content visual showing one measure from dax-measures-html-cards.dax:
+Every card is an HTML Content visual showing one measure from the Report Cards folders of _Measures:
 an SVG that draws the card exactly as the mockup does (rounded bars, glow, shaded areas).
 The SVGs use the card frame as their viewBox, so they scale with the page. Slicers and the
 page buttons stay native Power BI visuals.
 
 Re-running replaces these pages wholesale. Close Power BI Desktop first.
-Measures used: dax-measures-overview-pm.dax and dax-measures-html-cards.dax
-(apply each with scripts/add_measures.py).
+Measures used: the HTML * measures in _Measures.tmdl.
 """
 import json, os, shutil, sys
 
@@ -167,6 +166,10 @@ PAGES = {
 }
 # top bar and sidebar measures are named by page, not by key
 CHROME = {"overview": "Overview", "pm_compliance": "PM", "reliability": "Reliability", "planning": "Planning", "information": "Information"}
+# a slicer goes only on pages where it changes something: Planning is all "as of" or fixed
+# rolling windows (no card reads the year), Information is static reference text
+SITE_SLICER = {"overview", "pm_compliance", "reliability", "planning"}
+YEAR_SLICER = {"overview", "pm_compliance", "reliability"}
 NOT_BLANK_YEAR = {"filters": [{
     "name": "year_not_blank", "field": column("DimDate", "YEAR"), "type": "Advanced",
     "filter": {"Version": 2, "From": [{"Name": "d", "Entity": "DimDate", "Type": 0}],
@@ -191,20 +194,22 @@ def build(pid):
         })
         p.visuals[-1]["visual"]["visualContainerObjects"]["visualLink"] = [
             obj({"show": True, "type": "PageNavigation", "navigationSection": target})]
-    p.add("slicer", 16, 380, 239, 150, roles={"Values": [proj(column("DimSite", "CITY"), "Site")]}, objects={
-        "data": obj({"mode": "Basic"}),
-        "selection": obj({"selectAllCheckboxEnabled": True, "singleSelect": False}),
-        "header": obj({"show": False}),
-        "items": obj({"fontColor": col(TXT), "textSize": 11, "background": col("#0E0E10")}),
-    })
-    p.add("slicer", 1430, 12, 290, 32, roles={"Values": [proj(column("DimDate", "YEAR"), "Year")]}, objects={
-        "data": obj({"mode": "Basic"}),
-        "general": obj({"orientation": 1}),
-        "selection": obj({"singleSelect": True}),
-        "header": obj({"show": False}),
-        "items": obj({"fontColor": col(MUT), "textSize": 9, "background": col("#0A0A0B")}),
-    })
-    p.visuals[-1]["filterConfig"] = NOT_BLANK_YEAR
+    if pid in SITE_SLICER:
+        p.add("slicer", 16, 380, 239, 150, roles={"Values": [proj(column("DimSite", "CITY"), "Site")]}, objects={
+            "data": obj({"mode": "Basic"}),
+            "selection": obj({"selectAllCheckboxEnabled": True, "singleSelect": False}),
+            "header": obj({"show": False}),
+            "items": obj({"fontColor": col(TXT), "textSize": 11, "background": col("#0E0E10")}),
+        })
+    if pid in YEAR_SLICER:
+        p.add("slicer", 1430, 12, 290, 32, roles={"Values": [proj(column("DimDate", "YEAR"), "Year")]}, objects={
+            "data": obj({"mode": "Basic"}),
+            "general": obj({"orientation": 1}),
+            "selection": obj({"singleSelect": True}),
+            "header": obj({"show": False}),
+            "items": obj({"fontColor": col(MUT), "textSize": 9, "background": col("#0A0A0B")}),
+        })
+        p.visuals[-1]["filterConfig"] = NOT_BLANK_YEAR
     p.html((x0 - 8, 80, 1590, 88), f"HTML {key} Title")
     for frame, m in zip(M["kpi"], kpis):
         p.html(frame, f"HTML {key} {m}")

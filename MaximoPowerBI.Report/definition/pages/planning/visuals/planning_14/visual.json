@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "planning_14",
   "position": {
-    "x": 1619,
-    "y": 179,
+    "x": 304,
+    "y": 377,
     "z": 15000,
-    "height": 186,
-    "width": 265,
+    "height": 328,
+    "width": 1046,
     "tabOrder": 15000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML PLAN KPI Aged"
+                  "Property": "HTML PLAN Weeks"
                 }
               },
-              "queryRef": "_Measures.HTML PLAN KPI Aged",
-              "nativeQueryRef": "HTML PLAN KPI Aged"
+              "queryRef": "_Measures.HTML PLAN Weeks",
+              "nativeQueryRef": "HTML PLAN Weeks"
             }
           ]
         }

@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "information_10",
   "position": {
-    "x": 308,
+    "x": 1368,
     "y": 179,
     "z": 11000,
     "height": 152,
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML INFO Status"
+                  "Property": "HTML INFO Window"
                 }
               },
-              "queryRef": "_Measures.HTML INFO Status",
-              "nativeQueryRef": "HTML INFO Status"
+              "queryRef": "_Measures.HTML INFO Window",
+              "nativeQueryRef": "HTML INFO Window"
             }
           ]
         }

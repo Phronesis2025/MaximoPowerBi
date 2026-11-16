@@ -2,120 +2,36 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "information_07",
   "position": {
-    "x": 16,
-    "y": 380,
+    "x": 300,
+    "y": 80,
     "z": 8000,
-    "height": 150,
-    "width": 239,
+    "height": 90,
+    "width": 1590,
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "slicer",
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",
     "query": {
       "queryState": {
-        "Values": {
+        "content": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimSite"
+                      "Entity": "_Measures"
                     }
                   },
-                  "Property": "CITY"
+                  "Property": "HTML INFO Title"
                 }
               },
-              "queryRef": "DimSite.CITY",
-              "nativeQueryRef": "CITY",
-              "displayName": "Site"
+              "queryRef": "_Measures.HTML INFO Title",
+              "nativeQueryRef": "HTML INFO Title"
             }
           ]
         }
       }
-    },
-    "objects": {
-      "data": [
-        {
-          "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Basic'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "selectAllCheckboxEnabled": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "singleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "header": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "items": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#EDEDEF'"
-                    }
-                  }
-                }
-              }
-            },
-            "textSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "11D"
-                }
-              }
-            },
-            "background": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0E0E10'"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
     },
     "visualContainerObjects": {
       "background": [
@@ -171,6 +87,19 @@
         }
       ],
       "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
         {
           "properties": {
             "show": {

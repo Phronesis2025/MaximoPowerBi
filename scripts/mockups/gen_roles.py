@@ -180,5 +180,5 @@ body = f'''<div class="g2" style="grid-template-columns:1fr 520px">
 </div>'''
 o3 = page("Planning", "Planning", "open work as of 29 Jul 2026",
           f'<b>Houston starts only {sc["HOUSTON"]:.0f}% of its jobs on schedule</b> and carries {pl["weeks"]["HOUSTON"]:.0f} weeks of backlog. {tot[1]:,} jobs are still waiting for approval.',
-          k, body, "planning_v7.html")
+          k, body, "planning_v7.html", years=False)
 print(o1, o2, o3, sep="\n")

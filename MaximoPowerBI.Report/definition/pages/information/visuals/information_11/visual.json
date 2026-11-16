@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "information_11",
   "position": {
-    "x": 838,
-    "y": 179,
+    "x": 308,
+    "y": 343,
     "z": 12000,
-    "height": 152,
-    "width": 516,
+    "height": 696,
+    "width": 728,
     "tabOrder": 12000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML INFO Sites"
+                  "Property": "HTML INFO KPI Definitions"
                 }
               },
-              "queryRef": "_Measures.HTML INFO Sites",
-              "nativeQueryRef": "HTML INFO Sites"
+              "queryRef": "_Measures.HTML INFO KPI Definitions",
+              "nativeQueryRef": "HTML INFO KPI Definitions"
             }
           ]
         }

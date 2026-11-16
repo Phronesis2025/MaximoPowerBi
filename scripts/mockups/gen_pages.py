@@ -49,12 +49,17 @@ def kpi(label, num, target, bul, delta, dcol, vals, scol, hero=False, mr=10):
  <div class="kfoot"><span style="color:{dcol}">{delta}</span><span class="ktarget">{target}</span></div>
 </div>'''
 
-def page(active, title, grey, sub, kpis_html, body, file):
+def page(active, title, grey, sub, kpis_html, body, file, sites=True, years=True):
+    """sites/years=False drop the site list / year buttons on pages where they would filter nothing."""
     aside = ASIDE.replace('<div class="nav on">', '<div class="nav">')
     aside = aside.replace(f'<div class="nav">{g.I[active]}', f'<div class="nav on">{g.I[active]}')
+    if not sites:
+        aside, n = re.subn(r'\n[ \t]*<div class="lab">Sites</div>[^\n]*', "", aside)
+        assert n == 1, "site list not found in the shared sidebar"
+    topr = TOPR if years else re.sub(r'<div class="seg">.*?</div>', "", TOPR)
     kp = f'<div class="kpis">{kpis_html}</div>' if kpis_html else ""
     html = f'''<!doctype html><html><head><meta charset="utf-8"><style>{CSS}{EXTRA}</style></head><body>
-<aside>{aside}</aside><main><div class="top">{g.I[active]}<span>{active}</span>{TOPR}</div>
+<aside>{aside}</aside><main><div class="top">{g.I[active]}<span>{active}</span>{topr}</div>
 <div class="body"><h1>{title} <span>{grey}</span></h1><div class="sub">{sub}</div>{kp}{body}</div></main></body></html>'''
     out = os.path.join(g.OUT, file)
     open(out, "w", encoding="utf-8").write(html)
@@ -349,5 +354,5 @@ body = f'''<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;m
   <div class="note">Definitions live in DimWorkType, so this list can&rsquo;t drift from the data.</div></div>
  <div class="c" style="height:694px"><div class="cq">Read before you quote a number</div>{nt}</div>
 </div>'''
-o4 = page("Information", "How to read this report", "", "Definitions, targets and the data&rsquo;s known limits.", "", body, "information_v6.html")
+o4 = page("Information", "How to read this report", "", "Definitions, targets and the data&rsquo;s known limits.", "", body, "information_v6.html", sites=False, years=False)
 print(o1, o2, o3, o4, sep="\n")

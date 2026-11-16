@@ -2,126 +2,36 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "information_08",
   "position": {
-    "x": 1430,
-    "y": 12,
+    "x": 308,
+    "y": 179,
     "z": 9000,
-    "height": 32,
-    "width": 290,
+    "height": 152,
+    "width": 516,
     "tabOrder": 9000
   },
   "visual": {
-    "visualType": "slicer",
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",
     "query": {
       "queryState": {
-        "Values": {
+        "content": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimDate"
+                      "Entity": "_Measures"
                     }
                   },
-                  "Property": "YEAR"
+                  "Property": "HTML INFO Status"
                 }
               },
-              "queryRef": "DimDate.YEAR",
-              "nativeQueryRef": "YEAR",
-              "displayName": "Year"
+              "queryRef": "_Measures.HTML INFO Status",
+              "nativeQueryRef": "HTML INFO Status"
             }
           ]
         }
       }
-    },
-    "objects": {
-      "data": [
-        {
-          "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Basic'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "general": [
-        {
-          "properties": {
-            "orientation": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "singleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "header": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "items": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#A1A1AA'"
-                    }
-                  }
-                }
-              }
-            },
-            "textSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "9D"
-                }
-              }
-            },
-            "background": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0A0A0B'"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
     },
     "visualContainerObjects": {
       "background": [
@@ -188,65 +98,21 @@
             }
           }
         }
-      ]
-    },
-    "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "year_not_blank",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DimDate"
-              }
-            },
-            "Property": "YEAR"
-          }
-        },
-        "type": "Advanced",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "d",
-              "Entity": "DimDate",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "Comparison": {
-                      "ComparisonKind": 0,
-                      "Left": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Source": "d"
-                            }
-                          },
-                          "Property": "YEAR"
-                        }
-                      },
-                      "Right": {
-                        "Literal": {
-                          "Value": "null"
-                        }
-                      }
-                    }
-                  }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
-          ]
-        },
-        "howCreated": "User"
-      }
-    ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
   }
 }

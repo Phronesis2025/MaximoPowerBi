@@ -1,8 +1,8 @@
-"""Copy the measures in a dax-measures-*.dax file into _Measures.tmdl.
+"""Copy measures drafted in a .dax file into _Measures.tmdl.
 
-    py -3 scripts/add_measures.py dax-measures-overview-pm.dax
+    py -3 scripts/add_measures.py my-new-measures.dax
 
-The .dax file is the readable source; the TMDL is what Power BI loads. Each block is
+The TMDL is the single source and what Power BI loads; the .dax file is only a draft. Each block is
 comment lines, then "Name =" and the expression, separated by blank lines. Comment lines
 become the measure description (///), except "// @format X", which becomes formatString.
 Blocks that are only comments (section headers) are skipped.

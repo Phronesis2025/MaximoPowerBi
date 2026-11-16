@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "planning_16",
   "position": {
-    "x": 304,
-    "y": 717,
+    "x": 1364,
+    "y": 377,
     "z": 17000,
-    "height": 328,
-    "width": 1046,
+    "height": 668,
+    "width": 520,
     "tabOrder": 17000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "HTML PLAN Schedule"
+                  "Property": "HTML PLAN Crafts"
                 }
               },
-              "queryRef": "_Measures.HTML PLAN Schedule",
-              "nativeQueryRef": "HTML PLAN Schedule"
+              "queryRef": "_Measures.HTML PLAN Crafts",
+              "nativeQueryRef": "HTML PLAN Crafts"
             }
           ]
         }

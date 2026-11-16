@@ -1,0 +1,1820 @@
+// =============================================================================
+// HTML CARD MEASURES - Overview + PM & Compliance (dark redesign, Nov 2026)
+// =============================================================================
+//
+// Each measure returns one SVG that draws the contents of one card exactly as
+// the mockups do (assets/mockups/executive_v10, pm_compliance_v8): rounded
+// bars, glow, shaded areas, smooth lines. Shown with the HTML Content visual.
+//
+// Every SVG uses a viewBox the size of its card frame (page pixels), with
+// width 100%, so it scales with the page. The card frame itself (dark fill,
+// border, rounded corners) is the page background image.
+//
+// Glow is drawn as wider, fainter copies underneath (no SVG filters), the same
+// way the mockup generator does it. Smooth lines use a monotone cubic curve
+// (Fritsch-Butland slopes), so a line never overshoots its points.
+//
+// Numbers come from the measures in dax-measures-overview-pm.dax, so these
+// cards show the same values as before - only the drawing changed. They follow
+// the site slicer; the year buttons change the spend cards as before.
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// SHARED CHROME
+// -----------------------------------------------------------------------------
+
+// Top bar of the Overview page: page name with icon on the left, data cut-off on the right.
+HTML Top Bar Overview =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Overview</text>" &
+"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+
+
+// Top bar of the PM & Compliance page: page name with icon on the left, data cut-off on the right.
+HTML Top Bar PM =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>PM &amp; Compliance</text>" &
+"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+
+
+// Top bar of the Reliability page: page name with icon on the left, data cut-off on the right.
+HTML Top Bar Reliability =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Reliability</text>" &
+"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+
+
+// Top bar of the Planning page: page name with icon on the left, data cut-off on the right.
+HTML Top Bar Planning =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Planning</text>" &
+"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+
+
+// Top bar of the Information page: page name with icon on the left, data cut-off on the right.
+HTML Top Bar Information =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1648 56' width='100%' style='display:block'>" &
+"<g transform='translate(36,19)' fill='none' stroke='#C8C8CF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='64' y='33' font-family='Segoe UI' font-size='15' fill='#C8C8CF'>Information</text>" &
+"<text x='1612' y='32' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>data as of " & FORMAT ( [Data As Of Date], "d mmm yyyy", "en-US" ) & "</text></svg>"
+
+
+// Page list in the sidebar, Overview highlighted. Transparent buttons on top do the navigating.
+HTML Nav Overview =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+"<rect x='0.5' y='0.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
+"<g transform='translate(11,10)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Overview</text>" &
+"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='40' y='64' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>PM &amp; Compliance</text>" &
+"<g transform='translate(11,90)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='40' y='104' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Reliability</text>" &
+"<g transform='translate(11,130)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='40' y='144' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Planning</text>" &
+"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
+"</svg>"
+
+
+// Page list in the sidebar, PM & Compliance highlighted. Transparent buttons on top do the navigating.
+HTML Nav PM =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
+"<rect x='0.5' y='40.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
+"<g transform='translate(11,50)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='40' y='64' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>PM &amp; Compliance</text>" &
+"<g transform='translate(11,90)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='40' y='104' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Reliability</text>" &
+"<g transform='translate(11,130)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='40' y='144' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Planning</text>" &
+"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
+"</svg>"
+
+
+// Page list in the sidebar, Reliability highlighted. Transparent buttons on top do the navigating.
+HTML Nav Reliability =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
+"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='40' y='64' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>PM &amp; Compliance</text>" &
+"<rect x='0.5' y='80.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
+"<g transform='translate(11,90)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='40' y='104' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Reliability</text>" &
+"<g transform='translate(11,130)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='40' y='144' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Planning</text>" &
+"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
+"</svg>"
+
+
+// Page list in the sidebar, Planning highlighted. Transparent buttons on top do the navigating.
+HTML Nav Planning =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
+"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='40' y='64' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>PM &amp; Compliance</text>" &
+"<g transform='translate(11,90)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='40' y='104' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Reliability</text>" &
+"<rect x='0.5' y='120.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
+"<g transform='translate(11,130)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='40' y='144' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Planning</text>" &
+"<g transform='translate(11,170)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Information</text>" &
+"</svg>"
+
+
+// Page list in the sidebar, Information highlighted. Transparent buttons on top do the navigating.
+HTML Nav Information =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 239 200' width='100%' style='display:block'>" &
+"<g transform='translate(11,10)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/><rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></g></g>" &
+"<text x='40' y='24' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Overview</text>" &
+"<g transform='translate(11,50)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/><path d='M9 12l2 2 4-4'/></g></g>" &
+"<text x='40' y='64' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>PM &amp; Compliance</text>" &
+"<g transform='translate(11,90)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><path d='M3 12h4l2.5-6 5 12 2.5-6H21'/></g></g>" &
+"<text x='40' y='104' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Reliability</text>" &
+"<g transform='translate(11,130)' fill='none' stroke='#8B8B93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/></g></g>" &
+"<text x='40' y='144' font-family='Segoe UI' font-size='15' fill='#B4B4BC'>Planning</text>" &
+"<rect x='0.5' y='160.5' width='238' height='37' rx='8' fill='#1C1C20' stroke='#2A2A30'/>" &
+"<g transform='translate(11,170)' fill='none' stroke='#EDEDEF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><g transform='scale(0.75)'><circle cx='12' cy='12' r='9'/><path d='M12 11v6M12 7.5v.5'/></g></g>" &
+"<text x='40' y='184' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>Information</text>" &
+"</svg>"
+
+
+// -----------------------------------------------------------------------------
+// OVERVIEW
+// -----------------------------------------------------------------------------
+
+// Page title and the one-sentence headline under it.
+// Expected: "Maintenance portfolio 3 sites · Jul 2023 – Jul 2026" / "We spend $3.1M a year
+// more than our own benchmark — 70% of it at Houston. Aurora shows it can be won back."
+HTML OV Title =
+VAR _AsOf = MIN ( [Data As Of Date], MAX ( DimDate[Date] ) )
+VAR _From = MAX ( CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS ( DimDate ) ), MIN ( DimDate[Date] ) )
+VAR _N = COUNTROWS ( VALUES ( DimSite[SITEID] ) )
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@gap", [Spend Above Benchmark],
+        "@yoy", [Reactive YoY %],
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Gap = SUMX ( _Sites, [@gap] )
+VAR _Top = TOPN ( 1, _Sites, [@gap], DESC )
+VAR _Best = TOPN ( 1, FILTER ( _Sites, [@gap] > 0 && [@yoy] < -0.10 ), [@yoy], ASC )
+VAR _Bold =
+    IF (
+        _Gap > 0,
+        "We spend $" & FORMAT ( _Gap / 1e6, "0.0", "en-US" ) & "M a year more than our own benchmark" &
+            IF ( _N > 1, " &#8212; " & FORMAT ( DIVIDE ( MAXX ( _Top, [@gap] ), _Gap ), "0%", "en-US" ) & " of it at " & MAXX ( _Top, [@n] ) ) & ".",
+        "Spend is at or under our own benchmark."
+    )
+VAR _Rest = IF ( NOT ISEMPTY ( _Best ), " " & MAXX ( _Best, [@n] ) & " shows it can be won back." )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Maintenance portfolio" &
+"<tspan fill='#6E6E78'> " & _N & IF ( _N = 1, " site", " sites" ) & " &#183; " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
+"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
+
+
+// KPI 1 (hero): spend above benchmark, split by site.
+// Expected: "$3.1M/yr", bar Houston 70% / Aurora 30%, "Houston $2.2M · Aurora $0.9M · Bedford is the benchmark"
+HTML OV KPI Benchmark =
+VAR _BarW = 422.6
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@gap", [Spend Above Benchmark],
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Gap = SUMX ( _Sites, [@gap] )
+VAR _Pos = FILTER ( _Sites, [@gap] > 0 )
+VAR _Segs =
+    ADDCOLUMNS (
+        _Pos,
+        "@x", VAR _g = [@gap] RETURN 20 + DIVIDE ( SUMX ( FILTER ( _Pos, [@gap] > _g ), [@gap] ), _Gap ) * _BarW,
+        "@w", DIVIDE ( [@gap], _Gap ) * _BarW,
+        "@first", VAR _g = [@gap] RETURN COUNTROWS ( FILTER ( _Pos, [@gap] > _g ) ) = 0
+    )
+VAR _Bars =
+    CONCATENATEX (
+        _Segs,
+        IF ( [@first],
+            "<rect x='" & FORMAT ( [@x] - 6, "0.0", "en-US" ) & "' y='123' width='" & FORMAT ( [@w] + 12, "0.0", "en-US" ) & "' height='22' rx='10' fill='" & [@c] & "' fill-opacity='0.07'/>" &
+            "<rect x='" & FORMAT ( [@x] - 3, "0.0", "en-US" ) & "' y='126' width='" & FORMAT ( [@w] + 6, "0.0", "en-US" ) & "' height='16' rx='7' fill='" & [@c] & "' fill-opacity='0.16'/>" ) &
+        "<rect x='" & FORMAT ( [@x], "0.0", "en-US" ) & "' y='129' width='" & FORMAT ( MAX ( [@w] - 2, 1 ), "0.0", "en-US" ) & "' height='10' rx='3' fill='" & [@c] & "'/>",
+        "", [@gap], DESC
+    )
+VAR _Named =
+    CONCATENATEX (
+        _Pos,
+        "<tspan fill='" & [@c] & "'>" & [@n] & " $" & FORMAT ( [@gap] / 1e6, "0.0", "en-US" ) & "M</tspan>",
+        " &#183; ", [@gap], DESC
+    )
+VAR _Bench = CONCATENATEX ( FILTER ( _Sites, [@gap] <= 0 ), [@n], " and " )
+VAR _Legend =
+    _Named & IF ( _Bench <> "", IF ( _Named <> "", " &#183; " ) & _Bench & IF ( COUNTROWS ( FILTER ( _Sites, [@gap] <= 0 ) ) = 1, " is", " are" ) & " the benchmark" )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Spend above our own benchmark</text>" &
+"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>$" & FORMAT ( _Gap / 1e6, "0.0", "en-US" ) & "M<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>/yr</tspan></text>" &
+"<rect x='20' y='129' width='422.6' height='10' rx='3' fill='#222227'/>" & _Bars &
+"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & _Legend & "</text></svg>"
+
+
+// KPI 2: annual maintenance spend, with cost as % of asset value on a 0-10% scale.
+// Band = best practice 2-3%, tick = 3%. Expected: "$9.3M", "▲ 6.0% of asset value", red.
+HTML OV KPI Spend =
+VAR _PW = 224.4
+VAR _V = [Maintenance Cost % of RAV]
+VAR _C = IF ( _V <= 0.03, "#4ADE80", IF ( _V <= 0.04, "#FBBF24", "#F87171" ) )
+VAR _G = IF ( _V <= 0.03, "&#10003;", IF ( _V <= 0.04, "&#9679;", "&#9650;" ) )
+VAR _FillW = MIN ( 1, MAX ( 0, _V / 0.10 ) ) * _PW
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Annual maintenance spend</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>$" & FORMAT ( [Annual Maintenance Spend] / 1e6, "0.0", "en-US" ) & "M</text>" &
+"<rect x='20' y='102' width='224.4' height='4' rx='2' fill='#222227'/>" &
+"<rect x='" & FORMAT ( 20 + 0.2 * _PW, "0.0", "en-US" ) & "' y='102' width='" & FORMAT ( 0.1 * _PW, "0.0", "en-US" ) & "' height='4' fill='#4ADE80' fill-opacity='0.25'/>" &
+"<rect x='17' y='99' width='" & FORMAT ( _FillW + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _C & "' fill-opacity='0.12'/>" &
+"<rect x='20' y='102' width='" & FORMAT ( _FillW, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _C & "'/>" &
+"<rect x='" & FORMAT ( 19 + 0.3 * _PW, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & FORMAT ( _V * 100, "0.0", "en-US" ) & "% of asset value</text>" &
+"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>best 2&#8211;3%</text></svg>"
+
+
+// KPI 3: share of spend on reactive work, and what a reactive job costs against a PM.
+// Expected: "62%", "$1,288 per reactive job", "$234 per PM", "5.5× the cost of a PM", "of $9.3M"
+HTML OV KPI Unplanned =
+VAR _R = [Cost per Reactive Job]
+VAR _P = [Cost per PM]
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Spent on unplanned work</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Reactive Cost Share], "0%", "en-US" ) & "</text>" &
+"<text x='20' y='111' font-family='Consolas' font-size='12' fill='#A1A1AA'>$" & FORMAT ( _R, "#,0", "en-US" ) & " per reactive job</text>" &
+"<text x='20' y='126' font-family='Consolas' font-size='12' fill='#A1A1AA'>$" & FORMAT ( _P, "#,0", "en-US" ) & " per PM</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>" & FORMAT ( DIVIDE ( _R, _P ), "0.0", "en-US" ) & "&#215; the cost of a PM</text>" &
+"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>of $" & FORMAT ( [Annual Maintenance Spend] / 1e6, "0.0", "en-US" ) & "M</text></svg>"
+
+
+// KPI 4: statutory inspection + safety jobs finished late. Target 0.
+// Expected: "480", "▲ 0 of 3 sites at 100%"
+HTML OV KPI Statutory =
+VAR _Sites = VALUES ( DimSite[SITEID] )
+VAR _N = COUNTROWS ( _Sites )
+VAR _Ok = COUNTROWS ( FILTER ( _Sites, [Statutory Finished Late] = 0 ) ) + 0
+VAR _C = IF ( _Ok = _N, "#4ADE80", "#F87171" )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory inspections late</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Statutory Finished Late], "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='111' font-family='Consolas' font-size='12' fill='#A1A1AA'>regulatory &amp; safety exposure</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & IF ( _Ok = _N, "&#10003;", "&#9650;" ) & " " & _Ok & " of " & _N & IF ( _N = 1, " site", " sites" ) & " at 100%</text>" &
+"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 0</text></svg>"
+
+
+// KPI 5: reactive work orders, last 12 complete months against the 12 before, per site.
+// Green when down more than 5%, red when up, grey in between. Expected: Houston +5%, Aurora -21%, Bedford -2%
+HTML OV KPI YoY =
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@yoy", [Reactive YoY %],
+        "@o", SWITCH ( DimSite[SITEID], "HOUSTON", 1, "AURORA", 2, "BEDFORD", 3, 9 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Rows =
+    ADDCOLUMNS ( _Sites, "@y", VAR _o = [@o] RETURN 70 + 24 * COUNTROWS ( FILTER ( _Sites, [@o] < _o ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Reactive work, year on year</text>" &
+CONCATENATEX (
+    _Rows,
+    VAR _v = [@yoy]
+    VAR _col = IF ( _v < -0.05, "#4ADE80", IF ( _v > 0, "#F87171", "#A1A1AA" ) )
+    RETURN
+    "<circle cx='24' cy='" & ( [@y] - 5 ) & "' r='4' fill='" & [@c] & "'/>" &
+    "<text x='35' y='" & [@y] & "' font-family='Segoe UI' font-size='14' fill='#EDEDEF'>" & [@n] & "</text>" &
+    "<text x='244.4' y='" & [@y] & "' text-anchor='end' font-family='Consolas' font-size='14' font-weight='600' fill='" & _col & "'>" &
+        IF ( _v < 0, "&#9660;", "&#9650;" ) & " " & FORMAT ( _v * 100, "+0;-0;0", "en-US" ) & "%</text>",
+    "", [@o], ASC
+) &
+"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>last 12 vs prior 12 mo</text></svg>"
+
+
+// Card: where is the money going. One bar per site: planned (grey) + reactive (red, glowing),
+// white tick = what the site would spend at Bedford's cost rate.
+// Expected: Houston $5.0M (+$2.2M over), Aurora $2.4M (+$0.9M over), Bedford $2.0M (the benchmark)
+HTML OV Money =
+VAR _T =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@tot", [Annual Maintenance Spend],
+        "@plan", [Annual Planned Spend],
+        "@bench", [Spend at Benchmark Rate],
+        "@gap", [Spend Above Benchmark],
+        "@rav", [Maintenance Cost % of RAV],
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Max = MAXX ( _T, [@tot] )
+VAR _Mx = _Max * 1.12
+VAR _Step = IF ( _Max > 8e6, 2e6, 1e6 )
+VAR _Rows = ADDCOLUMNS ( _T, "@y", VAR _tv = [@tot] RETURN 84 + 68 * COUNTROWS ( FILTER ( _T, [@tot] > _tv ) ) )
+VAR _Grid =
+    CONCATENATEX (
+        GENERATESERIES ( 0, _Max, _Step ),
+        VAR _x = FORMAT ( 132 + [Value] / _Mx * 460, "0.0", "en-US" )
+        RETURN
+        "<line x1='" & _x & "' x2='" & _x & "' y1='76' y2='284' stroke='#1D1D21'/>" &
+        "<text x='" & _x & "' y='300' text-anchor='middle' font-family='Consolas' font-size='11' fill='#5C5C66'>$" & FORMAT ( [Value] / 1e6, "0", "en-US" ) & "M</text>",
+        ""
+    )
+VAR _Bars =
+    CONCATENATEX (
+        _Rows,
+        VAR _y = [@y]
+        VAR _x0 = 132
+        VAR _xp = 132 + [@plan] / _Mx * 460
+        VAR _xt = 132 + [@tot] / _Mx * 460
+        VAR _xb = FORMAT ( 132 + [@bench] / _Mx * 460, "0.0", "en-US" )
+        RETURN
+        "<text x='22' y='" & ( _y + 22 ) & "' font-family='Segoe UI' font-size='16' font-weight='600' fill='" & [@c] & "'>" & [@n] & "</text>" &
+        "<text x='22' y='" & ( _y + 40 ) & "' font-family='Consolas' font-size='11.5' fill='#A1A1AA'>" & FORMAT ( [@rav] * 100, "0.0", "en-US" ) & "% of RAV</text>" &
+        "<rect x='" & FORMAT ( _xp - 8, "0.0", "en-US" ) & "' y='" & ( _y - 8 ) & "' width='" & FORMAT ( _xt - _xp + 16, "0.0", "en-US" ) & "' height='56' rx='14' fill='#F87171' fill-opacity='0.06'/>" &
+        "<rect x='" & FORMAT ( _xp - 4, "0.0", "en-US" ) & "' y='" & ( _y - 4 ) & "' width='" & FORMAT ( _xt - _xp + 8, "0.0", "en-US" ) & "' height='48' rx='10' fill='#F87171' fill-opacity='0.12'/>" &
+        "<rect x='132' y='" & _y & "' width='" & FORMAT ( _xp - _x0, "0.0", "en-US" ) & "' height='40' rx='6' fill='#A1A1AA' fill-opacity='0.55'/>" &
+        "<rect x='" & FORMAT ( _xp, "0.0", "en-US" ) & "' y='" & _y & "' width='" & FORMAT ( _xt - _xp, "0.0", "en-US" ) & "' height='40' rx='6' fill='#F87171' fill-opacity='0.9'/>" &
+        "<line x1='" & _xb & "' x2='" & _xb & "' y1='" & ( _y - 6 ) & "' y2='" & ( _y + 46 ) & "' stroke='#F4F4F5' stroke-width='2.5'/>" &
+        "<text x='" & FORMAT ( _xt + 12, "0.0", "en-US" ) & "' y='" & ( _y + 18 ) & "' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>$" & FORMAT ( [@tot] / 1e6, "0.0", "en-US" ) & "M</text>" &
+        IF ( [@gap] > 1,
+            "<text x='" & FORMAT ( _xt + 12, "0.0", "en-US" ) & "' y='" & ( _y + 36 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#F87171'>+$" & FORMAT ( [@gap] / 1e6, "0.0", "en-US" ) & "M over</text>",
+            "<text x='" & FORMAT ( _xt + 12, "0.0", "en-US" ) & "' y='" & ( _y + 36 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#4ADE80'>the benchmark</text>" ),
+        "", [@tot], DESC
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is the money going?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>annual maintenance spend by site &#183; white tick = spend at Bedford&#8217;s cost rate</text>" &
+_Grid & _Bars &
+"<g font-family='Consolas' font-size='12' fill='#A1A1AA'>" &
+"<rect x='22' y='313' width='10' height='10' rx='3' fill='#A1A1AA' fill-opacity='0.6'/><text x='38' y='322'>planned work</text>" &
+"<rect x='135' y='313' width='10' height='10' rx='3' fill='#F87171'/><text x='151' y='322'>reactive work</text>" &
+"<rect x='256' y='313' width='3' height='10' rx='1' fill='#F4F4F5'/><text x='265' y='322'>spend at Bedford&#8217;s rate</text></g></svg>"
+
+
+// Card: which sites need intervention. Reactive share of work orders (x) against cost as %
+// of asset value (y), bubble = annual spend. Green zone = < 20% reactive and <= 3% of asset value.
+HTML OV Quad =
+VAR _T =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@rx", MIN ( 50, MAX ( 0, [Reactive Maintenance %] * 100 ) ),
+        "@cy", MIN ( 9, MAX ( 0, [Maintenance Cost % of RAV] * 100 ) ),
+        "@tot", [Annual Maintenance Spend],
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _MaxT = MAXX ( _T, [@tot] )
+VAR _Grid =
+    CONCATENATEX (
+        { 0, 3, 6, 9 },
+        VAR _y = FORMAT ( 78 + ( 9 - [Value] ) / 9 * 218, "0.0", "en-US" )
+        RETURN
+        "<line x1='68' x2='746' y1='" & _y & "' y2='" & _y & "' stroke='#1D1D21'/>" &
+        "<text x='60' y='" & FORMAT ( 82 + ( 9 - [Value] ) / 9 * 218, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='11' fill='#5C5C66'>" & [Value] & "%</text>",
+        ""
+    ) &
+    CONCATENATEX (
+        { 0, 10, 20, 30, 40, 50 },
+        "<text x='" & FORMAT ( 68 + [Value] / 50 * 678, "0.0", "en-US" ) & "' y='314' text-anchor='middle' font-family='Consolas' font-size='11' fill='#5C5C66'>" & [Value] & "%</text>",
+        ""
+    )
+VAR _Dots =
+    CONCATENATEX (
+        _T,
+        VAR _x = 68 + [@rx] / 50 * 678
+        VAR _y = 78 + ( 9 - [@cy] ) / 9 * 218
+        VAR _r = 9 + DIVIDE ( [@tot], _MaxT ) * 16
+        VAR _lx = SWITCH ( DimSite[SITEID], "HOUSTON", _x, "AURORA", _x - _r - 12, _x + _r + 12 )
+        VAR _ly = SWITCH ( DimSite[SITEID], "HOUSTON", _y + _r + 20, _y + 2 )
+        VAR _a = SWITCH ( DimSite[SITEID], "HOUSTON", "middle", "AURORA", "end", "start" )
+        VAR _cx = FORMAT ( _x, "0.0", "en-US" )
+        VAR _cy = FORMAT ( _y, "0.0", "en-US" )
+        RETURN
+        "<circle cx='" & _cx & "' cy='" & _cy & "' r='" & FORMAT ( _r + 10, "0.0", "en-US" ) & "' fill='" & [@c] & "' fill-opacity='0.10'/>" &
+        "<circle cx='" & _cx & "' cy='" & _cy & "' r='" & FORMAT ( _r + 5, "0.0", "en-US" ) & "' fill='" & [@c] & "' fill-opacity='0.16'/>" &
+        "<circle cx='" & _cx & "' cy='" & _cy & "' r='" & FORMAT ( _r, "0.0", "en-US" ) & "' fill='" & [@c] & "' fill-opacity='0.85'/>" &
+        "<text x='" & FORMAT ( _lx, "0.0", "en-US" ) & "' y='" & FORMAT ( _ly, "0.0", "en-US" ) & "' text-anchor='" & _a & "' font-family='Segoe UI' font-size='15' font-weight='600' fill='" & [@c] & "'>" & [@n] & "</text>" &
+        "<text x='" & FORMAT ( _lx, "0.0", "en-US" ) & "' y='" & FORMAT ( _ly + 16, "0.0", "en-US" ) & "' text-anchor='" & _a & "' font-family='Consolas' font-size='11.5' fill='#A1A1AA'>$" & FORMAT ( [@tot] / 1e6, "0.0", "en-US" ) & "M/yr</text>",
+        "", [@tot], ASC
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 781 330' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which sites need intervention?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>bubble size = annual spend &#183; green zone = &lt; 20% reactive and &#8804; 3% of asset value</text>" &
+"<rect x='68' y='223.3' width='271.2' height='72.7' fill='#4ADE80' fill-opacity='0.10'/>" &
+"<rect x='474.8' y='78' width='271.2' height='96.9' fill='#F87171' fill-opacity='0.08'/>" &
+_Grid &
+"<text x='81.6' y='286.3' font-family='Consolas' font-size='11' font-weight='600' fill='#4ADE80'>WORLD-CLASS</text>" &
+"<text x='485.6' y='90.1' font-family='Consolas' font-size='11' font-weight='600' fill='#F87171'>INTERVENE</text>" &
+"<text x='407' y='329' text-anchor='middle' font-family='Consolas' font-size='11' fill='#A1A1AA'>reactive share of work orders &#8594;</text>" &
+"<text x='34' y='187' transform='rotate(-90 34 187)' text-anchor='middle' font-family='Consolas' font-size='11' fill='#A1A1AA'>cost % of asset value &#8594;</text>" &
+_Dots & "</svg>"
+
+
+// Card: is it getting better. Reactive work orders by month for each site: solid = the last 12
+// complete months (shaded, glowing), dashed = the same month a year earlier. Each panel has its own scale.
+HTML OV Trend =
+VAR _End = EOMONTH ( [Data As Of Date], -1 )
+VAR _Start = EOMONTH ( [Data As Of Date], -13 ) + 1
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@yoy", [Reactive YoY %],
+        "@o", SWITCH ( DimSite[SITEID], "HOUSTON", 1, "AURORA", 2, "BEDFORD", 3, 9 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Panels =
+    ADDCOLUMNS ( _Sites, "@k", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _Sites, [@o] < _o ) ) )
+VAR _Body =
+    CONCATENATEX (
+        _Panels,
+        VAR _px = 22 + [@k] * 356.67
+        VAR _c = [@c]
+        VAR _v = [@yoy]
+        VAR _vc = IF ( _v < -0.05, "#4ADE80", IF ( _v > 0, "#F87171", "#A1A1AA" ) )
+        VAR _M =
+            ADDCOLUMNS (
+                GENERATESERIES ( 0, 11, 1 ),
+                "@m", EDATE ( _Start, [Value] ),
+                "@ty", CALCULATE ( [Reactive Work Orders], REMOVEFILTERS ( DimDate ),
+                        DATESBETWEEN ( DimDate[Date], EDATE ( _Start, [Value] ), EOMONTH ( _Start, [Value] ) ) ) + 0,
+                "@ly", CALCULATE ( [Reactive Work Orders], REMOVEFILTERS ( DimDate ),
+                        DATESBETWEEN ( DimDate[Date], EDATE ( _Start, [Value] - 12 ), EOMONTH ( _Start, [Value] - 12 ) ) ) + 0
+            )
+        VAR _Hi = MAX ( MAXX ( _M, [@ty] ), MAXX ( _M, [@ly] ) )
+        VAR _StepY = IF ( _Hi > 100, 100, 50 )
+        VAR _Top = ( INT ( _Hi / _StepY ) + 1 ) * _StepY
+        VAR _H = 272 / 11
+        VAR _P =
+            ADDCOLUMNS ( _M, "@x", _px + 30 + [Value] * _H, "@yt", 101 + ( _Top - [@ty] ) / _Top * 200, "@yl", 101 + ( _Top - [@ly] ) / _Top * 200 )
+        // slopes per segment, then monotone tangents per point (Fritsch-Butland)
+        VAR _D =
+            ADDCOLUMNS (
+                _P,
+                "@dt", VAR _i = [Value] RETURN DIVIDE ( MAXX ( FILTER ( _P, [Value] = _i + 1 ), [@yt] ) - [@yt], _H ),
+                "@dl", VAR _i = [Value] RETURN DIVIDE ( MAXX ( FILTER ( _P, [Value] = _i + 1 ), [@yl] ) - [@yl], _H )
+            )
+        VAR _T =
+            ADDCOLUMNS (
+                _D,
+                "@mt",
+                    VAR _i = [Value]
+                    VAR _a = MAXX ( FILTER ( _D, [Value] = _i - 1 ), [@dt] )
+                    VAR _b = [@dt]
+                    RETURN IF ( _i = 0, _b, IF ( _i = 11, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) ),
+                "@ml",
+                    VAR _i = [Value]
+                    VAR _a = MAXX ( FILTER ( _D, [Value] = _i - 1 ), [@dl] )
+                    VAR _b = [@dl]
+                    RETURN IF ( _i = 0, _b, IF ( _i = 11, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) )
+            )
+        VAR _x0 = FORMAT ( _px + 30, "0.0", "en-US" )
+        VAR _y00 = MAXX ( FILTER ( _T, [Value] = 0 ), [@yt] )
+        VAR _l00 = MAXX ( FILTER ( _T, [Value] = 0 ), [@yl] )
+        VAR _CurveT =
+            CONCATENATEX (
+                FILTER ( _T, [Value] < 11 ),
+                VAR _i = [Value]
+                VAR _x1 = [@x]
+                VAR _y1 = [@yt]
+                VAR _m1 = [@mt]
+                VAR _x2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@x] )
+                VAR _y2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@yt] )
+                VAR _m2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@mt] )
+                VAR _h3 = _H / 3
+                RETURN
+                " C" & FORMAT ( _x1 + _h3, "0.0", "en-US" ) & "," & FORMAT ( _y1 + _m1 * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+                "", [Value], ASC
+            )
+        VAR _CurveL =
+            CONCATENATEX (
+                FILTER ( _T, [Value] < 11 ),
+                VAR _i = [Value]
+                VAR _x1 = [@x]
+                VAR _y1 = [@yl]
+                VAR _m1 = [@ml]
+                VAR _x2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@x] )
+                VAR _y2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@yl] )
+                VAR _m2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@ml] )
+                VAR _h3 = _H / 3
+                RETURN
+                " C" & FORMAT ( _x1 + _h3, "0.0", "en-US" ) & "," & FORMAT ( _y1 + _m1 * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+                "", [Value], ASC
+            )
+        VAR _PathT = "M" & _x0 & "," & FORMAT ( _y00, "0.0", "en-US" ) & _CurveT
+        VAR _PathL = "M" & _x0 & "," & FORMAT ( _l00, "0.0", "en-US" ) & _CurveL
+        VAR _xe = FORMAT ( _px + 302, "0.0", "en-US" )
+        VAR _ye = FORMAT ( MAXX ( FILTER ( _T, [Value] = 11 ), [@yt] ), "0.0", "en-US" )
+        RETURN
+        "<circle cx='" & FORMAT ( _px + 4, "0.0", "en-US" ) & "' cy='79' r='7' fill='" & _c & "' fill-opacity='0.25'/>" &
+        "<circle cx='" & FORMAT ( _px + 4, "0.0", "en-US" ) & "' cy='79' r='4' fill='" & _c & "'/>" &
+        "<text x='" & FORMAT ( _px + 15, "0.0", "en-US" ) & "' y='84' font-family='Segoe UI' font-size='14' font-weight='600' fill='#EDEDEF'>" & [@n] & "</text>" &
+        "<text x='" & FORMAT ( _px + 334.67, "0.0", "en-US" ) & "' y='84' text-anchor='end' font-family='Consolas' font-size='14' font-weight='600' fill='" & _vc & "'>" & FORMAT ( _v * 100, "+0;-0;0", "en-US" ) & "%</text>" &
+        CONCATENATEX (
+            { 0, 0.5, 1 },
+            VAR _gy = FORMAT ( 101 + ( 1 - [Value] ) * 200, "0.0", "en-US" )
+            RETURN
+            "<line x1='" & _x0 & "' x2='" & _xe & "' y1='" & _gy & "' y2='" & _gy & "' stroke='#1D1D21'/>" &
+            "<text x='" & FORMAT ( _px + 24, "0.0", "en-US" ) & "' y='" & FORMAT ( 105 + ( 1 - [Value] ) * 200, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>" & ( _Top * [Value] ) & "</text>",
+            ""
+        ) &
+        "<path d='" & _PathL & "' fill='none' stroke='#71717A' stroke-width='1.6' stroke-dasharray='4 4'/>" &
+        "<path d='" & _PathT & " L" & _xe & ",301 L" & _x0 & ",301 Z' fill='" & _c & "' fill-opacity='0.09'/>" &
+        "<path d='" & _PathT & "' fill='none' stroke='" & _c & "' stroke-width='14.4' stroke-opacity='0.06' stroke-linecap='round'/>" &
+        "<path d='" & _PathT & "' fill='none' stroke='" & _c & "' stroke-width='7.2' stroke-opacity='0.16' stroke-linecap='round'/>" &
+        "<path d='" & _PathT & "' fill='none' stroke='" & _c & "' stroke-width='2.4' stroke-linecap='round'/>" &
+        "<circle cx='" & _xe & "' cy='" & _ye & "' r='4' fill='" & _c & "'/>" &
+        CONCATENATEX (
+            FILTER ( _T, [Value] IN { 0, 3, 6, 9, 11 } ),
+            "<text x='" & FORMAT ( [@x], "0.0", "en-US" ) & "' y='319' text-anchor='middle' font-family='Consolas' font-size='12' fill='#5C5C66'>" & FORMAT ( [@m], "mmm", "en-US" ) & "</text>",
+            ""
+        ),
+        "", [@o], ASC
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 322' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Is it getting better?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>reactive work orders by month &#183; solid = last 12 complete months &#183; dashed = same month a year earlier</text>" &
+_Body & "</svg>"
+
+
+// Card: where is our compliance risk. Statutory jobs finished late per site, worst first.
+// Expected: Houston 321 (70.8% on time), Aurora 103 (83.7%), Bedford 56 (90.7%)
+HTML OV Risk =
+VAR _T =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@late", [Statutory Finished Late] + 0,
+        "@ot", [Statutory On-Time %],
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Max = MAX ( MAXX ( _T, [@late] ), 1 )
+VAR _Rows = ADDCOLUMNS ( _T, "@k", VAR _l = [@late] VAR _n = [@n] RETURN COUNTROWS ( FILTER ( _T, [@late] > _l || ( [@late] = _l && [@n] < _n ) ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 322' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is our compliance risk?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>statutory inspections finished late &#183; target 0</text>" &
+CONCATENATEX (
+    _Rows,
+    VAR _y = 89 + 69 * [@k]
+    VAR _w = [@late] / _Max * 332.3
+    RETURN
+    "<circle cx='26' cy='" & ( _y - 5 ) & "' r='4' fill='" & [@c] & "'/>" &
+    "<text x='38' y='" & _y & "' font-family='Segoe UI' font-size='14' fill='#EDEDEF'>" & [@n] & "</text>" &
+    "<text x='448' y='" & _y & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & FORMAT ( [@ot] * 100, "0.0", "en-US" ) & "% on time</text>" &
+    IF ( _w > 0,
+        "<rect x='16' y='" & ( _y + 12 ) & "' width='" & FORMAT ( _w + 12, "0.0", "en-US" ) & "' height='28' rx='10' fill='#F87171' fill-opacity='0.07'/>" &
+        "<rect x='19' y='" & ( _y + 15 ) & "' width='" & FORMAT ( _w + 6, "0.0", "en-US" ) & "' height='22' rx='7' fill='#F87171' fill-opacity='0.12'/>" &
+        "<rect x='22' y='" & ( _y + 18 ) & "' width='" & FORMAT ( _w, "0.0", "en-US" ) & "' height='16' rx='4' fill='#F87171'/>" ) &
+    "<text x='" & FORMAT ( 22 + _w + 12, "0.0", "en-US" ) & "' y='" & ( _y + 33 ) & "' font-family='Segoe UI' font-size='20' font-weight='600' fill='" & IF ( [@late] = 0, "#4ADE80", "#F87171" ) & "'>" & FORMAT ( [@late], "#,0", "en-US" ) & "</text>",
+    "", [@k], ASC
+) & "</svg>"
+
+
+// -----------------------------------------------------------------------------
+// PM & COMPLIANCE
+// -----------------------------------------------------------------------------
+
+// Page title and headline.
+// Expected: "40 statutory jobs are overdue today — 23 at Houston. The oldest (Replace faulty
+// emergency stop) is 81 days late and still waiting for approval."
+HTML PM Title =
+VAR _AsOf = [Data As Of Date]
+VAR _N = [Statutory Overdue Today]
+VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@n", [Statutory Overdue Today] ), [@n], DESC )
+VAR _TopName = UPPER ( LEFT ( MAXX ( _Top, DimSite[SITEID] ), 1 ) ) & LOWER ( MID ( MAXX ( _Top, DimSite[SITEID] ), 2, 50 ) )
+VAR _Old =
+    TOPN (
+        1,
+        CALCULATETABLE (
+            SELECTCOLUMNS ( FactWorkOrder, "@d", FactWorkOrder[DaysOverdue], "@w", FactWorkOrder[WONUM], "@t", FactWorkOrder[DESCRIPTION], "@s", FactWorkOrder[STATUS] ),
+            FactWorkOrder[IsOpen] = 1, FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" }, NOT ISBLANK ( FactWorkOrder[DaysOverdue] ), REMOVEFILTERS ( DimDate )
+        ),
+        [@d], DESC, [@w], ASC
+    )
+VAR _Status = SWITCH ( MAXX ( _Old, [@s] ), "WAPPR", "still waiting for approval", "APPR", "approved but not started", "INPRG", "in progress", "open" )
+VAR _Bold =
+    IF ( _N > 0,
+        _N & " statutory job" & IF ( _N = 1, " is", "s are" ) & " overdue today" & IF ( COUNTROWS ( VALUES ( DimSite[SITEID] ) ) > 1, " &#8212; " & MAXX ( _Top, [@n] ) & " at " & _TopName ) & ".",
+        "No statutory jobs are overdue today." )
+VAR _Rest = IF ( _N > 0, " The oldest (" & MAXX ( _Old, [@t] ) & ") is " & MAXX ( _Old, [@d] ) & " days late and " & _Status & "." )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>PM &amp; Compliance" &
+"<tspan fill='#6E6E78'> open work as of " & FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) & "</tspan></text>" &
+"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Bold & "</tspan>" & _Rest & "</text></svg>"
+
+
+// KPI 1 (hero): statutory jobs overdue today, split by site.
+// Expected: "40", "Houston 23 · Aurora 10 · Bedford 7"
+HTML PM KPI Overdue =
+VAR _BarW = 422.6
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@v", [Statutory Overdue Today],
+        "@o", SWITCH ( DimSite[SITEID], "HOUSTON", 1, "AURORA", 2, "BEDFORD", 3, 9 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Tot = SUMX ( _Sites, [@v] )
+VAR _Pos = FILTER ( _Sites, [@v] > 0 )
+VAR _Segs =
+    ADDCOLUMNS (
+        _Pos,
+        "@x", VAR _o = [@o] RETURN 20 + DIVIDE ( SUMX ( FILTER ( _Pos, [@o] < _o ), [@v] ), _Tot ) * _BarW,
+        "@w", DIVIDE ( [@v], _Tot ) * _BarW,
+        "@first", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _Pos, [@o] < _o ) ) = 0
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory jobs overdue today</text>" &
+"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _Tot, "#,0", "en-US" ) & "</text>" &
+"<rect x='20' y='129' width='422.6' height='10' rx='3' fill='#222227'/>" &
+CONCATENATEX (
+    _Segs,
+    IF ( [@first],
+        "<rect x='" & FORMAT ( [@x] - 6, "0.0", "en-US" ) & "' y='123' width='" & FORMAT ( [@w] + 12, "0.0", "en-US" ) & "' height='22' rx='10' fill='" & [@c] & "' fill-opacity='0.07'/>" &
+        "<rect x='" & FORMAT ( [@x] - 3, "0.0", "en-US" ) & "' y='126' width='" & FORMAT ( [@w] + 6, "0.0", "en-US" ) & "' height='16' rx='7' fill='" & [@c] & "' fill-opacity='0.16'/>" ) &
+    "<rect x='" & FORMAT ( [@x], "0.0", "en-US" ) & "' y='129' width='" & FORMAT ( MAX ( [@w] - 2, 1 ), "0.0", "en-US" ) & "' height='10' rx='3' fill='" & [@c] & "'/>",
+    "", [@o], ASC
+) &
+"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'>" &
+CONCATENATEX ( _Sites, "<tspan fill='" & [@c] & "'>" & [@n] & " " & [@v] & "</tspan>", " &#183; ", [@o], ASC ) &
+"</text></svg>"
+
+
+// KPI 2: statutory jobs due in the next 30 days. Footer = the site with the most.
+// Expected: "38", "● Houston 26"
+HTML PM KPI Due =
+VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [Statutory Due Next 30 Days] ), [@v], DESC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Top, DimSite[SITEID] )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory due in next 30 days</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [Statutory Due Next 30 Days], "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
+
+
+// KPI 3: PMs overdue today. Footer = the site with the most.
+// Expected: "610", "Houston 352"
+HTML PM KPI PMs =
+VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [PMs Overdue Today] ), [@v], DESC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Top, DimSite[SITEID] )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>PMs overdue today</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [PMs Overdue Today], "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & MAXX ( _Top, [@v] ) & "</text></svg>"
+
+
+// KPI 4: statutory jobs finished on time, against a 100% target.
+// Expected: "79.5%", red bar, "▲ 480 finished late", "target 100%"
+HTML PM KPI Statutory =
+VAR _V = [Statutory On-Time %]
+VAR _C = IF ( _V >= 1, "#4ADE80", IF ( _V >= 0.95, "#FBBF24", "#F87171" ) )
+VAR _G = IF ( _V >= 1, "&#10003;", IF ( _V >= 0.95, "&#9679;", "&#9650;" ) )
+VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 223.3
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Statutory on time</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
+"<rect x='20' y='102' width='224.3' height='4' rx='2' fill='#222227'/>" &
+"<rect x='17' y='99' width='" & FORMAT ( _FillW + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _C & "' fill-opacity='0.12'/>" &
+"<rect x='20' y='102' width='" & FORMAT ( _FillW, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _C & "'/>" &
+"<rect x='243.3' y='97' width='2' height='14' fill='#E4E4E7'/>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & FORMAT ( [Statutory Finished Late], "#,0", "en-US" ) & " finished late</text>" &
+"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 100%</text></svg>"
+
+
+// KPI 5: PM compliance against the 90% target.
+// Expected: "81.8%", amber bar, "● −8.2 pts", "target 90%"
+HTML PM KPI Compliance =
+VAR _V = [PM Compliance %]
+VAR _C = IF ( _V >= 0.9, "#4ADE80", IF ( _V >= 0.8, "#FBBF24", "#F87171" ) )
+VAR _G = IF ( _V >= 0.9, "&#10003;", IF ( _V >= 0.8, "&#9679;", "&#9650;" ) )
+VAR _Pts = ( _V - 0.9 ) * 100
+VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 224.4
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>PM compliance</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
+"<rect x='20' y='102' width='224.4' height='4' rx='2' fill='#222227'/>" &
+"<rect x='17' y='99' width='" & FORMAT ( _FillW + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _C & "' fill-opacity='0.12'/>" &
+"<rect x='20' y='102' width='" & FORMAT ( _FillW, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _C & "'/>" &
+"<rect x='" & FORMAT ( 19 + 0.9 * 224.4, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & IF ( _Pts < 0, "&#8722;", "+" ) & FORMAT ( ABS ( _Pts ), "0.0", "en-US" ) & " pts</text>" &
+"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 90%</text></svg>"
+
+
+// Card: what statutory work is overdue right now - the five oldest open inspection + safety jobs.
+// Expected first row: 1035067 · VALVE-00470 · Replace faulty emergency stop · SAF · awaiting approval · 81 d
+HTML PM Overdue List =
+VAR _N = [Statutory Overdue Today]
+VAR _Rows =
+    TOPN (
+        5,
+        CALCULATETABLE (
+            SELECTCOLUMNS (
+                FactWorkOrder,
+                "@wo", FactWorkOrder[WONUM], "@a", FactWorkOrder[ASSETNUM], "@t", FactWorkOrder[DESCRIPTION],
+                "@ty", FactWorkOrder[WORKTYPE], "@s", FactWorkOrder[STATUS], "@d", FactWorkOrder[DaysOverdue], "@site", FactWorkOrder[SITEID]
+            ),
+            FactWorkOrder[IsOpen] = 1, FactWorkOrder[WORKTYPE] IN { "INSP", "SAF" }, NOT ISBLANK ( FactWorkOrder[DaysOverdue] ), REMOVEFILTERS ( DimDate )
+        ),
+        [@d], DESC, [@wo], ASC
+    )
+VAR _Max = MAX ( MAXX ( _Rows, [@d] ), 1 )
+VAR _K = ADDCOLUMNS ( _Rows, "@k", VAR _d = [@d] VAR _w = [@wo] RETURN COUNTROWS ( FILTER ( _Rows, [@d] > _d || ( [@d] = _d && [@wo] < _w ) ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>What statutory work is overdue right now?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>open inspection + safety jobs past target date &#183; oldest first</text>" &
+"<text x='1070' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>All " & _N & " &#8594;</text>" &
+"<g font-family='Consolas' font-size='10.5' letter-spacing='0.4' fill='#5C5C66'><text x='22' y='83'>WO</text><text x='122' y='83'>ASSET</text><text x='304' y='83'>TASK</text><text x='728' y='83'>TYPE</text><text x='796' y='83'>STATUS</text><text x='1070' y='83' text-anchor='end'>DAYS OVERDUE</text></g>" &
+"<line x1='22' x2='1070' y1='91.5' y2='91.5' stroke='#232327'/>" &
+CONCATENATEX (
+    _K,
+    VAR _c = 115 + 46 * [@k]
+    VAR _st = SWITCH ( [@s], "WAPPR", "awaiting approval", "APPR", "not started", "INPRG", "in progress", [@s] )
+    VAR _sc = SWITCH ( [@s], "WAPPR", "#FBBF24", "APPR", "#A1A1AA", "INPRG", "#93C5FD", "#A1A1AA" )
+    VAR _sitec = SWITCH ( [@site], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" )
+    VAR _task = IF ( LEN ( [@t] ) > 54, LEFT ( [@t], 52 ) & "&#8230;", [@t] )
+    VAR _asset = IF ( ISBLANK ( [@a] ) || [@a] = "" || [@a] = "(none)", "location only", [@a] )
+    RETURN
+    "<text x='22' y='" & ( _c + 4 ) & "' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & [@wo] & "</text>" &
+    "<circle cx='126' cy='" & _c & "' r='4' fill='" & _sitec & "'/>" &
+    "<text x='138' y='" & ( _c + 4 ) & "' font-family='Consolas' font-size='13' fill='#EDEDEF'>" & _asset & "</text>" &
+    "<text x='304' y='" & ( _c + 5 ) & "' font-family='Segoe UI' font-size='14' fill='#EDEDEF'>" & _task & "</text>" &
+    "<rect x='728.5' y='" & ( _c - 8.5 ) & "' width='" & FORMAT ( 12 + LEN ( [@ty] ) * 5.8, "0.0", "en-US" ) & "' height='17' rx='5' fill='none' stroke='#33333A'/>" &
+    "<text x='734' y='" & ( _c + 4 ) & "' font-family='Consolas' font-size='10.5' fill='#B4B4BC'>" & [@ty] & "</text>" &
+    "<text x='796' y='" & ( _c + 4 ) & "' font-family='Consolas' font-size='13' fill='" & _sc & "'>" & _st & "</text>" &
+    "<text x='1070' y='" & ( _c - 1 ) & "' text-anchor='end' font-family='Consolas' font-size='13' font-weight='600' fill='#F87171'>" & [@d] & " d</text>" &
+    "<rect x='960' y='" & ( _c + 9 ) & "' width='110' height='3' rx='1.5' fill='#222227'/>" &
+    "<rect x='960' y='" & ( _c + 9 ) & "' width='" & FORMAT ( [@d] / _Max * 110, "0.0", "en-US" ) & "' height='3' rx='1.5' fill='#F87171'/>" &
+    IF ( [@k] < COUNTROWS ( _Rows ) - 1, "<line x1='22' x2='1070' y1='" & ( _c + 23.5 ) & "' y2='" & ( _c + 23.5 ) & "' stroke='#1C1C20'/>" ),
+    "", [@k], ASC
+) & "</svg>"
+
+
+// Card: where is it piling up - statutory jobs overdue today by days past target, against what
+// falls due in the next 30 days. Expected: Houston 23 / 26, Aurora 10 / 5, Bedford 7 / 7
+HTML PM Pile Up =
+VAR _T =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@v", [Statutory Overdue Today],
+        "@b1", [Statutory Overdue 1-7 Days] + 0,
+        "@b2", [Statutory Overdue 8-30 Days] + 0,
+        "@b3", [Statutory Overdue 31+ Days] + 0,
+        "@due", [Statutory Due Next 30 Days],
+        "@o", SWITCH ( DimSite[SITEID], "HOUSTON", 1, "AURORA", 2, "BEDFORD", 3, 9 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _Max = MAX ( MAXX ( _T, [@v] ), 1 )
+VAR _Rows = ADDCOLUMNS ( _T, "@k", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _T, [@o] < _o ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Where is it piling up?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>statutory jobs overdue today vs due in the next 30 days</text>" &
+"<text x='364' y='83' text-anchor='end' font-family='Consolas' font-size='12' fill='#A1A1AA'>overdue</text>" &
+"<text x='448' y='83' text-anchor='end' font-family='Consolas' font-size='12' fill='#A1A1AA'>due 30 d</text>" &
+CONCATENATEX (
+    _Rows,
+    VAR _c = 123 + 52 * [@k]
+    VAR _W = [@v] / _Max * 146
+    VAR _w1 = DIVIDE ( [@b1], [@v] ) * _W
+    VAR _w2 = DIVIDE ( [@b2], [@v] ) * _W
+    VAR _w3 = DIVIDE ( [@b3], [@v] ) * _W
+    RETURN
+    "<circle cx='26' cy='" & _c & "' r='7' fill='" & [@c] & "' fill-opacity='0.25'/>" &
+    "<circle cx='26' cy='" & _c & "' r='4' fill='" & [@c] & "'/>" &
+    "<text x='38' y='" & ( _c + 5 ) & "' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>" & [@n] & "</text>" &
+    IF ( [@b1] > 0, "<rect x='132' y='" & ( _c - 8 ) & "' width='" & FORMAT ( MAX ( _w1 - 2, 1 ), "0.0", "en-US" ) & "' height='16' rx='3' fill='#FDE68A'/>" ) &
+    IF ( [@b2] > 0, "<rect x='" & FORMAT ( 132 + _w1, "0.0", "en-US" ) & "' y='" & ( _c - 8 ) & "' width='" & FORMAT ( MAX ( _w2 - 2, 1 ), "0.0", "en-US" ) & "' height='16' rx='3' fill='#FBBF24'/>" ) &
+    IF ( [@b3] > 0, "<rect x='" & FORMAT ( 132 + _w1 + _w2, "0.0", "en-US" ) & "' y='" & ( _c - 8 ) & "' width='" & FORMAT ( MAX ( _w3, 1 ), "0.0", "en-US" ) & "' height='16' rx='3' fill='#F87171'/>" ) &
+    "<text x='364' y='" & ( _c + 8 ) & "' text-anchor='end' font-family='Segoe UI' font-size='24' font-weight='600' fill='#F87171'>" & [@v] & "</text>" &
+    "<text x='448' y='" & ( _c + 8 ) & "' text-anchor='end' font-family='Segoe UI' font-size='24' font-weight='600' fill='#FBBF24'>" & [@due] & "</text>",
+    "", [@o], ASC
+) &
+"<g font-family='Consolas' font-size='12' fill='#A1A1AA'><text x='22' y='275'>days overdue:</text>" &
+"<rect x='126' y='266' width='10' height='10' rx='3' fill='#FDE68A'/><text x='142' y='275'>1&#8211;7</text>" &
+"<rect x='194' y='266' width='10' height='10' rx='3' fill='#FBBF24'/><text x='210' y='275'>8&#8211;30</text>" &
+"<rect x='270' y='266' width='10' height='10' rx='3' fill='#F87171'/><text x='286' y='275'>31+</text></g></svg>"
+
+
+// Card: is statutory compliance improving - on-time % of inspection + safety jobs by due quarter,
+// one smooth glowing line per site, dashed target at 100%, value labels at the line ends.
+// Follows the year buttons (only quarters ending inside the selected years are drawn).
+// Expected last points (Jun 2026): Bedford 92.0%, Aurora 89.3%, Houston 80.0%
+HTML PM Quarterly =
+VAR _AsOf = [Data As Of Date]
+VAR _FirstFull = EDATE ( CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () ), 3 )
+VAR _SelFrom = MIN ( DimDate[Date] )
+VAR _SelTo = MAX ( DimDate[Date] )
+// quarter ends from the first full quarter to the cut-off, inside the selected years
+VAR _AllQ =
+    FILTER (
+        ADDCOLUMNS ( GENERATESERIES ( 0, 60, 1 ), "@qe", EOMONTH ( _FirstFull, [Value] ) ),
+        MONTH ( [@qe] ) IN { 3, 6, 9, 12 }
+            && EOMONTH ( [@qe], -3 ) + 1 >= _FirstFull
+            && [@qe] <= _AsOf
+            && [@qe] >= _SelFrom
+            && [@qe] <= _SelTo
+    )
+VAR _Q = ADDCOLUMNS ( _AllQ, "@i", VAR _q = [@qe] RETURN COUNTROWS ( FILTER ( _AllQ, [@qe] < _q ) ) )
+VAR _NQ = COUNTROWS ( _Q )
+VAR _PW = 1030 - 46 - 130
+VAR _Step = DIVIDE ( _PW, MAX ( _NQ - 1, 1 ) )
+VAR _Vals =
+    ADDCOLUMNS (
+        CROSSJOIN ( VALUES ( DimSite[SITEID] ), _Q ),
+        "@v", CALCULATE ( [Statutory On-Time %], REMOVEFILTERS ( DimDate ),
+                DATESBETWEEN ( DimDate[Date], EOMONTH ( [@qe], -3 ) + 1, [@qe] ),
+                USERELATIONSHIP ( DimDate[Date], FactWorkOrder[TargCompDate] ) )
+    )
+VAR _Lo = MIN ( 0.6, FLOOR ( MINX ( _Vals, [@v] ), 0.1 ) )
+VAR _Hi = 1.06
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ),
+        "@last", VAR _s = DimSite[SITEID] RETURN MAXX ( FILTER ( _Vals, DimSite[SITEID] = _s && [@i] = _NQ - 1 ), [@v] )
+    )
+VAR _E0 =
+    ADDCOLUMNS ( _Sites, "@ey", 68 + ( _Hi - [@last] ) / ( _Hi - _Lo ) * 194 )
+VAR _Ends =
+    ADDCOLUMNS ( _E0, "@rk", VAR _y = [@ey] VAR _s = DimSite[SITEID] RETURN COUNTROWS ( FILTER ( _E0, [@ey] < _y || ( [@ey] = _y && DimSite[SITEID] < _s ) ) ) )
+// end labels top to bottom, at least 18px apart: y(k) = max over j <= k of ( ey(j) + 18 * (k - j) )
+VAR _Lab =
+    ADDCOLUMNS (
+        _Ends,
+        "@ly", VAR _k = [@rk] RETURN MAXX ( FILTER ( _Ends, [@rk] <= _k ), [@ey] + 18 * ( _k - [@rk] ) )
+    )
+VAR _Grid =
+    CONCATENATEX (
+        FILTER ( { 0.6, 0.7, 0.8, 0.9, 1.0, 0.5, 0.4, 0.3, 0.2, 0.1, 0 }, [Value] >= _Lo - 0.001 ),
+        VAR _gy = 68 + ( _Hi - [Value] ) / ( _Hi - _Lo ) * 194
+        RETURN
+        "<line x1='68' x2='" & FORMAT ( 68 + _PW, "0.0", "en-US" ) & "' y1='" & FORMAT ( _gy, "0.0", "en-US" ) & "' y2='" & FORMAT ( _gy, "0.0", "en-US" ) & "' stroke='#1D1D21'/>" &
+        "<text x='58' y='" & FORMAT ( _gy + 4, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>" & FORMAT ( [Value] * 100, "0", "en-US" ) & "</text>",
+        ""
+    ) &
+    CONCATENATEX (
+        FILTER ( _Q, MOD ( [@i], 2 ) = 0 || [@i] = _NQ - 1 ),
+        "<text x='" & FORMAT ( 68 + [@i] * _Step, "0.0", "en-US" ) & "' y='282' text-anchor='middle' font-family='Consolas' font-size='12' fill='#5C5C66'>" &
+            FORMAT ( [@qe], "yy", "en-US" ) & " Q" & ROUNDUP ( MONTH ( [@qe] ) / 3, 0 ) & "</text>",
+        ""
+    )
+VAR _Ty = 68 + ( _Hi - 1 ) / ( _Hi - _Lo ) * 194
+VAR _Lines =
+    CONCATENATEX (
+        _Sites,
+        VAR _s = DimSite[SITEID]
+        VAR _c = [@c]
+        VAR _P =
+            SELECTCOLUMNS (
+                FILTER ( _Vals, DimSite[SITEID] = _s ),
+                "@i", [@i],
+                "@x", 68 + [@i] * _Step,
+                "@y", 68 + ( _Hi - [@v] ) / ( _Hi - _Lo ) * 194
+            )
+        VAR _D = ADDCOLUMNS ( _P, "@d", VAR _i = [@i] RETURN DIVIDE ( MAXX ( FILTER ( _P, [@i] = _i + 1 ), [@y] ) - [@y], _Step ) )
+        VAR _T =
+            ADDCOLUMNS (
+                _D,
+                "@m",
+                    VAR _i = [@i]
+                    VAR _a = MAXX ( FILTER ( _D, [@i] = _i - 1 ), [@d] )
+                    VAR _b = [@d]
+                    RETURN IF ( _i = 0, _b, IF ( _i = _NQ - 1, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) )
+            )
+        VAR _h3 = _Step / 3
+        VAR _Path =
+            "M68," & FORMAT ( MAXX ( FILTER ( _T, [@i] = 0 ), [@y] ), "0.0", "en-US" ) &
+            CONCATENATEX (
+                FILTER ( _T, [@i] < _NQ - 1 ),
+                VAR _i = [@i]
+                VAR _x2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@x] )
+                VAR _y2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@y] )
+                VAR _m2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@m] )
+                RETURN
+                " C" & FORMAT ( [@x] + _h3, "0.0", "en-US" ) & "," & FORMAT ( [@y] + [@m] * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " &
+                FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+                "", [@i], ASC
+            )
+        VAR _ex = FORMAT ( 68 + ( _NQ - 1 ) * _Step, "0.0", "en-US" )
+        VAR _ey = FORMAT ( MAXX ( FILTER ( _T, [@i] = _NQ - 1 ), [@y] ), "0.0", "en-US" )
+        RETURN
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='14.4' stroke-opacity='0.06' stroke-linecap='round'/>" &
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='7.2' stroke-opacity='0.16' stroke-linecap='round'/>" &
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='2.4' stroke-linecap='round'/>" &
+        "<circle cx='" & _ex & "' cy='" & _ey & "' r='4' fill='" & _c & "'/>",
+        ""
+    )
+VAR _Labels =
+    CONCATENATEX (
+        _Lab,
+        "<text x='" & FORMAT ( 68 + _PW + 12, "0.0", "en-US" ) & "' y='" & FORMAT ( [@ly] + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='" & [@c] & "'>" & [@n] &
+            " <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( [@last] * 100, "0.0", "en-US" ) & "%</tspan></text>",
+        ""
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Is statutory compliance improving?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>inspection + safety jobs finished on time, by quarter</text>" &
+_Grid &
+"<line x1='68' x2='" & FORMAT ( 68 + _PW, "0.0", "en-US" ) & "' y1='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' y2='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' stroke='#FBBF24' stroke-width='1.3' stroke-dasharray='5 5'/>" &
+"<text x='74' y='" & FORMAT ( _Ty - 7, "0.0", "en-US" ) & "' font-family='Consolas' font-size='11' fill='#FBBF24'>target 100%</text>" &
+_Lines & _Labels & "</svg>"
+
+
+// Card: which PM schedules keep slipping - the four schedules (12+ finished runs) with the
+// lowest on-time rate. Expected first rows: PM-00305 · XFMR-00400 7 of 12, PM-00472 · TANK-00606 7 of 12
+HTML PM Slipping =
+VAR _Below = [PM Schedules Below 80%]
+VAR _S =
+    FILTER (
+        ADDCOLUMNS (
+            CALCULATETABLE ( VALUES ( FactWorkOrder[PMNUM] ), FactWorkOrder[IsPM] = 1, NOT ISBLANK ( FactWorkOrder[PMNUM] ) ),
+            "@runs", CALCULATE ( SUM ( FactWorkOrder[IsPMCompleted] ) ),
+            "@ok", CALCULATE ( SUM ( FactWorkOrder[IsPMOnTime] ) ),
+            "@a", CALCULATE ( MAX ( FactWorkOrder[ASSETNUM] ) ),
+            "@site", CALCULATE ( MAX ( FactWorkOrder[SITEID] ) ),
+            "@t", CALCULATE ( MAX ( FactWorkOrder[DESCRIPTION] ) )
+        ),
+        [@runs] >= 12
+    )
+VAR _Top = TOPN ( 4, ADDCOLUMNS ( _S, "@r", DIVIDE ( [@ok], [@runs] ) ), [@r], ASC, FactWorkOrder[PMNUM], ASC )
+VAR _K = ADDCOLUMNS ( _Top, "@k", VAR _r = [@r] VAR _p = FactWorkOrder[PMNUM] RETURN COUNTROWS ( FILTER ( _Top, [@r] < _r || ( [@r] = _r && FactWorkOrder[PMNUM] < _p ) ) ) )
+VAR _OneSite = IF ( COUNTROWS ( DISTINCT ( SELECTCOLUMNS ( _Top, "s", [@site] ) ) ) = 1, MAXX ( _Top, [@site] ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which PM schedules keep slipping?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>schedules with 12+ runs" & IF ( _OneSite <> "", " &#183; all at " & UPPER ( LEFT ( _OneSite, 1 ) ) & LOWER ( MID ( _OneSite, 2, 50 ) ) ) & "</text>" &
+"<text x='448' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>" & _Below & " below 80% &#8594;</text>" &
+"<g font-family='Consolas' font-size='10.5' letter-spacing='0.4' fill='#5C5C66'><text x='22' y='82'>PM SCHEDULE</text><text x='328' y='82'>LATE</text></g>" &
+"<line x1='22' x2='448' y1='91.5' y2='91.5' stroke='#232327'/>" &
+CONCATENATEX (
+    _K,
+    VAR _y = 116 + 55 * [@k]
+    VAR _late = [@runs] - [@ok]
+    VAR _sitec = SWITCH ( [@site], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" )
+    VAR _t = IF ( LEN ( [@t] ) > 38, LEFT ( [@t], 37 ) & "&#8230;", [@t] )
+    RETURN
+    "<circle cx='26' cy='" & ( _y - 4 ) & "' r='4' fill='" & _sitec & "'/>" &
+    "<text x='38' y='" & _y & "' font-family='Consolas' font-size='13' fill='#EDEDEF'>" & FactWorkOrder[PMNUM] & " &#183; " & [@a] & "</text>" &
+    "<text x='38' y='" & ( _y + 18 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & _t & "</text>" &
+    "<text x='328' y='" & ( _y + 1 ) & "' font-family='Consolas' font-size='13' fill='#F87171'>" & _late & " of " & [@runs] & "</text>" &
+    "<rect x='328' y='" & ( _y + 10 ) & "' width='120' height='3' rx='1.5' fill='#222227'/>" &
+    "<rect x='328' y='" & ( _y + 10 ) & "' width='" & FORMAT ( DIVIDE ( _late, [@runs] ) * 120, "0.0", "en-US" ) & "' height='3' rx='1.5' fill='#F87171'/>" &
+    IF ( [@k] < COUNTROWS ( _Top ) - 1, "<line x1='22' x2='448' y1='" & ( _y + 31.5 ) & "' y2='" & ( _y + 31.5 ) & "' stroke='#1C1C20'/>" ),
+    "", [@k], ASC
+) & "</svg>"
+
+
+// -----------------------------------------------------------------------------
+// RELIABILITY
+// -----------------------------------------------------------------------------
+// Bad actors = the worst 5% of the selected sites' assets by failure count (the mockup's rule).
+
+// Page title and headline.
+// Expected: "Reliability Jul 2023 – Jul 2026" / "45 assets cause 20% of failures — and their condition
+// meters have drifted 54% above baseline."
+HTML REL Title =
+VAR _AsOf = MIN ( [Data As Of Date], MAX ( DimDate[Date] ) )
+VAR _From = MAX ( CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS ( DimDate ) ), MIN ( DimDate[Date] ) )
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _F = ADDCOLUMNS ( FILTER ( VALUES ( FactFailure[ASSETNUM] ), FactFailure[ASSETNUM] <> "" ), "@f", CALCULATE ( COUNTROWS ( FactFailure ) ) )
+VAR _Share = DIVIDE ( SUMX ( TOPN ( _K, _F, [@f], DESC, FactFailure[ASSETNUM], ASC ), [@f] ), COUNTROWS ( FactFailure ) )
+VAR _Drift = [Bad Actor Meter Drift %]
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Reliability" &
+"<tspan fill='#6E6E78'> " & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( _AsOf, "mmm yyyy", "en-US" ) & "</tspan></text>" &
+"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _K & " assets cause " & FORMAT ( _Share, "0%", "en-US" ) & " of failures</tspan>" &
+IF ( NOT ISBLANK ( _Drift ), " &#8212; and their condition meters have drifted " & FORMAT ( ABS ( _Drift ), "0%", "en-US" ) & IF ( _Drift >= 0, " above", " below" ) & " baseline." ) & "</text></svg>"
+
+
+// Condition-meter drift of the bad actors in the last complete month, against their own baseline
+// (the first three months of readings). Gauges only - run hours excluded. Bad actors are taken
+// over the whole data window so the line does not change membership month to month.
+// Expected: 0.54 (index 154)
+// @format 0%
+Bad Actor Meter Drift % =
+VAR _Start0 = CALCULATE ( MIN ( FactMeterReading[ReadingDate] ), REMOVEFILTERS () )
+VAR _M0 = DATE ( YEAR ( _Start0 ), MONTH ( _Start0 ), 1 )
+VAR _BaseYM = FORMAT ( EDATE ( _M0, 3 ), "yyyy-mm" )
+VAR _LastYM = FORMAT ( EOMONTH ( [Data As Of Date], -1 ), "yyyy-mm" )
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _Bad =
+    SELECTCOLUMNS (
+        TOPN ( _K,
+            ADDCOLUMNS ( CALCULATETABLE ( FILTER ( VALUES ( FactFailure[ASSETNUM] ), FactFailure[ASSETNUM] <> "" ), REMOVEFILTERS ( DimDate ) ),
+                "@f", CALCULATE ( COUNTROWS ( FactFailure ), REMOVEFILTERS ( DimDate ) ) ),
+            [@f], DESC, FactFailure[ASSETNUM], ASC ),
+        "@a", FactFailure[ASSETNUM] )
+VAR _G =
+    CALCULATETABLE (
+        ADDCOLUMNS (
+            SUMMARIZE ( FactMeterReading, FactMeterReading[ASSETNUM], FactMeterReading[METERNAME], DimDate[YEARMONTH] ),
+            "@s", CALCULATE ( SUM ( FactMeterReading[READING] ) ),
+            "@n", CALCULATE ( COUNTROWS ( FactMeterReading ) )
+        ),
+        FactMeterReading[METERNAME] <> "RUNHOURS",
+        REMOVEFILTERS ( DimDate )
+    )
+VAR _GB = FILTER ( _G, FactMeterReading[ASSETNUM] IN _Bad )
+VAR _Base =
+    GROUPBY ( FILTER ( _GB, DimDate[YEARMONTH] < _BaseYM ), FactMeterReading[ASSETNUM], FactMeterReading[METERNAME],
+        "@bs", SUMX ( CURRENTGROUP (), [@s] ), "@bn", SUMX ( CURRENTGROUP (), [@n] ) )
+VAR _J = FILTER ( NATURALINNERJOIN ( _GB, _Base ), DimDate[YEARMONTH] = _LastYM )
+VAR _Idx = DIVIDE ( SUMX ( _J, [@s] / DIVIDE ( [@bs], [@bn] ) ), SUMX ( _J, [@n] ) )
+RETURN
+    IF ( NOT ISBLANK ( _Idx ), _Idx - 1 )
+
+
+// KPI 1 (hero): share of all failures that come from the worst 5% of assets.
+// Expected: "19.8%", "45 of 900 assets · the worst 5%"
+HTML REL KPI Bad Actors =
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _F = ADDCOLUMNS ( FILTER ( VALUES ( FactFailure[ASSETNUM] ), FactFailure[ASSETNUM] <> "" ), "@f", CALCULATE ( COUNTROWS ( FactFailure ) ) )
+VAR _Share = DIVIDE ( SUMX ( TOPN ( _K, _F, [@f], DESC, FactFailure[ASSETNUM], ASC ), [@f] ), COUNTROWS ( FactFailure ) )
+VAR _W = MIN ( 1, MAX ( 0, _Share ) ) * 422.6
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 462.6 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Failures from the worst 5% of assets</text>" &
+"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _Share * 100, "0.0", "en-US" ) & "%</text>" &
+"<rect x='20' y='129' width='422.6' height='10' rx='5' fill='#222227'/>" &
+"<rect x='14' y='123' width='" & FORMAT ( _W + 12, "0.0", "en-US" ) & "' height='22' rx='11' fill='#F87171' fill-opacity='0.07'/>" &
+"<rect x='17' y='126' width='" & FORMAT ( _W + 6, "0.0", "en-US" ) & "' height='16' rx='8' fill='#F87171' fill-opacity='0.16'/>" &
+"<rect x='20' y='129' width='" & FORMAT ( _W, "0.0", "en-US" ) & "' height='10' rx='5' fill='#F87171'/>" &
+"<text x='20' y='157' font-family='Consolas' font-size='12' fill='#A1A1AA'><tspan fill='#F87171'>" & _K & " of " & FORMAT ( _Assets, "#,0", "en-US" ) & " assets</tspan> &#183; the worst 5%</text></svg>"
+
+
+// KPI 2: reactive work-order cost of the worst 45 assets (ranked by that cost).
+// Expected: "$3.6M", "20% of reactive cost", "3 years"
+HTML REL KPI Reactive Cost =
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _C =
+    ADDCOLUMNS (
+        CALCULATETABLE ( FILTER ( VALUES ( FactWorkOrder[ASSETNUM] ), FactWorkOrder[ASSETNUM] <> "" ), FactWorkOrder[IsReactive] = 1, FactWorkOrder[IsCancelled] = 0 ),
+        "@c", CALCULATE ( SUM ( FactWorkOrder[ActualTotalCost] ), FactWorkOrder[IsReactive] = 1, FactWorkOrder[IsCancelled] = 0 )
+    )
+VAR _Top = SUMX ( TOPN ( _K, _C, [@c], DESC, FactWorkOrder[ASSETNUM], ASC ), [@c] )
+VAR _All = SUMX ( _C, [@c] )
+VAR _Yrs = ROUND ( [Analysis Years], 0 )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Reactive cost, worst " & _K & "</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>$" & FORMAT ( _Top / 1e6, "0.0", "en-US" ) & "M</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _Top, _All ), "0%", "en-US" ) & " of reactive cost</text>" &
+"<text x='244.4' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>" & _Yrs & IF ( _Yrs = 1, " year", " years" ) & "</text></svg>"
+
+
+// KPI 3: mean time to repair (elapsed downtime per downtime event). Footer = the slowest site.
+// Expected: "13.4h", "Houston 15.6 h"
+HTML REL KPI MTTR =
+VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [MTTR (Hours)] ), [@v], DESC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Top, DimSite[SITEID] )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTTR</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTTR (Hours)], "0.0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & FORMAT ( MAXX ( _Top, [@v] ), "0.0", "en-US" ) & " h</text></svg>"
+
+
+// KPI 4: downtime hours. Footer = share at the site with the most.
+// Expected: "101k h", "71% at Houston", "3 years"
+HTML REL KPI Downtime =
+VAR _All = [Downtime Hours]
+VAR _Top = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@v", [Downtime Hours] ), [@v], DESC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Top, DimSite[SITEID] )
+VAR _Yrs = ROUND ( [Analysis Years], 0 )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.3 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Downtime</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" &
+    IF ( _All >= 10000, FORMAT ( _All / 1000, "0", "en-US" ) & "k", FORMAT ( _All, "#,0", "en-US" ) ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( MAXX ( _Top, [@v] ), _All ), "0%", "en-US" ) & " at " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & "</text>" &
+"<text x='244.3' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>" & _Yrs & IF ( _Yrs = 1, " year", " years" ) & "</text></svg>"
+
+
+// KPI 5: mean time between failures. Marked provisional (see the Information page).
+// Expected: "1,643h"
+HTML REL KPI MTBF =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 264.4 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>MTBF</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( [MTBF (Hours)], "#,0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>h</tspan></text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>provisional</text></svg>"
+
+
+// Card: can we see failures coming. Condition-meter readings indexed to each meter's first three
+// months (= 100), monthly mean: bad actors (red, glowing) against every other metered asset (grey).
+// Whole data window, so the year buttons do not cut the line. Expected last points: 154 vs 115.
+HTML REL Drift =
+VAR _Start0 = CALCULATE ( MIN ( FactMeterReading[ReadingDate] ), REMOVEFILTERS () )
+VAR _M0 = DATE ( YEAR ( _Start0 ), MONTH ( _Start0 ), 1 )
+VAR _BaseYM = FORMAT ( EDATE ( _M0, 3 ), "yyyy-mm" )
+VAR _NM = DATEDIFF ( _M0, EOMONTH ( [Data As Of Date], -1 ), MONTH ) + 1
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _Bad =
+    SELECTCOLUMNS (
+        TOPN ( _K,
+            ADDCOLUMNS ( CALCULATETABLE ( FILTER ( VALUES ( FactFailure[ASSETNUM] ), FactFailure[ASSETNUM] <> "" ), REMOVEFILTERS ( DimDate ) ),
+                "@f", CALCULATE ( COUNTROWS ( FactFailure ), REMOVEFILTERS ( DimDate ) ) ),
+            [@f], DESC, FactFailure[ASSETNUM], ASC ),
+        "@a", FactFailure[ASSETNUM] )
+VAR _G =
+    CALCULATETABLE (
+        ADDCOLUMNS (
+            SUMMARIZE ( FactMeterReading, FactMeterReading[ASSETNUM], FactMeterReading[METERNAME], DimDate[YEARMONTH] ),
+            "@s", CALCULATE ( SUM ( FactMeterReading[READING] ) ),
+            "@n", CALCULATE ( COUNTROWS ( FactMeterReading ) )
+        ),
+        FactMeterReading[METERNAME] <> "RUNHOURS",
+        REMOVEFILTERS ( DimDate )
+    )
+VAR _Base =
+    GROUPBY ( FILTER ( _G, DimDate[YEARMONTH] < _BaseYM ), FactMeterReading[ASSETNUM], FactMeterReading[METERNAME],
+        "@bs", SUMX ( CURRENTGROUP (), [@s] ), "@bn", SUMX ( CURRENTGROUP (), [@n] ) )
+VAR _J = ADDCOLUMNS ( NATURALINNERJOIN ( _G, _Base ), "@r", [@s] / DIVIDE ( [@bs], [@bn] ), "@bad", FactMeterReading[ASSETNUM] IN _Bad )
+VAR _NBad = COUNTROWS ( DISTINCT ( SELECTCOLUMNS ( FILTER ( _J, [@bad] ), "a", FactMeterReading[ASSETNUM] ) ) )
+VAR _NRest = COUNTROWS ( DISTINCT ( SELECTCOLUMNS ( FILTER ( _J, NOT [@bad] ), "a", FactMeterReading[ASSETNUM] ) ) )
+VAR _S =
+    ADDCOLUMNS (
+        GENERATESERIES ( 0, _NM - 1, 1 ),
+        "@m", EDATE ( _M0, [Value] ),
+        "@b", VAR _ym = FORMAT ( EDATE ( _M0, [Value] ), "yyyy-mm" ) VAR _r = FILTER ( _J, DimDate[YEARMONTH] = _ym && [@bad] ) RETURN 100 * DIVIDE ( SUMX ( _r, [@r] ), SUMX ( _r, [@n] ) ),
+        "@o", VAR _ym = FORMAT ( EDATE ( _M0, [Value] ), "yyyy-mm" ) VAR _r = FILTER ( _J, DimDate[YEARMONTH] = _ym && NOT [@bad] ) RETURN 100 * DIVIDE ( SUMX ( _r, [@r] ), SUMX ( _r, [@n] ) )
+    )
+VAR _Mx = MAX ( MAXX ( _S, [@b] ), MAXX ( _S, [@o] ) )
+VAR _Mn = MIN ( MINX ( _S, [@b] ), MINX ( _S, [@o] ) )
+VAR _Hi = MAX ( 180, CEILING ( _Mx, 20 ) )
+VAR _Lo = MIN ( 80, FLOOR ( _Mn, 20 ) )
+VAR _Step = DIVIDE ( 854, MAX ( _NM - 1, 1 ) )
+VAR _h3 = _Step / 3
+VAR _P =
+    ADDCOLUMNS ( _S, "@x", 68 + [Value] * _Step, "@yb", 68 + ( _Hi - [@b] ) / ( _Hi - _Lo ) * 204, "@yo", 68 + ( _Hi - [@o] ) / ( _Hi - _Lo ) * 204 )
+VAR _D =
+    ADDCOLUMNS ( _P,
+        "@db", VAR _i = [Value] RETURN DIVIDE ( MAXX ( FILTER ( _P, [Value] = _i + 1 ), [@yb] ) - [@yb], _Step ),
+        "@do", VAR _i = [Value] RETURN DIVIDE ( MAXX ( FILTER ( _P, [Value] = _i + 1 ), [@yo] ) - [@yo], _Step ) )
+VAR _T =
+    ADDCOLUMNS ( _D,
+        "@mb", VAR _i = [Value] VAR _a = MAXX ( FILTER ( _D, [Value] = _i - 1 ), [@db] ) VAR _b = [@db]
+            RETURN IF ( _i = 0, _b, IF ( _i = _NM - 1, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) ),
+        "@mo", VAR _i = [Value] VAR _a = MAXX ( FILTER ( _D, [Value] = _i - 1 ), [@do] ) VAR _b = [@do]
+            RETURN IF ( _i = 0, _b, IF ( _i = _NM - 1, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) ) )
+VAR _PathB =
+    "M68," & FORMAT ( MAXX ( FILTER ( _T, [Value] = 0 ), [@yb] ), "0.0", "en-US" ) &
+    CONCATENATEX ( FILTER ( _T, [Value] < _NM - 1 ),
+        VAR _i = [Value]
+        VAR _x2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@x] )
+        VAR _y2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@yb] )
+        VAR _m2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@mb] )
+        RETURN " C" & FORMAT ( [@x] + _h3, "0.0", "en-US" ) & "," & FORMAT ( [@yb] + [@mb] * _h3, "0.0", "en-US" ) & " " &
+            FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " & FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+        "", [Value], ASC )
+VAR _PathO =
+    "M68," & FORMAT ( MAXX ( FILTER ( _T, [Value] = 0 ), [@yo] ), "0.0", "en-US" ) &
+    CONCATENATEX ( FILTER ( _T, [Value] < _NM - 1 ),
+        VAR _i = [Value]
+        VAR _x2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@x] )
+        VAR _y2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@yo] )
+        VAR _m2 = MAXX ( FILTER ( _T, [Value] = _i + 1 ), [@mo] )
+        RETURN " C" & FORMAT ( [@x] + _h3, "0.0", "en-US" ) & "," & FORMAT ( [@yo] + [@mo] * _h3, "0.0", "en-US" ) & " " &
+            FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " & FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+        "", [Value], ASC )
+VAR _Last = MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@x] )
+VAR _yb = MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@yb] )
+VAR _yo = MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@yo] )
+VAR _lb = IF ( _yb <= _yo, MIN ( _yb, _yo - 18 ), MAX ( _yb, _yo + 18 ) )
+VAR _Y100 = 68 + ( _Hi - 100 ) / ( _Hi - _Lo ) * 204
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1092 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Can we see failures coming?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>condition meter readings, indexed &#183; " & _NBad & " metered bad actors vs " & _NRest & " other assets</text>" &
+CONCATENATEX (
+    GENERATESERIES ( _Lo, _Hi, 20 ),
+    VAR _gy = FORMAT ( 68 + ( _Hi - [Value] ) / ( _Hi - _Lo ) * 204, "0.0", "en-US" )
+    RETURN "<line x1='68' x2='922' y1='" & _gy & "' y2='" & _gy & "' stroke='#1D1D21'/>" &
+        "<text x='58' y='" & FORMAT ( 72 + ( _Hi - [Value] ) / ( _Hi - _Lo ) * 204, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>" & [Value] & "</text>",
+    "" ) &
+CONCATENATEX (
+    FILTER ( _T, MOD ( [Value], 6 ) = 0 || [Value] = _NM - 1 ),
+    "<text x='" & FORMAT ( [@x], "0.0", "en-US" ) & "' y='292' text-anchor='middle' font-family='Consolas' font-size='12' fill='#5C5C66'>" & FORMAT ( [@m], "mmm yy", "en-US" ) & "</text>",
+    "" ) &
+"<line x1='68' x2='922' y1='" & FORMAT ( _Y100, "0.0", "en-US" ) & "' y2='" & FORMAT ( _Y100, "0.0", "en-US" ) & "' stroke='#FBBF24' stroke-width='1.3' stroke-dasharray='5 5'/>" &
+"<text x='74' y='" & FORMAT ( _Y100 - 7, "0.0", "en-US" ) & "' font-family='Consolas' font-size='11' fill='#FBBF24'>baseline = 100 (" & FORMAT ( _M0, "mmm", "en-US" ) & "&#8211;" & FORMAT ( EDATE ( _M0, 2 ), "mmm yyyy", "en-US" ) & ")</text>" &
+"<path d='" & _PathO & "' fill='none' stroke='#A1A1AA' stroke-width='2' stroke-opacity='0.7'/>" &
+"<circle cx='" & FORMAT ( _Last, "0.0", "en-US" ) & "' cy='" & FORMAT ( _yo, "0.0", "en-US" ) & "' r='4' fill='#A1A1AA'/>" &
+"<path d='" & _PathB & "' fill='none' stroke='#F87171' stroke-width='14.4' stroke-opacity='0.06' stroke-linecap='round'/>" &
+"<path d='" & _PathB & "' fill='none' stroke='#F87171' stroke-width='7.2' stroke-opacity='0.16' stroke-linecap='round'/>" &
+"<path d='" & _PathB & "' fill='none' stroke='#F87171' stroke-width='2.4' stroke-linecap='round'/>" &
+"<circle cx='" & FORMAT ( _Last, "0.0", "en-US" ) & "' cy='" & FORMAT ( _yb, "0.0", "en-US" ) & "' r='4' fill='#F87171'/>" &
+"<text x='934' y='" & FORMAT ( _lb + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='#F87171'>Bad actors <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@b] ), "0", "en-US" ) & "</tspan></text>" &
+"<text x='934' y='" & FORMAT ( _yo + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='#A1A1AA'>Other assets <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( MAXX ( FILTER ( _T, [Value] = _NM - 1 ), [@o] ), "0", "en-US" ) & "</tspan></text></svg>"
+
+
+// Card: does criticality predict failure - failures per asset at each criticality level.
+// "No." when the highest level is within 25% of the lowest. Expected: 15.0, 14.4, 15.8, 14.6 -> "No."
+HTML REL Criticality =
+VAR _Sites = VALUES ( DimSite[SITEID] )
+VAR _C =
+    ADDCOLUMNS (
+        FILTER ( ALL ( DimAsset[CRITICALITY] ), DimAsset[CRITICALITY] & "" <> "" ),
+        "@n", CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( _Sites, DimAsset[SITEID] ) ),
+        "@f", CALCULATE ( COUNTROWS ( FactFailure ), DimAsset[ASSETNUM] <> "(none)" ) + 0
+    )
+VAR _R = ADDCOLUMNS ( FILTER ( _C, [@n] > 0 ), "@fpa", DIVIDE ( [@f], [@n] ) )
+VAR _Mx = MAXX ( _R, [@fpa] )
+VAR _Mn = MINX ( _R, [@fpa] )
+VAR _Flat = DIVIDE ( _Mx, _Mn ) < 1.25
+VAR _Top = MAX ( 20, CEILING ( _Mx, 10 ) )
+VAR _N = COUNTROWS ( _R )
+VAR _CW = 456 / MAX ( _N, 1 )
+VAR _K = ADDCOLUMNS ( _R, "@k", VAR _cr = DimAsset[CRITICALITY] RETURN COUNTROWS ( FILTER ( _R, DimAsset[CRITICALITY] < _cr ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Does criticality predict failure? <tspan fill='" & IF ( _Flat, "#F87171'>No.", "#4ADE80'>Yes." ) & "</tspan></text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>failures per asset &#183; " & IF ( _Flat, "every level fails about as often", "levels fail at different rates" ) & "</text>" &
+CONCATENATEX (
+    { 0, 0.5, 1 },
+    VAR _gy = FORMAT ( 94 + ( 1 - [Value] ) * 170, "0.0", "en-US" )
+    RETURN "<line x1='56' x2='512' y1='" & _gy & "' y2='" & _gy & "' stroke='#1D1D21'/>" &
+        "<text x='48' y='" & FORMAT ( 98 + ( 1 - [Value] ) * 170, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='11' fill='#5C5C66'>" & _Top * [Value] & "</text>",
+    "" ) &
+CONCATENATEX (
+    _K,
+    VAR _x = 56 + [@k] * _CW + ( _CW - 64 ) / 2
+    VAR _h = [@fpa] / _Top * 170
+    VAR _cx = FORMAT ( _x + 32, "0.0", "en-US" )
+    RETURN
+    "<rect x='" & FORMAT ( _x, "0.0", "en-US" ) & "' y='" & FORMAT ( 264 - _h, "0.0", "en-US" ) & "' width='64' height='" & FORMAT ( _h, "0.0", "en-US" ) & "' rx='5' fill='#A1A1AA' fill-opacity='0.75'/>" &
+    "<text x='" & _cx & "' y='" & FORMAT ( 256 - _h, "0.0", "en-US" ) & "' text-anchor='middle' font-family='Segoe UI' font-size='15' font-weight='600' fill='#EDEDEF'>" & FORMAT ( [@fpa], "0.0", "en-US" ) & "</text>" &
+    "<text x='" & _cx & "' y='284' text-anchor='middle' font-family='Consolas' font-size='11.5' font-weight='600' fill='#D4D4D8'>CRIT " & DimAsset[CRITICALITY] & "</text>" &
+    IF ( [@k] = 0, "<text x='" & _cx & "' y='299' text-anchor='middle' font-family='Consolas' font-size='10.5' fill='#5C5C66'>most critical</text>" ) &
+    IF ( [@k] = _N - 1, "<text x='" & _cx & "' y='299' text-anchor='middle' font-family='Consolas' font-size='10.5' fill='#5C5C66'>least</text>" ),
+    "", [@k], ASC ) & "</svg>"
+
+
+// Card: what fails - failure reports by problem code, top six.
+// Expected: Degraded 1,412 · Not Operating 1,400 · Leak 1,344 · Alarm 1,331 · Bearing Noise 573 · Overheat 537
+HTML REL What Fails =
+VAR _P =
+    TOPN ( 6,
+        ADDCOLUMNS ( FILTER ( VALUES ( FactFailure[PROBLEMCODE] ), FactFailure[PROBLEMCODE] <> "" ), "@n", CALCULATE ( COUNTROWS ( FactFailure ) ) ),
+        [@n], DESC, FactFailure[PROBLEMCODE], ASC )
+VAR _Mx = MAXX ( _P, [@n] )
+VAR _K = ADDCOLUMNS ( _P, "@k", VAR _n = [@n] VAR _c = FactFailure[PROBLEMCODE] RETURN COUNTROWS ( FILTER ( _P, [@n] > _n || ( [@n] = _n && FactFailure[PROBLEMCODE] < _c ) ) ) )
+VAR _AllSites = COUNTROWS ( VALUES ( DimSite[SITEID] ) ) = COUNTROWS ( ALL ( DimSite[SITEID] ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 539 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>What fails?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>failure reports by problem code, " &
+    IF ( _AllSites, "all sites", CONCATENATEX ( VALUES ( DimSite[SITEID] ), UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ), ", " ) ) & "</text>" &
+CONCATENATEX (
+    _K,
+    VAR _y = 82 + [@k] * 38
+    VAR _w = [@n] / _Mx * 312
+    VAR _code = FactFailure[PROBLEMCODE]
+    VAR _name = COALESCE ( LOOKUPVALUE ( DimFailureCode[ProblemName], DimFailureCode[ProblemCode], _code ), _code )
+    RETURN
+    "<text x='22' y='" & ( _y + 15 ) & "' font-family='Segoe UI' font-size='13.5' fill='#D4D4D8'>" & _name & "</text>" &
+    "<rect x='140' y='" & _y & "' width='" & FORMAT ( _w, "0.0", "en-US" ) & "' height='20' rx='4' fill='" & IF ( [@k] < 4, "#D4D4D8' fill-opacity='0.85", "#A1A1AA' fill-opacity='0.45" ) & "'/>" &
+    "<text x='" & FORMAT ( 148 + _w, "0.0", "en-US" ) & "' y='" & ( _y + 15 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#EDEDEF'>" & FORMAT ( [@n], "#,0", "en-US" ) & "</text>",
+    "", [@k], ASC ) & "</svg>"
+
+
+// Card: top 10 bad actors - failures (red bar), downtime hours (grey bar), reactive cost ($).
+// Expected first row: VALVE-00387 · 107 failures · 1,232 h · $147k
+HTML REL Bad Actors =
+VAR _Assets = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", TREATAS ( VALUES ( DimSite[SITEID] ), DimAsset[SITEID] ) )
+VAR _K = MAX ( 1, ROUND ( _Assets * 0.05, 0 ) )
+VAR _F = ADDCOLUMNS ( FILTER ( VALUES ( FactFailure[ASSETNUM] ), FactFailure[ASSETNUM] <> "" ), "@f", CALCULATE ( COUNTROWS ( FactFailure ) ) )
+VAR _Top10 =
+    ADDCOLUMNS (
+        TOPN ( 10, _F, [@f], DESC, FactFailure[ASSETNUM], ASC ),
+        "@dt", VAR _a = FactFailure[ASSETNUM] RETURN CALCULATE ( SUM ( FactDowntime[DOWNTIME] ), TREATAS ( { _a }, DimAsset[ASSETNUM] ) ) + 0,
+        "@c", VAR _a = FactFailure[ASSETNUM] RETURN CALCULATE ( SUM ( FactWorkOrder[ActualTotalCost] ), FactWorkOrder[IsReactive] = 1, FactWorkOrder[IsCancelled] = 0, TREATAS ( { _a }, DimAsset[ASSETNUM] ) ) + 0,
+        "@site", VAR _a = FactFailure[ASSETNUM] RETURN LOOKUPVALUE ( DimAsset[SITEID], DimAsset[ASSETNUM], _a )
+    )
+VAR _R = ADDCOLUMNS ( _Top10, "@k", VAR _fv = [@f] VAR _a = FactFailure[ASSETNUM] RETURN COUNTROWS ( FILTER ( _Top10, [@f] > _fv || ( [@f] = _fv && FactFailure[ASSETNUM] < _a ) ) ) )
+VAR _MxF = MAXX ( _R, [@f] )
+VAR _MxD = MAX ( MAXX ( _R, [@dt] ), 1 )
+VAR _Sites = DISTINCT ( SELECTCOLUMNS ( _R, "s", [@site] ) )
+VAR _One = IF ( COUNTROWS ( _Sites ) = 1, MAXX ( _Sites, [s] ) )
+VAR _Yrs = ROUND ( [Analysis Years], 0 )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 470 666' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Top 10 bad actors</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>" & IF ( _One <> "", "all ten at " & UPPER ( LEFT ( _One, 1 ) ) & LOWER ( MID ( _One, 2, 50 ) ) & " &#183; " ) & _Yrs & IF ( _Yrs = 1, " yr", " yrs" ) & "</text>" &
+"<text x='448' y='36' text-anchor='end' font-family='Segoe UI' font-size='13' fill='#93C5FD'>All " & _K & " &#8594;</text>" &
+"<g font-family='Consolas' font-size='12' fill='#A1A1AA'><rect x='22' y='72' width='10' height='10' rx='3' fill='#F87171'/><text x='38' y='81'>failures</text>" &
+"<rect x='107' y='72' width='10' height='10' rx='3' fill='#A1A1AA' fill-opacity='0.6'/><text x='123' y='81'>downtime hours</text><text x='231' y='81'>$ = reactive cost</text></g>" &
+CONCATENATEX (
+    _R,
+    VAR _y = 104 + 57 * [@k]
+    VAR _wf = [@f] / _MxF * 232
+    VAR _wd = [@dt] / _MxD * 206
+    VAR _sc = SWITCH ( [@site], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" )
+    RETURN
+    "<circle cx='27' cy='" & ( _y + 11 ) & "' r='4' fill='" & _sc & "'/>" &
+    "<text x='38' y='" & ( _y + 15 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#EDEDEF'>" & FactFailure[ASSETNUM] & "</text>" &
+    "<text x='38' y='" & ( _y + 32 ) & "' font-family='Consolas' font-size='11.5' fill='#5C5C66'>$" & FORMAT ( [@c] / 1000, "#,0", "en-US" ) & "k</text>" &
+    "<rect x='169' y='" & ( _y - 1 ) & "' width='" & FORMAT ( _wf + 6, "0.0", "en-US" ) & "' height='22' rx='7' fill='#F87171' fill-opacity='0.08'/>" &
+    "<rect x='172' y='" & ( _y + 2 ) & "' width='" & FORMAT ( _wf, "0.0", "en-US" ) & "' height='16' rx='4' fill='#F87171' fill-opacity='0.85'/>" &
+    "<text x='" & FORMAT ( 180 + _wf, "0.0", "en-US" ) & "' y='" & ( _y + 15 ) & "' font-family='Consolas' font-size='12.5' font-weight='600' fill='#F87171'>" & [@f] & "</text>" &
+    IF ( _wd > 0, "<rect x='172' y='" & ( _y + 23 ) & "' width='" & FORMAT ( _wd, "0.0", "en-US" ) & "' height='7' rx='3' fill='#A1A1AA' fill-opacity='0.6'/>" ) &
+    "<text x='" & FORMAT ( 180 + _wd, "0.0", "en-US" ) & "' y='" & ( _y + 31 ) & "' font-family='Consolas' font-size='10.5' fill='#5C5C66'>" & FORMAT ( [@dt], "#,0", "en-US" ) & " h</text>",
+    "", [@k], ASC ) & "</svg>"
+
+
+// -----------------------------------------------------------------------------
+// PLANNING
+// -----------------------------------------------------------------------------
+
+// Share of scheduled jobs started within the tolerance (2 days) of their scheduled start, over the
+// 12 months to the data cut-off, by scheduled start date. Fixed to the cut-off.
+// Expected: 72.2% all sites (mockup 72.9% counted completed jobs only)
+// @format 0.0%
+Schedule Compliance % (12M) =
+VAR _AsOf = [Data As Of Date]
+RETURN
+    CALCULATE (
+        [Schedule Compliance %],
+        REMOVEFILTERS ( DimDate ),
+        FactWorkOrder[SchedStartDate] > _AsOf - 365,
+        FactWorkOrder[SchedStartDate] <= _AsOf
+    )
+
+
+// Page title and headline.
+// Expected: "Houston starts only 60% of its jobs on schedule and carries 10 weeks of backlog.
+// 553 jobs are still waiting for approval."
+HTML PLAN Title =
+VAR _AsOf = [Data As Of Date]
+VAR _Worst = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@s", [Schedule Compliance % (12M)], "@w", [Backlog Weeks] ), [@s], ASC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Worst, DimSite[SITEID] )
+VAR _Name = UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) )
+VAR _Wait = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>Planning" &
+"<tspan fill='#6E6E78'> open work as of " & FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) & "</tspan></text>" &
+"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'><tspan font-weight='600' fill='#EDEDEF'>" & _Name &
+    IF ( MAXX ( _Worst, [@s] ) < 0.9, " starts only ", " starts " ) & FORMAT ( MAXX ( _Worst, [@s] ), "0%", "en-US" ) & " of its jobs on schedule</tspan> and carries " &
+    FORMAT ( MAXX ( _Worst, [@w] ), "0", "en-US" ) & " weeks of backlog. " & FORMAT ( _Wait, "#,0", "en-US" ) & IF ( _Wait = 1, " job is", " jobs are" ) & " still waiting for approval.</text></svg>"
+
+
+// KPI 1 (hero): backlog in weeks of crew capacity, on a 0-12 week scale. Band = healthy 4-6 weeks.
+// Expected: "5.8 wks", amber, "● top of the healthy band"
+HTML PLAN KPI Backlog =
+VAR _V = [Backlog Weeks]
+VAR _PW = 423.8
+VAR _C = IF ( _V > 6, "#F87171", IF ( _V >= 4 && _V < 5.5, "#4ADE80", "#FBBF24" ) )
+VAR _Word =
+    IF ( _V > 6, "&#9650; over the healthy band",
+        IF ( _V < 4, "&#9679; below the healthy band",
+            IF ( _V < 5.5, "&#10003; inside the healthy band", "&#9679; top of the healthy band" ) ) )
+VAR _FillW = MIN ( 1, MAX ( 0, _V / 12 ) ) * _PW
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 463.8 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Backlog</text>" &
+"<text x='20' y='100' font-family='Segoe UI' font-size='64' font-weight='500' letter-spacing='-1.5' fill='#EDEDEF'>" & FORMAT ( _V, "0.0", "en-US" ) & "<tspan dx='3' font-size='20' letter-spacing='0' fill='#8B8B93'>wks</tspan></text>" &
+"<rect x='20' y='129' width='423.8' height='4' rx='2' fill='#222227'/>" &
+"<rect x='" & FORMAT ( 20 + _PW / 3, "0.0", "en-US" ) & "' y='129' width='" & FORMAT ( _PW / 6, "0.0", "en-US" ) & "' height='4' fill='#4ADE80' fill-opacity='0.19'/>" &
+"<rect x='17' y='126' width='" & FORMAT ( _FillW + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _C & "' fill-opacity='0.12'/>" &
+"<rect x='20' y='129' width='" & FORMAT ( _FillW, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _C & "'/>" &
+"<rect x='" & FORMAT ( 19 + _PW / 2, "0.0", "en-US" ) & "' y='124' width='2' height='14' fill='#E4E4E7'/>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _Word & "</text>" &
+"<text x='443.8' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>healthy 4&#8211;6 wks</text></svg>"
+
+
+// KPI 2: jobs started on schedule (12 months), target 90%. Footer = the worst site.
+// Expected: "72.2%", red, "▲ Houston 60%"
+HTML PLAN KPI Schedule =
+VAR _V = [Schedule Compliance % (12M)]
+VAR _C = IF ( _V >= 0.9, "#4ADE80", IF ( _V >= 0.8, "#FBBF24", "#F87171" ) )
+VAR _G = IF ( _V >= 0.9, "&#10003;", IF ( _V >= 0.8, "&#9679;", "&#9650;" ) )
+VAR _Worst = TOPN ( 1, ADDCOLUMNS ( VALUES ( DimSite[SITEID] ), "@s", [Schedule Compliance % (12M)] ), [@s], ASC, DimSite[SITEID], ASC )
+VAR _Id = MAXX ( _Worst, DimSite[SITEID] )
+VAR _FillW = MIN ( 1, MAX ( 0, _V ) ) * 225
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Jobs started on schedule</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _V * 100, "0.0", "en-US" ) & "%</text>" &
+"<rect x='20' y='102' width='225' height='4' rx='2' fill='#222227'/>" &
+"<rect x='17' y='99' width='" & FORMAT ( _FillW + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _C & "' fill-opacity='0.12'/>" &
+"<rect x='20' y='102' width='" & FORMAT ( _FillW, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _C & "'/>" &
+"<rect x='" & FORMAT ( 19 + 0.9 * 225, "0.0", "en-US" ) & "' y='97' width='2' height='14' fill='#E4E4E7'/>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='" & _C & "'>" & _G & " " & UPPER ( LEFT ( _Id, 1 ) ) & LOWER ( MID ( _Id, 2, 50 ) ) & " " & FORMAT ( MAXX ( _Worst, [@s] ), "0%", "en-US" ) & "</text>" &
+"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>target 90%</text></svg>"
+
+
+// KPI 3: open jobs approved and ready to schedule (status APPR).
+// Expected: "1,310", "6,844 h of work", "approved"
+HTML PLAN KPI Ready =
+VAR _N = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "APPR", REMOVEFILTERS ( DimDate ) ) + 0
+VAR _H = CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "APPR", REMOVEFILTERS ( DimDate ) ) + 0
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Ready to schedule</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( _H, "#,0", "en-US" ) & " h of work</text>" &
+"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>approved</text></svg>"
+
+
+// KPI 4: open jobs waiting for approval (status WAPPR).
+// Expected: "553", "● 3,488 h stuck"
+HTML PLAN KPI Waiting =
+VAR _N = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
+VAR _H = CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Waiting for approval</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _N, "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#FBBF24'>&#9679; " & FORMAT ( _H, "#,0", "en-US" ) & " h stuck</text></svg>"
+
+
+// KPI 5: open jobs older than 90 days, against the whole open backlog.
+// Expected: "102" (mockup 95), "3.9% of backlog", "of 2,596"
+HTML PLAN KPI Aged =
+VAR _A = [Aged Over 90 Days] + 0
+VAR _O = [Open Work Orders] + 0
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 265 184' width='100%' style='display:block'>" &
+"<text x='20' y='34' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>Open over 90 days</text>" &
+"<text x='20' y='78' font-family='Segoe UI' font-size='38' font-weight='500' letter-spacing='-0.5' fill='#EDEDEF'>" & FORMAT ( _A, "#,0", "en-US" ) & "</text>" &
+"<text x='20' y='163' font-family='Consolas' font-size='13' fill='#A1A1AA'>" & FORMAT ( DIVIDE ( _A, _O ) * 100, "0.0", "en-US" ) & "% of backlog</text>" &
+"<text x='245' y='163' text-anchor='end' font-family='Consolas' font-size='13' fill='#5C5C66'>of " & FORMAT ( _O, "#,0", "en-US" ) & "</text></svg>"
+
+
+// Card: how many weeks of work is waiting - per site, backlog weeks on a 0-12 scale (band 4-6)
+// and the open hours split by status. Expected: Houston 10.1 over, Aurora 4.4 in band, Bedford 2.8 low
+HTML PLAN Weeks =
+VAR _T =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@w", [Backlog Weeks],
+        "@n", [Open Work Orders] + 0,
+        "@cap", [Weekly Craft Capacity (Hours)] + 0,
+        "@h1", CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "APPR", REMOVEFILTERS ( DimDate ) ) + 0,
+        "@h2", CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "WAPPR", REMOVEFILTERS ( DimDate ) ) + 0,
+        "@h3", CALCULATE ( SUM ( FactWorkOrder[ESTLABHRS] ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[STATUS] = "INPRG", REMOVEFILTERS ( DimDate ) ) + 0,
+        "@o", SWITCH ( DimSite[SITEID], "HOUSTON", 1, "AURORA", 2, "BEDFORD", 3, 9 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@nm", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) )
+    )
+VAR _R = ADDCOLUMNS ( _T, "@k", VAR _o = [@o] RETURN COUNTROWS ( FILTER ( _T, [@o] < _o ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>How many weeks of work is waiting &#8212; and is it ready?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>open estimated hours &#247; crew capacity (assumed) &#183; healthy band 4&#8211;6 weeks</text>" &
+CONCATENATEX (
+    _R,
+    VAR _y = 98 + 66 * [@k]
+    VAR _v = [@w]
+    VAR _col = IF ( _v > 6, "#F87171", IF ( _v < 4, "#FBBF24", "#4ADE80" ) )
+    VAR _word = IF ( _v > 6, "over", IF ( _v < 4, "low", "in band" ) )
+    VAR _fw = MIN ( 1, MAX ( 0, _v / 12 ) ) * 672
+    VAR _tot = [@h1] + [@h2] + [@h3]
+    VAR _w1 = DIVIDE ( [@h1], _tot ) * 672
+    VAR _w2 = DIVIDE ( [@h2], _tot ) * 672
+    VAR _w3 = DIVIDE ( [@h3], _tot ) * 672
+    RETURN
+    "<circle cx='26' cy='" & ( _y + 4 ) & "' r='7' fill='" & [@c] & "' fill-opacity='0.25'/>" &
+    "<circle cx='26' cy='" & ( _y + 4 ) & "' r='4' fill='" & [@c] & "'/>" &
+    "<text x='38' y='" & ( _y + 9 ) & "' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>" & [@nm] & "</text>" &
+    "<rect x='192' y='" & _y & "' width='672' height='4' rx='2' fill='#222227'/>" &
+    "<rect x='416' y='" & _y & "' width='112' height='4' fill='#4ADE80' fill-opacity='0.25'/>" &
+    "<rect x='189' y='" & ( _y - 3 ) & "' width='" & FORMAT ( _fw + 6, "0.0", "en-US" ) & "' height='10' rx='5' fill='" & _col & "' fill-opacity='0.12'/>" &
+    "<rect x='192' y='" & _y & "' width='" & FORMAT ( _fw, "0.0", "en-US" ) & "' height='4' rx='2' fill='" & _col & "'/>" &
+    "<rect x='527' y='" & ( _y - 5 ) & "' width='2' height='14' fill='#E4E4E7'/>" &
+    IF ( [@h1] > 0, "<rect x='192' y='" & ( _y + 16 ) & "' width='" & FORMAT ( MAX ( _w1 - 2, 1 ), "0.0", "en-US" ) & "' height='6' rx='2' fill='#D4D4D8'/>" ) &
+    IF ( [@h2] > 0, "<rect x='" & FORMAT ( 192 + _w1, "0.0", "en-US" ) & "' y='" & ( _y + 16 ) & "' width='" & FORMAT ( MAX ( _w2 - 2, 1 ), "0.0", "en-US" ) & "' height='6' rx='2' fill='#FBBF24'/>" ) &
+    IF ( [@h3] > 0, "<rect x='" & FORMAT ( 192 + _w1 + _w2, "0.0", "en-US" ) & "' y='" & ( _y + 16 ) & "' width='" & FORMAT ( MAX ( _w3, 1 ), "0.0", "en-US" ) & "' height='6' rx='2' fill='#60708A'/>" ) &
+    "<text x='1024' y='" & ( _y + 6 ) & "' text-anchor='end'><tspan font-family='Segoe UI' font-size='22' font-weight='500' fill='" & _col & "'>" & FORMAT ( _v, "0.0", "en-US" ) & "</tspan>" &
+        "<tspan font-family='Consolas' font-size='12' fill='#A1A1AA'> wks &#183; " & _word & "</tspan></text>" &
+    "<text x='1024' y='" & ( _y + 23 ) & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & FORMAT ( [@n], "#,0", "en-US" ) & " WOs &#183; " & FORMAT ( [@cap], "#,0", "en-US" ) & " h/wk</text>",
+    "", [@k], ASC ) &
+"<g font-family='Consolas' font-size='12' fill='#A1A1AA'><text x='192' y='287'>open hours by status:</text>" &
+"<rect x='348' y='278' width='10' height='10' rx='3' fill='#D4D4D8'/><text x='364' y='287'>ready</text>" &
+"<rect x='413' y='278' width='10' height='10' rx='3' fill='#FBBF24'/><text x='429' y='287'>waiting for approval</text>" &
+"<rect x='577' y='278' width='10' height='10' rx='3' fill='#60708A'/><text x='593' y='287'>in progress</text></g></svg>"
+
+
+// Card: are we starting work when we planned - share of jobs started within 2 days of their
+// scheduled start, by scheduled-start month, 3-month rolling average, one smooth glowing line
+// per site, dashed target at 90%. Whole data window (like the mockup).
+// Expected last points (Jun 2026): Bedford 84%, Aurora 81%, Houston 62%
+HTML PLAN Schedule =
+VAR _AsOf = [Data As Of Date]
+VAR _M0 = EOMONTH ( CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () ), 0 ) + 1
+VAR _NM = DATEDIFF ( _M0, EOMONTH ( _AsOf, -1 ), MONTH ) + 1
+VAR _Mo = ADDCOLUMNS ( GENERATESERIES ( 0, _NM - 1, 1 ), "@m", EDATE ( _M0, [Value] ) )
+VAR _V0 =
+    ADDCOLUMNS (
+        CROSSJOIN ( VALUES ( DimSite[SITEID] ), _Mo ),
+        "@v", VAR _m = [@m] RETURN CALCULATE ( [Schedule Compliance %], REMOVEFILTERS ( DimDate ),
+                FactWorkOrder[SchedStartDate] >= _m, FactWorkOrder[SchedStartDate] <= EOMONTH ( _m, 0 ) )
+    )
+VAR _V =
+    ADDCOLUMNS ( _V0, "@r",
+        VAR _s = DimSite[SITEID] VAR _i = [Value]
+        RETURN AVERAGEX ( FILTER ( _V0, DimSite[SITEID] = _s && [Value] >= _i - 2 && [Value] <= _i && NOT ISBLANK ( [@v] ) ), [@v] ) )
+VAR _Lo = MIN ( 0.5, FLOOR ( MINX ( _V, [@r] ), 0.1 ) )
+VAR _Hi = 1.0
+VAR _Step = DIVIDE ( 824, MAX ( _NM - 1, 1 ) )
+VAR _h3 = _Step / 3
+VAR _Sites =
+    ADDCOLUMNS (
+        VALUES ( DimSite[SITEID] ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ),
+        "@n", UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ),
+        "@last", VAR _s = DimSite[SITEID] RETURN MAXX ( FILTER ( _V, DimSite[SITEID] = _s && [Value] = _NM - 1 ), [@r] )
+    )
+VAR _E0 = ADDCOLUMNS ( _Sites, "@ey", 68 + ( _Hi - [@last] ) / ( _Hi - _Lo ) * 200 )
+VAR _Ends = ADDCOLUMNS ( _E0, "@rk", VAR _y = [@ey] VAR _s = DimSite[SITEID] RETURN COUNTROWS ( FILTER ( _E0, [@ey] < _y || ( [@ey] = _y && DimSite[SITEID] < _s ) ) ) )
+VAR _Lab = ADDCOLUMNS ( _Ends, "@ly", VAR _k = [@rk] RETURN MAXX ( FILTER ( _Ends, [@rk] <= _k ), [@ey] + 18 * ( _k - [@rk] ) ) )
+VAR _Ty = 68 + ( _Hi - 0.9 ) / ( _Hi - _Lo ) * 200
+VAR _Lines =
+    CONCATENATEX (
+        _Sites,
+        VAR _s = DimSite[SITEID]
+        VAR _c = [@c]
+        VAR _P = SELECTCOLUMNS ( FILTER ( _V, DimSite[SITEID] = _s ), "@i", [Value], "@x", 68 + [Value] * _Step, "@y", 68 + ( _Hi - [@r] ) / ( _Hi - _Lo ) * 200 )
+        VAR _D = ADDCOLUMNS ( _P, "@d", VAR _i = [@i] RETURN DIVIDE ( MAXX ( FILTER ( _P, [@i] = _i + 1 ), [@y] ) - [@y], _Step ) )
+        VAR _T =
+            ADDCOLUMNS ( _D, "@m",
+                VAR _i = [@i] VAR _a = MAXX ( FILTER ( _D, [@i] = _i - 1 ), [@d] ) VAR _b = [@d]
+                RETURN IF ( _i = 0, _b, IF ( _i = _NM - 1, _a, IF ( _a * _b <= 0, 0, ( _a + _b ) / 2 * MIN ( 1, 3 * MIN ( ABS ( _a ), ABS ( _b ) ) / MAX ( ABS ( ( _a + _b ) / 2 ), 1e-9 ) ) ) ) ) )
+        VAR _Path =
+            "M68," & FORMAT ( MAXX ( FILTER ( _T, [@i] = 0 ), [@y] ), "0.0", "en-US" ) &
+            CONCATENATEX ( FILTER ( _T, [@i] < _NM - 1 ),
+                VAR _i = [@i]
+                VAR _x2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@x] )
+                VAR _y2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@y] )
+                VAR _m2 = MAXX ( FILTER ( _T, [@i] = _i + 1 ), [@m] )
+                RETURN " C" & FORMAT ( [@x] + _h3, "0.0", "en-US" ) & "," & FORMAT ( [@y] + [@m] * _h3, "0.0", "en-US" ) & " " &
+                    FORMAT ( _x2 - _h3, "0.0", "en-US" ) & "," & FORMAT ( _y2 - _m2 * _h3, "0.0", "en-US" ) & " " & FORMAT ( _x2, "0.0", "en-US" ) & "," & FORMAT ( _y2, "0.0", "en-US" ),
+                "", [@i], ASC )
+        VAR _ex = FORMAT ( 68 + ( _NM - 1 ) * _Step, "0.0", "en-US" )
+        VAR _ey = FORMAT ( MAXX ( FILTER ( _T, [@i] = _NM - 1 ), [@y] ), "0.0", "en-US" )
+        RETURN
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='14.4' stroke-opacity='0.06' stroke-linecap='round'/>" &
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='7.2' stroke-opacity='0.16' stroke-linecap='round'/>" &
+        "<path d='" & _Path & "' fill='none' stroke='" & _c & "' stroke-width='2.4' stroke-linecap='round'/>" &
+        "<circle cx='" & _ex & "' cy='" & _ey & "' r='4' fill='" & _c & "'/>",
+        "" )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1046 326' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Are we starting work when we planned?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>planned jobs started within 2 days of scheduled start &#183; 3-month rolling average</text>" &
+CONCATENATEX (
+    FILTER ( GENERATESERIES ( 0, 1, 0.1 ), [Value] >= _Lo - 0.001 ),
+    VAR _gy = 68 + ( _Hi - [Value] ) / ( _Hi - _Lo ) * 200
+    RETURN "<line x1='68' x2='892' y1='" & FORMAT ( _gy, "0.0", "en-US" ) & "' y2='" & FORMAT ( _gy, "0.0", "en-US" ) & "' stroke='#1D1D21'/>" &
+        "<text x='58' y='" & FORMAT ( _gy + 4, "0.0", "en-US" ) & "' text-anchor='end' font-family='Consolas' font-size='12' fill='#5C5C66'>" & FORMAT ( [Value] * 100, "0", "en-US" ) & "</text>",
+    "" ) &
+CONCATENATEX (
+    FILTER ( _Mo, MOD ( [Value], 6 ) = 0 || [Value] = _NM - 1 ),
+    "<text x='" & FORMAT ( 68 + [Value] * _Step, "0.0", "en-US" ) & "' y='288' text-anchor='middle' font-family='Consolas' font-size='12' fill='#5C5C66'>" & FORMAT ( [@m], "mmm yy", "en-US" ) & "</text>",
+    "" ) &
+"<line x1='68' x2='892' y1='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' y2='" & FORMAT ( _Ty, "0.0", "en-US" ) & "' stroke='#FBBF24' stroke-width='1.3' stroke-dasharray='5 5'/>" &
+"<text x='74' y='" & FORMAT ( _Ty - 7, "0.0", "en-US" ) & "' font-family='Consolas' font-size='11' fill='#FBBF24'>target 90%</text>" &
+_Lines &
+CONCATENATEX ( _Lab,
+    "<text x='904' y='" & FORMAT ( [@ly] + 4, "0.0", "en-US" ) & "' font-family='Segoe UI' font-size='13' fill='" & [@c] & "'>" & [@n] &
+        " <tspan font-family='Consolas' font-weight='600'>" & FORMAT ( [@last] * 100, "0", "en-US" ) & "%</tspan></text>",
+    "" ) & "</svg>"
+
+
+// Card: which crafts are the bottleneck - booked hours over the last 12 months against capacity
+// (active people x 40 h x 52 weeks). Tick = 100%. Crafts booking under 5% are named as a data gap.
+// Expected: Mechanic 137%, Electrician 112%, Operator 71%, HVAC 69%, Lube tech 59%, Instrument 55%, Millwright 41%
+HTML PLAN Crafts =
+VAR _AsOf = [Data As Of Date]
+VAR _Sites = VALUES ( DimSite[SITEID] )
+VAR _All =
+    ADDCOLUMNS (
+        CALCULATETABLE ( VALUES ( DimLabor[CRAFT] ), DimLabor[IsWrenchCraft] = 1, DimLabor[STATUS] = "ACTIVE", REMOVEFILTERS ( DimLabor ) ),
+        "@hc", VAR _cf = DimLabor[CRAFT] RETURN CALCULATE ( COUNTROWS ( DimLabor ), REMOVEFILTERS ( DimLabor ), DimLabor[CRAFT] = _cf, DimLabor[STATUS] = "ACTIVE", TREATAS ( _Sites, DimLabor[SITEID] ) ) + 0,
+        "@h", VAR _cf = DimLabor[CRAFT] RETURN CALCULATE ( SUM ( FactLabour[REGULARHRS] ) + SUM ( FactLabour[PREMIUMPAYHOURS] ), REMOVEFILTERS ( DimDate ), REMOVEFILTERS ( DimLabor ),
+                TREATAS ( { _cf }, FactLabour[CRAFT] ), FactLabour[TransDate] > EDATE ( _AsOf, -12 ), FactLabour[TransDate] <= _AsOf ) + 0
+    )
+VAR _U = ADDCOLUMNS ( FILTER ( _All, [@hc] > 0 ), "@u", DIVIDE ( [@h], [@hc] * 40 * 52 ) )
+VAR _Shown = TOPN ( 7, FILTER ( _U, [@u] >= 0.05 ), [@u], DESC, DimLabor[CRAFT], ASC )
+VAR _Gap = FILTER ( _U, [@u] < 0.05 )
+VAR _R = ADDCOLUMNS ( _Shown, "@k", VAR _uv = [@u] VAR _cf = DimLabor[CRAFT] RETURN COUNTROWS ( FILTER ( _Shown, [@u] > _uv || ( [@u] = _uv && DimLabor[CRAFT] < _cf ) ) ) )
+VAR _AllSites = COUNTROWS ( _Sites ) = COUNTROWS ( ALL ( DimSite[SITEID] ) )
+VAR _GapNames =
+    CONCATENATEX ( _Gap,
+        SWITCH ( DimLabor[CRAFT], "WELD", "welders", "PIPE", "pipefitters", "PDM", "predictive techs", "MECH", "mechanics", "ELECT", "electricians",
+            "OPER", "operators", "HVAC", "HVAC techs", "LUBE", "lube techs", "INSTR", "instrument techs", "MILLWR", "millwrights", LOWER ( DimLabor[CRAFT] ) ),
+        " and ", DimLabor[CRAFT], ASC )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 666' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Which crafts are the bottleneck?</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>" &
+    IF ( _AllSites, "all sites", CONCATENATEX ( _Sites, UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ), ", " ) ) & "</text>" &
+"<g font-family='Consolas' font-size='10.5' letter-spacing='0.4' fill='#5C5C66'><text x='22' y='82'>CRAFT</text><text x='146' y='82'>BOOKED HOURS vs CAPACITY &#183; last 12 mo</text><text x='498' y='82' text-anchor='end'>UTIL.</text></g>" &
+"<line x1='22' x2='498' y1='91.5' y2='91.5' stroke='#232327'/>" &
+CONCATENATEX (
+    _R,
+    VAR _y = 119 + 58 * [@k]
+    VAR _ut = [@u]
+    VAR _col = IF ( _ut > 1, "#F87171", IF ( _ut > 0.85, "#FBBF24", "#A1A1AA" ) )
+    VAR _w = MIN ( _ut, 1.5 ) / 1.5 * 268
+    VAR _name = SWITCH ( DimLabor[CRAFT], "MECH", "Mechanic", "ELECT", "Electrician", "OPER", "Operator", "HVAC", "HVAC", "LUBE", "Lube tech",
+        "INSTR", "Instrument", "MILLWR", "Millwright", "WELD", "Welder", "PIPE", "Pipefitter", "PDM", "Predictive tech", DimLabor[CRAFT] )
+    RETURN
+    "<text x='22' y='" & _y & "' font-family='Segoe UI' font-size='14' fill='#EDEDEF'>" & _name & "</text>" &
+    "<text x='22' y='" & ( _y + 16 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & [@hc] & IF ( [@hc] = 1, " person", " people" ) & "</text>" &
+    "<rect x='146' y='" & ( _y - 2 ) & "' width='268' height='8' rx='4' fill='#222227'/>" &
+    IF ( _col <> "#A1A1AA", "<rect x='142' y='" & ( _y - 6 ) & "' width='" & FORMAT ( _w + 8, "0.0", "en-US" ) & "' height='16' rx='8' fill='" & _col & "' fill-opacity='0.14'/>" ) &
+    "<rect x='146' y='" & ( _y - 2 ) & "' width='" & FORMAT ( _w, "0.0", "en-US" ) & "' height='8' rx='4' fill='" & _col & "'/>" &
+    "<rect x='323.7' y='" & ( _y - 6 ) & "' width='2' height='16' fill='#E4E4E7'/>" &
+    "<text x='498' y='" & ( _y + 6 ) & "' text-anchor='end' font-family='Consolas' font-size='13' fill='" & _col & "'>" & FORMAT ( _ut * 100, "0", "en-US" ) & "%</text>" &
+    "<line x1='22' x2='498' y1='" & ( _y + 28.5 ) & "' y2='" & ( _y + 28.5 ) & "' stroke='#1C1C20'/>",
+    "", [@k], ASC ) &
+IF ( NOT ISEMPTY ( _Gap ),
+    "<text x='22' y='625' font-family='Consolas' font-size='11.5' fill='#5C5C66'><tspan fill='#FBBF24'>Data gap:</tspan> " & _GapNames & " book &lt;5% of capacity &#8212;</text>" &
+    "<text x='22' y='642' font-family='Consolas' font-size='11.5' fill='#5C5C66'>the synthetic labour data barely uses them. Tick = 100%.</text>",
+    "<text x='22' y='642' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Tick = 100% of capacity.</text>" ) & "</svg>"
+
+
+// -----------------------------------------------------------------------------
+// INFORMATION
+// -----------------------------------------------------------------------------
+
+// Page title.
+HTML INFO Title =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1590 88' width='100%' style='display:block'>" &
+"<text x='8' y='42' font-family='Segoe UI' font-size='40' font-weight='300' letter-spacing='-0.5' fill='#EDEDEF'>How to read this report</text>" &
+"<text x='8' y='73' font-family='Segoe UI' font-size='17' fill='#A1A1AA'>Definitions, targets and the data&#8217;s known limits.</text></svg>"
+
+
+// Card: what the status colours mean.
+HTML INFO Status =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Status</text>" &
+"<text x='22' y='73' font-family='Segoe UI' font-size='15'><tspan fill='#4ADE80'>&#10003;</tspan><tspan fill='#A1A1AA'> on target</tspan></text>" &
+"<circle cx='131' cy='68' r='3' fill='#FBBF24'/><text x='138' y='73' font-family='Segoe UI' font-size='15' fill='#A1A1AA'>near</text>" &
+"<text x='194' y='73' font-family='Segoe UI' font-size='15'><tspan fill='#F87171'>&#9650;</tspan><tspan fill='#A1A1AA'> off target</tspan></text>" &
+"<text x='22' y='102' font-family='Consolas' font-size='12' fill='#A1A1AA'>Status colours only ever mean status.</text></svg>"
+
+
+// Card: what the site colours mean.
+HTML INFO Sites =
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Sites</text>" &
+CONCATENATEX (
+    ADDCOLUMNS ( ALL ( DimSite[SITEID] ),
+        "@o", SWITCH ( DimSite[SITEID], "BEDFORD", 0, "AURORA", 1, "HOUSTON", 2, 3 ),
+        "@c", SWITCH ( DimSite[SITEID], "HOUSTON", "#C084FC", "AURORA", "#22D3EE", "BEDFORD", "#60A5FA", "#A1A1AA" ) ),
+    VAR _x = 27 + [@o] * 92
+    RETURN
+    "<circle cx='" & _x & "' cy='68' r='7' fill='" & [@c] & "' fill-opacity='0.25'/><circle cx='" & _x & "' cy='68' r='4' fill='" & [@c] & "'/>" &
+    "<text x='" & ( _x + 12 ) & "' y='73' font-family='Segoe UI' font-size='15' fill='#EDEDEF'>" & UPPER ( LEFT ( DimSite[SITEID], 1 ) ) & LOWER ( MID ( DimSite[SITEID], 2, 50 ) ) & "</text>",
+    "", [@o], ASC ) &
+"<text x='22' y='102' font-family='Consolas' font-size='12' fill='#A1A1AA'>Site colours never signal good or bad.</text></svg>"
+
+
+// Card: the data window. Expected: "Jul 2023 – Jul 2026", "40,935 work orders · 900 assets · 3 sites"
+HTML INFO Window =
+VAR _From = CALCULATE ( MIN ( FactWorkOrder[ReportDate] ), REMOVEFILTERS () )
+VAR _WO = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsCancelled] = 0, REMOVEFILTERS () )
+VAR _A = CALCULATE ( COUNTROWS ( DimAsset ), DimAsset[ASSETNUM] <> "(none)", REMOVEFILTERS () )
+VAR _S = COUNTROWS ( ALL ( DimSite[SITEID] ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 516 150' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Data window</text>" &
+"<text x='22' y='77' font-family='Segoe UI' font-size='22' font-weight='500' fill='#EDEDEF'>" & FORMAT ( _From, "mmm yyyy", "en-US" ) & " &#8211; " & FORMAT ( [Data As Of Date], "mmm yyyy", "en-US" ) & "</text>" &
+"<text x='22' y='100' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & FORMAT ( _WO, "#,0", "en-US" ) & " work orders &#183; " & FORMAT ( _A, "#,0", "en-US" ) & " assets &#183; " & _S & " sites</text></svg>"
+
+
+// Card: KPI definitions as implemented in the model, with their targets.
+HTML INFO KPI Definitions =
+VAR _Rows =
+    DATATABLE (
+        "n", STRING, "d1", STRING, "d2", STRING, "t", STRING, "y", INTEGER,
+        {
+            { "Reactive maintenance %", "(CM + EM) &#247; all non-cancelled work orders", "", "&lt; 20%", 115 },
+            { "PM compliance %", "PMs finished on or before target &#247; completed PMs", "", "&#8805; 90%", 161 },
+            { "Statutory compliance %", "inspection + safety WOs finished on time &#247;", "completed", "100%", 217 },
+            { "MTBF", "operating hours &#247; failure events (operating-hours", "assumption)", "trend only", 282 },
+            { "MTTR", "elapsed downtime &#247; downtime events &#8212; not labour", "hours", "lower is better", 347 },
+            { "Backlog (weeks)", "open estimated labour hours &#247; (active trades &#215; 40 h)", "", "4&#8211;6 weeks", 402 },
+            { "Cost % of RAV", "annual maintenance cost &#247; asset replacement value", "", "2&#8211;3%", 448 },
+            { "Bad actor", "top 5% of assets by failure count", "", "&#8212;", 494 }
+        }
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 728 694' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>KPI definitions</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>as implemented in the semantic model</text>" &
+"<g font-family='Consolas' font-size='10.5' letter-spacing='0.4' fill='#5C5C66'><text x='22' y='82'>KPI</text><text x='236' y='82'>DEFINITION</text><text x='706' y='82' text-anchor='end'>TARGET</text></g>" &
+"<line x1='22' x2='706' y1='91.5' y2='91.5' stroke='#232327'/>" &
+CONCATENATEX (
+    _Rows,
+    VAR _c = [y]
+    VAR _two = [d2] <> ""
+    RETURN
+    "<text x='22' y='" & ( _c + 5 ) & "' font-family='Segoe UI' font-size='14' font-weight='600' fill='#EDEDEF'>" & [n] & "</text>" &
+    "<text x='236' y='" & IF ( _two, _c - 4, _c + 5 ) & "' font-family='Segoe UI' font-size='14' fill='#A1A1AA'>" & [d1] & "</text>" &
+    IF ( _two, "<text x='236' y='" & ( _c + 15 ) & "' font-family='Segoe UI' font-size='14' fill='#A1A1AA'>" & [d2] & "</text>" ) &
+    "<text x='706' y='" & ( _c + 5 ) & "' text-anchor='end' font-family='Consolas' font-size='13' fill='#EDEDEF'>" & [t] & "</text>" &
+    "<line x1='22' x2='706' y1='" & ( _c + IF ( _two, 32.5, 23.5 ) ) & "' y2='" & ( _c + IF ( _two, 32.5, 23.5 ) ) & "' stroke='#1C1C20'/>",
+    "", [y], ASC ) &
+"<text x='22' y='670' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Targets follow SMRP best-practice benchmarks. Every KPI has a DAX test case in <tspan fill='#B4B4BC'>verify_measures.py</tspan>.</text></svg>"
+
+
+// Card: work types, straight from DimWorkType, so it cannot drift from the data.
+HTML INFO Work Types =
+VAR _T = ADDCOLUMNS ( ALL ( DimWorkType[WORKTYPE], DimWorkType[WorkTypeName], DimWorkType[WorkTypeGroup], DimWorkType[SortOrder] ), "@k", VAR _so = DimWorkType[SortOrder] RETURN COUNTROWS ( FILTER ( ALL ( DimWorkType[SortOrder] ), DimWorkType[SortOrder] < _so ) ) )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 694' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Work types</text>" &
+"<text x='22' y='56' font-family='Consolas' font-size='12' fill='#5C5C66'>reactive = unplanned; drives Reactive %</text>" &
+CONCATENATEX (
+    _T,
+    VAR _c = 84 + 36 * [@k]
+    VAR _re = DimWorkType[WorkTypeGroup] = "Reactive"
+    RETURN
+    "<rect x='22.5' y='" & ( _c - 8.5 ) & "' width='" & FORMAT ( 12 + LEN ( DimWorkType[WORKTYPE] ) * 5.8, "0.0", "en-US" ) & "' height='17' rx='5' fill='none' stroke='#33333A'/>" &
+    "<text x='28' y='" & ( _c + 4 ) & "' font-family='Consolas' font-size='10.5' fill='#B4B4BC'>" & DimWorkType[WORKTYPE] & "</text>" &
+    "<text x='96' y='" & ( _c + 5 ) & "' font-family='Segoe UI' font-size='14' fill='#EDEDEF'>" & DimWorkType[WorkTypeName] & "</text>" &
+    "<text x='398' y='" & ( _c + 4 ) & "' text-anchor='end' font-family='Consolas' font-size='13' fill='" & IF ( _re, "#F87171", "#A1A1AA" ) & "'>" & LOWER ( DimWorkType[WorkTypeGroup] ) & "</text>" &
+    IF ( [@k] < COUNTROWS ( _T ) - 1, "<line x1='22' x2='398' y1='" & ( _c + 18.5 ) & "' y2='" & ( _c + 18.5 ) & "' stroke='#1C1C20'/>" ),
+    "", [@k], ASC ) &
+"<text x='22' y='652' font-family='Consolas' font-size='11.5' fill='#5C5C66'>Definitions live in DimWorkType, so this list can&#8217;t drift</text>" &
+"<text x='22' y='670' font-family='Consolas' font-size='11.5' fill='#5C5C66'>from the data.</text></svg>"
+
+
+// Card: read before you quote a number - the data's known limits.
+// Expected "Open work": 732 open WOs with report dates after the cut-off (mockup 827)
+HTML INFO Notes =
+VAR _AsOf = [Data As Of Date]
+VAR _Future = CALCULATE ( COUNTROWS ( FactWorkOrder ), FactWorkOrder[IsOpen] = 1, FactWorkOrder[ReportDate] > _AsOf, REMOVEFILTERS () ) + 0
+VAR _Notes =
+    DATATABLE (
+        "h", STRING, "l1", STRING, "l2", STRING, "i", INTEGER,
+        {
+            { "Synthetic data", "Generated @asof, seed 20260729. No real site,", "asset or person.", 0 },
+            { "Recent months", "Recent work is left open on purpose, so the last ~3", "months understate completions, failures and cost.", 1 },
+            { "Provisional", "MTBF year-on-year is flagged until the end-of-window", "effect is ruled out.", 2 },
+            { "Open work", "@future open WOs carry report dates after the cut-off and", "are counted in backlog.", 3 },
+            { "Capacity", "Not in Maximo. Assumed: active trades &#215; 40 h/week.", "", 4 }
+        }
+    )
+RETURN
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 694' width='100%' style='display:block'>" &
+"<text x='22' y='37' font-family='Segoe UI' font-size='17' font-weight='600' fill='#EDEDEF'>Read before you quote a number</text>" &
+CONCATENATEX (
+    _Notes,
+    VAR _y = 70 + 72 * [i]
+    VAR _l1 = SUBSTITUTE ( SUBSTITUTE ( [l1], "@asof", FORMAT ( _AsOf, "d mmm yyyy", "en-US" ) ), "@future", FORMAT ( _Future, "#,0", "en-US" ) )
+    RETURN
+    "<text x='22' y='" & _y & "' font-family='Segoe UI' font-size='14' font-weight='600' fill='#EDEDEF'>" & [h] & "</text>" &
+    "<text x='22' y='" & ( _y + 20 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & _l1 & "</text>" &
+    IF ( [l2] <> "", "<text x='22' y='" & ( _y + 38 ) & "' font-family='Consolas' font-size='12' fill='#A1A1AA'>" & [l2] & "</text>" ),
+    "", [i], ASC ) & "</svg>"

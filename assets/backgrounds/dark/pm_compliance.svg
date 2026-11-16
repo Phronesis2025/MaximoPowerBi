@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect id="page-bg" x="0" y="0" width="1920" height="1080" fill="#0A0A0B"/>
+  <g id="sidebar">
+    <rect id="sidebar-panel" x="0" y="0" width="272" height="1080" fill="#0E0E10"/>
+    <rect id="sidebar-edge" x="271" y="0" width="1" height="1080" fill="#232327"/>
+    <g id="logo" transform="translate(24 22) scale(1.0000)"><polygon points="19.8,10.9 22.3,11.1 22.3,14.9 19.8,15.1" fill="#EDEDEF"/><polygon points="19.3,16.3 20.9,18.2 18.2,20.9 16.3,19.3" fill="#EDEDEF"/><polygon points="15.1,19.8 14.9,22.3 11.1,22.3 10.9,19.8" fill="#EDEDEF"/><polygon points="9.7,19.3 7.8,20.9 5.1,18.2 6.7,16.3" fill="#EDEDEF"/><polygon points="6.2,15.1 3.7,14.9 3.7,11.1 6.2,10.9" fill="#EDEDEF"/><polygon points="6.7,9.7 5.1,7.8 7.8,5.1 9.7,6.7" fill="#EDEDEF"/><polygon points="10.9,6.2 11.1,3.7 14.9,3.7 15.1,6.2" fill="#EDEDEF"/><polygon points="16.3,6.7 18.2,5.1 20.9,7.8 19.3,9.7" fill="#EDEDEF"/><circle cx="13.0" cy="13.0" r="5.6" fill="none" stroke="#EDEDEF" stroke-width="3.6"/><polygon points="3.5,7.0 19.0,22.5 22.5,19.0 7.0,3.5" fill="#0E0E10"/><circle cx="5.3" cy="5.3" r="3.9" fill="#0E0E10"/><circle cx="20.7" cy="20.7" r="3.9" fill="#0E0E10"/><polygon points="4.3,6.3 19.7,21.7 21.7,19.7 6.3,4.3" fill="#EDEDEF"/><circle cx="5.3" cy="5.3" r="2.9" fill="#EDEDEF"/><circle cx="20.7" cy="20.7" r="2.9" fill="#EDEDEF"/><polygon points="0.8,2.9 2.9,0.8 5.2,5.2" fill="#0E0E10"/><polygon points="23.1,25.2 25.2,23.1 20.8,20.8" fill="#0E0E10"/></g>
+    <rect id="sidebar-rule-1" x="16" y="324" width="239" height="1" fill="#232327"/>
+    <rect id="footnote-rule" x="16" y="1007.8" width="239" height="1" fill="#232327"/>
+    <text id="label-1" x="60" y="42" font-family="&quot;Segoe UI&quot;, system-ui, sans-serif" font-size="18px" font-weight="600" fill="rgb(237, 237, 239)" xml:space="preserve">Maximo </text>
+    <text id="label-2" x="136.5" y="41" font-family="&quot;Segoe UI&quot;, system-ui, sans-serif" font-size="15px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve">Analytics</text>
+    <text id="label-3" x="26" y="89" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(92, 92, 102)" xml:space="preserve">Pages</text>
+    <text id="label-4" x="26" y="366" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(92, 92, 102)" xml:space="preserve">Sites</text>
+    <text id="label-5" x="26" y="938.4" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(74, 222, 128)" xml:space="preserve">✓</text>
+    <text id="label-6" x="35" y="938.4" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve"> on target</text>
+    <text id="label-7" x="26" y="961.2" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(251, 191, 36)" xml:space="preserve">●</text>
+    <text id="label-8" x="32.6" y="961.2" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve"> near target</text>
+    <text id="label-9" x="26" y="984" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(248, 113, 113)" xml:space="preserve">▲</text>
+    <text id="label-10" x="32.6" y="984" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="12px" font-weight="400" fill="rgb(139, 139, 147)" xml:space="preserve"> off target</text>
+    <text id="label-11" x="26" y="1034.8" font-family="Consolas, &quot;SF Mono&quot;, Menlo, monospace" font-size="11px" font-weight="400" fill="rgb(92, 92, 102)" xml:space="preserve">Synthetic data</text>
+  </g>
+  <rect id="topbar-rule" x="272" y="55" width="1648" height="1" fill="#232327"/>
+  <g id="kpi-cards">
+    <rect id="kpi-card-1" x="308.5" y="179.5" width="461.6" height="183" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="kpi-card-2" x="785.1" y="179.5" width="263.4" height="183" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="kpi-card-3" x="1063.5" y="179.5" width="263.3" height="183" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="kpi-card-4" x="1341.8" y="179.5" width="263.3" height="183" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="kpi-card-5" x="1620.1" y="179.5" width="263.4" height="183" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+  </g>
+  <g id="chart-cards">
+    <rect id="chart-card-1" x="308.5" y="377.5" width="1091" height="325" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="chart-card-2" x="1414.5" y="377.5" width="469" height="325" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="chart-card-3" x="308.5" y="717.5" width="1091" height="325" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+    <rect id="chart-card-4" x="1414.5" y="717.5" width="469" height="325" rx="14" fill="#131315" stroke="#232327" stroke-width="1"/>
+  </g>
+</svg>

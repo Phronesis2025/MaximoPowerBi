@@ -1,0 +1,740 @@
+{
+ "pm": {
+  "pm_n": 19392,
+  "pm_late": 3521,
+  "pm_late_median_days": 24.0,
+  "pm_late_mean_days": 23.558080090883273,
+  "late_buckets": {
+   "BEDFORD": [
+    54,
+    244,
+    138,
+    0
+   ],
+   "AURORA": [
+    101,
+    464,
+    274,
+    0
+   ],
+   "HOUSTON": [
+    285,
+    1202,
+    759,
+    0
+   ]
+  },
+  "stat_by_type": {
+   "BEDFORD": {
+    "INSP": {
+     "n": 273,
+     "late": 23
+    },
+    "SAF": {
+     "n": 332,
+     "late": 33
+    }
+   },
+   "AURORA": {
+    "INSP": {
+     "n": 326,
+     "late": 49
+    },
+    "SAF": {
+     "n": 305,
+     "late": 54
+    }
+   },
+   "HOUSTON": {
+    "INSP": {
+     "n": 559,
+     "late": 173
+    },
+    "SAF": {
+     "n": 541,
+     "late": 148
+    }
+   }
+  },
+  "stat_late_median_days": 24.0,
+  "worst_pms": [
+   {
+    "pm": "PM-00305",
+    "site": "HOUSTON",
+    "asset": "XFMR-00400",
+    "desc": "Quarterly vibration analysis route",
+    "freq": "3 months",
+    "n": 12,
+    "late": 7,
+    "ontime": 41.7,
+    "med": 20.0
+   },
+   {
+    "pm": "PM-00472",
+    "site": "HOUSTON",
+    "asset": "TANK-00606",
+    "desc": "Quarterly vibration analysis route",
+    "freq": "3 months",
+    "n": 12,
+    "late": 7,
+    "ontime": 41.7,
+    "med": 21.0
+   },
+   {
+    "pm": "PM-00283",
+    "site": "HOUSTON",
+    "asset": "MIXER-00369",
+    "desc": "Quarterly mechanical inspection",
+    "freq": "3 months",
+    "n": 12,
+    "late": 6,
+    "ontime": 50.0,
+    "med": 30.0
+   },
+   {
+    "pm": "PM-00308",
+    "site": "HOUSTON",
+    "asset": "XFMR-00404",
+    "desc": "Quarterly mechanical inspection",
+    "freq": "3 months",
+    "n": 12,
+    "late": 6,
+    "ontime": 50.0,
+    "med": 32.0
+   },
+   {
+    "pm": "PM-00352",
+    "site": "HOUSTON",
+    "asset": "VALVE-00466",
+    "desc": "Quarterly mechanical inspection",
+    "freq": "3 months",
+    "n": 12,
+    "late": 6,
+    "ontime": 50.0,
+    "med": 31.5
+   },
+   {
+    "pm": "PM-00402",
+    "site": "HOUSTON",
+    "asset": "TANK-00527",
+    "desc": "Quarterly vibration analysis route",
+    "freq": "3 months",
+    "n": 12,
+    "late": 6,
+    "ontime": 50.0,
+    "med": 21.5
+   },
+   {
+    "pm": "PM-00418",
+    "site": "HOUSTON",
+    "asset": "ANALYZER-00548",
+    "desc": "Quarterly vibration analysis route",
+    "freq": "3 months",
+    "n": 12,
+    "late": 6,
+    "ontime": 50.0,
+    "med": 22.5
+   },
+   {
+    "pm": "PM-00329",
+    "site": "HOUSTON",
+    "asset": "PUMP-00440",
+    "desc": "Quarterly vibration analysis route",
+    "freq": "3 months",
+    "n": 13,
+    "late": 6,
+    "ontime": 53.8,
+    "med": 34.5
+   }
+  ],
+  "pm_sched_n": 326,
+  "pm_sched_below_80": 115,
+  "pm_by_priority": {
+   "2": 81.4,
+   "3": 81.8,
+   "4": 82.3
+  }
+ },
+ "rel": {
+  "n_assets": 900,
+  "bad_k": 45,
+  "bad_share": 19.8,
+  "fail_total": 13662,
+  "top": [
+   {
+    "asset": "VALVE-00387",
+    "desc": "Control Valve 00387",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 107,
+    "dt": 1232.0,
+    "q": [
+     8,
+     3,
+     8,
+     5,
+     13,
+     4,
+     16,
+     10,
+     14,
+     13,
+     5,
+     6
+    ]
+   },
+   {
+    "asset": "ANALYZER-00532",
+    "desc": "Inline Process Analyzer 00532",
+    "site": "HOUSTON",
+    "crit": "1",
+    "fails": 99,
+    "dt": 1002.0,
+    "q": [
+     10,
+     11,
+     9,
+     7,
+     9,
+     7,
+     9,
+     4,
+     7,
+     12,
+     9,
+     5
+    ]
+   },
+   {
+    "asset": "MOTOR-00349",
+    "desc": "AC Induction Motor 00349",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 81,
+    "dt": 971.0,
+    "q": [
+     6,
+     9,
+     8,
+     10,
+     5,
+     4,
+     7,
+     7,
+     3,
+     7,
+     4,
+     7
+    ]
+   },
+   {
+    "asset": "MIXER-00392",
+    "desc": "Agitator Mixer 00392",
+    "site": "HOUSTON",
+    "crit": "2",
+    "fails": 81,
+    "dt": 873.0,
+    "q": [
+     7,
+     5,
+     6,
+     7,
+     6,
+     4,
+     5,
+     10,
+     10,
+     5,
+     4,
+     11
+    ]
+   },
+   {
+    "asset": "BOILER-00409",
+    "desc": "Package Boiler 00409",
+    "site": "HOUSTON",
+    "crit": "2",
+    "fails": 80,
+    "dt": 966.0,
+    "q": [
+     1,
+     6,
+     3,
+     6,
+     9,
+     10,
+     4,
+     9,
+     9,
+     9,
+     10,
+     4
+    ]
+   },
+   {
+    "asset": "ANALYZER-00453",
+    "desc": "Inline Process Analyzer 00453",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 79,
+    "dt": 962.0,
+    "q": [
+     11,
+     5,
+     4,
+     6,
+     6,
+     9,
+     5,
+     7,
+     9,
+     7,
+     8,
+     2
+    ]
+   },
+   {
+    "asset": "PUMP-00499",
+    "desc": "Centrifugal Process Pump 00499",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 76,
+    "dt": 814.0,
+    "q": [
+     7,
+     7,
+     8,
+     6,
+     9,
+     5,
+     5,
+     5,
+     10,
+     5,
+     7,
+     2
+    ]
+   },
+   {
+    "asset": "PUMP-00595",
+    "desc": "Centrifugal Process Pump 00595",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 70,
+    "dt": 759.0,
+    "q": [
+     4,
+     4,
+     5,
+     4,
+     9,
+     4,
+     10,
+     2,
+     5,
+     9,
+     13,
+     0
+    ]
+   },
+   {
+    "asset": "PUMP-00347",
+    "desc": "Centrifugal Process Pump 00347",
+    "site": "HOUSTON",
+    "crit": "3",
+    "fails": 69,
+    "dt": 748.0,
+    "q": [
+     3,
+     4,
+     5,
+     8,
+     7,
+     9,
+     6,
+     6,
+     11,
+     5,
+     3,
+     1
+    ]
+   },
+   {
+    "asset": "PUMP-00525",
+    "desc": "Centrifugal Process Pump 00525",
+    "site": "HOUSTON",
+    "crit": "4",
+    "fails": 68,
+    "dt": 0.0,
+    "q": [
+     7,
+     6,
+     6,
+     3,
+     10,
+     5,
+     2,
+     6,
+     5,
+     8,
+     7,
+     2
+    ]
+   }
+  ],
+  "mttr": {
+   "BEDFORD": 9.04,
+   "AURORA": 10.82,
+   "HOUSTON": 15.56,
+   "ALL": 13.45
+  },
+  "dt_hours": {
+   "BEDFORD": 10459.0,
+   "AURORA": 18842.0,
+   "HOUSTON": 71685.0,
+   "ALL": 100986.0
+  },
+  "fails": {
+   "BEDFORD": 2127,
+   "AURORA": 3289,
+   "HOUSTON": 8246
+  },
+  "problems": [
+   {
+    "code": "DEGRADED",
+    "name": "Degraded",
+    "n": 1412
+   },
+   {
+    "code": "NOT-OPERATING",
+    "name": "Not Operating",
+    "n": 1400
+   },
+   {
+    "code": "LEAK",
+    "name": "Leak",
+    "n": 1344
+   },
+   {
+    "code": "ALARM",
+    "name": "Alarm",
+    "n": 1331
+   },
+   {
+    "code": "BEARING-NOISE",
+    "name": "Bearing Noise",
+    "n": 573
+   },
+   {
+    "code": "OVERHEAT",
+    "name": "Overheat",
+    "n": 537
+   },
+   {
+    "code": "SEAL-LEAK",
+    "name": "Seal Leak",
+    "n": 409
+   }
+  ],
+  "crit": {
+   "1": {
+    "assets": 74,
+    "fpa": 15.0,
+    "bad": 4
+   },
+   "2": {
+    "assets": 170,
+    "fpa": 14.4,
+    "bad": 8
+   },
+   "3": {
+    "assets": 432,
+    "fpa": 15.8,
+    "bad": 23
+   },
+   "4": {
+    "assets": 224,
+    "fpa": 14.6,
+    "bad": 10
+   }
+  },
+  "drift_months": [
+   "Jul 23",
+   "Aug 23",
+   "Sep 23",
+   "Oct 23",
+   "Nov 23",
+   "Dec 23",
+   "Jan 24",
+   "Feb 24",
+   "Mar 24",
+   "Apr 24",
+   "May 24",
+   "Jun 24",
+   "Jul 24",
+   "Aug 24",
+   "Sep 24",
+   "Oct 24",
+   "Nov 24",
+   "Dec 24",
+   "Jan 25",
+   "Feb 25",
+   "Mar 25",
+   "Apr 25",
+   "May 25",
+   "Jun 25",
+   "Jul 25",
+   "Aug 25",
+   "Sep 25",
+   "Oct 25",
+   "Nov 25",
+   "Dec 25",
+   "Jan 26",
+   "Feb 26",
+   "Mar 26",
+   "Apr 26",
+   "May 26",
+   "Jun 26"
+  ],
+  "drift_bad": [
+   96.7,
+   100.4,
+   103.1,
+   104.3,
+   106.3,
+   105.0,
+   109.0,
+   112.3,
+   112.4,
+   117.2,
+   119.5,
+   120.6,
+   116.8,
+   119.1,
+   122.4,
+   131.9,
+   126.2,
+   127.0,
+   127.7,
+   131.0,
+   133.8,
+   141.4,
+   136.3,
+   138.3,
+   135.8,
+   140.4,
+   147.0,
+   153.3,
+   150.0,
+   143.7,
+   147.9,
+   152.9,
+   159.4,
+   164.8,
+   156.1,
+   153.5
+  ],
+  "drift_rest": [
+   99.5,
+   99.9,
+   100.7,
+   100.6,
+   101.6,
+   102.1,
+   102.3,
+   102.7,
+   102.8,
+   103.5,
+   104.1,
+   104.6,
+   105.5,
+   105.4,
+   105.8,
+   106.4,
+   107.1,
+   107.8,
+   107.7,
+   107.9,
+   108.9,
+   108.9,
+   109.5,
+   110.2,
+   110.3,
+   111.2,
+   111.3,
+   111.7,
+   112.3,
+   112.7,
+   113.5,
+   113.6,
+   114.0,
+   114.4,
+   115.2,
+   115.3
+  ],
+  "drift_bad_n": 20,
+  "drift_rest_n": 269
+ },
+ "plan": {
+  "open": {
+   "BEDFORD": 578,
+   "AURORA": 600,
+   "HOUSTON": 1418,
+   "ALL": 2596
+  },
+  "open_hrs": {
+   "BEDFORD": 2860.6,
+   "AURORA": 3203.2,
+   "HOUSTON": 9739.1,
+   "ALL": 15803.0
+  },
+  "cap": {
+   "BEDFORD": 1040,
+   "AURORA": 720,
+   "HOUSTON": 960,
+   "ALL": 2720
+  },
+  "weeks": {
+   "BEDFORD": 2.8,
+   "AURORA": 4.4,
+   "HOUSTON": 10.1,
+   "ALL": 5.8
+  },
+  "age": {
+   "BEDFORD": [
+    445,
+    120,
+    13,
+    0
+   ],
+   "AURORA": [
+    424,
+    156,
+    20,
+    0
+   ],
+   "HOUSTON": [
+    876,
+    480,
+    62,
+    0
+   ],
+   "ALL": [
+    1745,
+    756,
+    95,
+    0
+   ]
+  },
+  "open_status": {
+   "APPR": 1310,
+   "INPRG": 733,
+   "WAPPR": 553
+  },
+  "future_reportdate": 827,
+  "ot": {
+   "BEDFORD": 5.1,
+   "AURORA": 5.2,
+   "HOUSTON": 5.4,
+   "ALL": 5.3
+  },
+  "crafts": [
+   {
+    "craft": "MECH",
+    "hc": 7,
+    "hrs": 19941.0,
+    "util": 137.0,
+    "ot": 5.6
+   },
+   {
+    "craft": "ELECT",
+    "hc": 11,
+    "hrs": 25535.0,
+    "util": 111.6,
+    "ot": 5.7
+   },
+   {
+    "craft": "OPER",
+    "hc": 6,
+    "hrs": 8889.0,
+    "util": 71.2,
+    "ot": 5.1
+   },
+   {
+    "craft": "HVAC",
+    "hc": 8,
+    "hrs": 11516.0,
+    "util": 69.2,
+    "ot": 5.3
+   },
+   {
+    "craft": "LUBE",
+    "hc": 4,
+    "hrs": 4913.0,
+    "util": 59.1,
+    "ot": 4.6
+   },
+   {
+    "craft": "INSTR",
+    "hc": 8,
+    "hrs": 9127.0,
+    "util": 54.8,
+    "ot": 5.2
+   },
+   {
+    "craft": "MILLWR",
+    "hc": 11,
+    "hrs": 9350.0,
+    "util": 40.9,
+    "ot": 4.4
+   },
+   {
+    "craft": "PDM",
+    "hc": 1,
+    "hrs": 369.0,
+    "util": 17.7,
+    "ot": 5.1
+   },
+   {
+    "craft": "WELD",
+    "hc": 7,
+    "hrs": 92.0,
+    "util": 0.6,
+    "ot": 4.4
+   },
+   {
+    "craft": "PIPE",
+    "hc": 5,
+    "hrs": 35.0,
+    "util": 0.3,
+    "ot": 3.6
+   }
+  ],
+  "open_prio": {
+   "1": 34,
+   "2": 726,
+   "3": 1217,
+   "4": 619
+  },
+  "cost": {
+   "BEDFORD": {
+    "labour": 2826065.0,
+    "material": 2264556.0,
+    "tools": 181042.0,
+    "services": 748550.0
+   },
+   "AURORA": {
+    "labour": 3478467.0,
+    "material": 2826377.0,
+    "tools": 195376.0,
+    "services": 750112.0
+   },
+   "HOUSTON": {
+    "labour": 7375792.0,
+    "material": 6339626.0,
+    "tools": 327123.0,
+    "services": 1393327.0
+   }
+  }
+ }
+}

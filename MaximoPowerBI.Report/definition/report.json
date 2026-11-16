@@ -11,7 +11,7 @@
       "type": "SharedResources"
     },
     "customTheme": {
-      "name": "Custom8299207587210535.json",
+      "name": "maximo_dark.json",
       "reportVersionAtImport": {
         "visual": "2.11.0",
         "report": "3.4.0",
@@ -75,23 +75,33 @@
       "type": "RegisteredResources",
       "items": [
         {
-          "name": "backlog_and_aging33104035473619.svg",
-          "path": "backlog_and_aging33104035473619.svg",
+          "name": "information_bg.png",
+          "path": "information_bg.png",
           "type": "Image"
         },
         {
-          "name": "Custom8299207587210535.json",
-          "path": "Custom8299207587210535.json",
+          "name": "maximo_dark.json",
+          "path": "maximo_dark.json",
           "type": "CustomTheme"
         },
         {
-          "name": "executive_overview5243013320214268.svg",
-          "path": "executive_overview5243013320214268.svg",
+          "name": "overview_bg.png",
+          "path": "overview_bg.png",
           "type": "Image"
         },
         {
-          "name": "x-close-delete4564751698961327.svg",
-          "path": "x-close-delete4564751698961327.svg",
+          "name": "planning_bg.png",
+          "path": "planning_bg.png",
+          "type": "Image"
+        },
+        {
+          "name": "pm_compliance_bg.png",
+          "path": "pm_compliance_bg.png",
+          "type": "Image"
+        },
+        {
+          "name": "reliability_bg.png",
+          "path": "reliability_bg.png",
           "type": "Image"
         }
       ]

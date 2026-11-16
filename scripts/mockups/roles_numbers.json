@@ -1,0 +1,698 @@
+{
+ "comp": {
+  "stat": {
+   "overdue": {
+    "HOUSTON": 23,
+    "AURORA": 10,
+    "BEDFORD": 7
+   },
+   "due30": {
+    "HOUSTON": 25,
+    "AURORA": 5,
+    "BEDFORD": 6
+   },
+   "overdue_buckets": {
+    "HOUSTON": [
+     4,
+     10,
+     9
+    ],
+    "AURORA": [
+     0,
+     6,
+     4
+    ],
+    "BEDFORD": [
+     3,
+     3,
+     1
+    ]
+   }
+  },
+  "stat_list": [
+   {
+    "wo": "1035067",
+    "site": "HOUSTON",
+    "asset": "VALVE-00470",
+    "type": "SAF",
+    "desc": "Replace faulty emergency stop",
+    "days": 80,
+    "status": "WAPPR"
+   },
+   {
+    "wo": "1040634",
+    "site": "AURORA",
+    "asset": "SPRINKLER-00790",
+    "type": "INSP",
+    "desc": "Regulatory pressure vessel inspection",
+    "days": 76,
+    "status": "INPRG"
+   },
+   {
+    "wo": "1035039",
+    "site": "HOUSTON",
+    "asset": "VALVE-00370",
+    "type": "INSP",
+    "desc": "Annual fire system inspection",
+    "days": 73,
+    "status": "WAPPR"
+   },
+   {
+    "wo": "1035367",
+    "site": "HOUSTON",
+    "asset": "PUMP-00364",
+    "type": "INSP",
+    "desc": "Insurance boiler inspection",
+    "days": 69,
+    "status": "APPR"
+   },
+   {
+    "wo": "1035109",
+    "site": "HOUSTON",
+    "asset": "MIXER-00363",
+    "type": "INSP",
+    "desc": "Annual fire system inspection",
+    "days": 60,
+    "status": "WAPPR"
+   },
+   {
+    "wo": "1035356",
+    "site": "HOUSTON",
+    "asset": "HEATEXCH-00474",
+    "type": "SAF",
+    "desc": "Repair damaged handrail",
+    "days": 57,
+    "status": "APPR"
+   },
+   {
+    "wo": "1040726",
+    "site": "AURORA",
+    "asset": "BALER-00853",
+    "type": "INSP",
+    "desc": "Regulatory pressure vessel inspection",
+    "days": 50,
+    "status": "WAPPR"
+   },
+   {
+    "wo": "1024369",
+    "site": "BEDFORD",
+    "asset": NaN,
+    "type": "INSP",
+    "desc": "Fall protection anchor inspection",
+    "days": 47,
+    "status": "APPR"
+   }
+  ],
+  "pm": {
+   "overdue": {
+    "HOUSTON": 352,
+    "AURORA": 145,
+    "BEDFORD": 113
+   },
+   "due30": {
+    "HOUSTON": 109,
+    "AURORA": 61,
+    "BEDFORD": 78
+   },
+   "overdue_buckets": {
+    "HOUSTON": [
+     56,
+     118,
+     178
+    ],
+    "AURORA": [
+     25,
+     51,
+     69
+    ],
+    "BEDFORD": [
+     21,
+     35,
+     57
+    ]
+   }
+  },
+  "stat_q_labels": [
+   "2023Q4",
+   "2024Q1",
+   "2024Q2",
+   "2024Q3",
+   "2024Q4",
+   "2025Q1",
+   "2025Q2",
+   "2025Q3",
+   "2025Q4",
+   "2026Q1",
+   "2026Q2"
+  ],
+  "stat_q": {
+   "HOUSTON": [
+    67.5,
+    69.8,
+    69.7,
+    63.1,
+    65.7,
+    67.3,
+    75.9,
+    72.7,
+    76.0,
+    63.7,
+    80.0
+   ],
+   "AURORA": [
+    76.6,
+    81.8,
+    81.0,
+    74.5,
+    83.0,
+    82.5,
+    88.1,
+    87.7,
+    83.3,
+    85.7,
+    89.3
+   ],
+   "BEDFORD": [
+    89.8,
+    90.9,
+    93.9,
+    90.0,
+    87.5,
+    86.0,
+    87.7,
+    93.4,
+    97.8,
+    90.7,
+    92.0
+   ]
+  }
+ },
+ "plan": {
+  "status": {
+   "HOUSTON": [
+    450,
+    199,
+    436
+   ],
+   "AURORA": [
+    148,
+    67,
+    156
+   ],
+   "BEDFORD": [
+    146,
+    54,
+    113
+   ]
+  },
+  "status_hrs": {
+   "HOUSTON": [
+    3434,
+    1894,
+    3512
+   ],
+   "AURORA": [
+    1244,
+    583,
+    938
+   ],
+   "BEDFORD": [
+    1060,
+    391,
+    686
+   ]
+  },
+  "sched12": {
+   "HOUSTON": 59.7,
+   "AURORA": 80.6,
+   "BEDFORD": 85.4,
+   "ALL": 72.9
+  },
+  "sched_months": [
+   "Aug 23",
+   "Sep 23",
+   "Oct 23",
+   "Nov 23",
+   "Dec 23",
+   "Jan 24",
+   "Feb 24",
+   "Mar 24",
+   "Apr 24",
+   "May 24",
+   "Jun 24",
+   "Jul 24",
+   "Aug 24",
+   "Sep 24",
+   "Oct 24",
+   "Nov 24",
+   "Dec 24",
+   "Jan 25",
+   "Feb 25",
+   "Mar 25",
+   "Apr 25",
+   "May 25",
+   "Jun 25",
+   "Jul 25",
+   "Aug 25",
+   "Sep 25",
+   "Oct 25",
+   "Nov 25",
+   "Dec 25",
+   "Jan 26",
+   "Feb 26",
+   "Mar 26",
+   "Apr 26",
+   "May 26",
+   "Jun 26"
+  ],
+  "sched_m": {
+   "HOUSTON": [
+    63.1,
+    62.8,
+    60.1,
+    60.1,
+    60.3,
+    63.2,
+    60.5,
+    63.7,
+    58.0,
+    65.5,
+    59.7,
+    60.5,
+    61.8,
+    61.6,
+    61.7,
+    60.3,
+    58.9,
+    61.8,
+    61.7,
+    61.2,
+    58.0,
+    58.6,
+    60.7,
+    61.1,
+    58.9,
+    61.0,
+    56.1,
+    57.6,
+    61.3,
+    60.4,
+    62.3,
+    55.0,
+    59.8,
+    58.3,
+    68.8
+   ],
+   "AURORA": [
+    69.8,
+    71.3,
+    70.2,
+    73.0,
+    73.9,
+    70.5,
+    70.5,
+    72.0,
+    74.6,
+    76.4,
+    71.4,
+    73.2,
+    72.5,
+    75.7,
+    80.5,
+    71.1,
+    78.6,
+    75.8,
+    79.1,
+    76.8,
+    80.4,
+    78.5,
+    79.6,
+    79.3,
+    77.7,
+    79.6,
+    77.6,
+    80.6,
+    79.5,
+    82.5,
+    81.4,
+    84.2,
+    81.0,
+    80.7,
+    82.0
+   ],
+   "BEDFORD": [
+    84.5,
+    84.7,
+    89.3,
+    85.3,
+    78.1,
+    88.9,
+    82.4,
+    85.1,
+    84.9,
+    90.1,
+    82.5,
+    85.9,
+    83.5,
+    85.9,
+    87.7,
+    86.8,
+    83.1,
+    84.5,
+    88.0,
+    88.4,
+    90.4,
+    83.8,
+    86.5,
+    88.9,
+    85.2,
+    81.6,
+    85.6,
+    86.4,
+    88.1,
+    88.9,
+    81.9,
+    88.3,
+    86.6,
+    83.5,
+    82.1
+   ]
+  },
+  "breakin": {
+   "HOUSTON": 9.5,
+   "AURORA": 6.0,
+   "BEDFORD": 5.6
+  },
+  "status_all": {
+   "HOUSTON": [
+    682,
+    279,
+    457
+   ],
+   "AURORA": [
+    298,
+    143,
+    159
+   ],
+   "BEDFORD": [
+    330,
+    131,
+    117
+   ]
+  },
+  "status_all_hrs": {
+   "HOUSTON": [
+    3875,
+    2085,
+    3779
+   ],
+   "AURORA": [
+    1474,
+    765,
+    964
+   ],
+   "BEDFORD": [
+    1495,
+    639,
+    727
+   ]
+  },
+  "status_all_tot": [
+   1310,
+   553,
+   733
+  ],
+  "status_all_tot_hrs": [
+   6844,
+   3488,
+   5470
+  ]
+ },
+ "rel": {
+  "asset_cols": [
+   "DESCRIPTION",
+   "ASSETTYPE",
+   "PRIORITY",
+   "CRITICALITY"
+  ],
+  "by_cost": [
+   {
+    "asset": "VALVE-00387",
+    "n": 110.0,
+    "cost": 146821.82,
+    "site": "HOUSTON",
+    "dt": 1232.28,
+    "DESCRIPTION": "Control Valve 00387",
+    "ASSETTYPE": "VALVE",
+    "PRIORITY": "3",
+    "CRITICALITY": "3"
+   },
+   {
+    "asset": "ANALYZER-00532",
+    "n": 109.0,
+    "cost": 126847.34,
+    "site": "HOUSTON",
+    "dt": 1001.92,
+    "DESCRIPTION": "Inline Process Analyzer 00532",
+    "ASSETTYPE": "ANALYZER",
+    "PRIORITY": "1",
+    "CRITICALITY": "1"
+   },
+   {
+    "asset": "MIXER-00392",
+    "n": 87.0,
+    "cost": 111190.98,
+    "site": "HOUSTON",
+    "dt": 873.27,
+    "DESCRIPTION": "Agitator Mixer 00392",
+    "ASSETTYPE": "MIXER",
+    "PRIORITY": "2",
+    "CRITICALITY": "2"
+   },
+   {
+    "asset": "MOTOR-00349",
+    "n": 83.0,
+    "cost": 106473.83,
+    "site": "HOUSTON",
+    "dt": 971.28,
+    "DESCRIPTION": "AC Induction Motor 00349",
+    "ASSETTYPE": "MOTOR",
+    "PRIORITY": "3",
+    "CRITICALITY": "3"
+   },
+   {
+    "asset": "BOILER-00409",
+    "n": 82.0,
+    "cost": 100002.58,
+    "site": "HOUSTON",
+    "dt": 965.94,
+    "DESCRIPTION": "Package Boiler 00409",
+    "ASSETTYPE": "BOILER",
+    "PRIORITY": "2",
+    "CRITICALITY": "2"
+   },
+   {
+    "asset": "PUMP-00525",
+    "n": 72.0,
+    "cost": 94776.66,
+    "site": "HOUSTON",
+    "dt": 0.0,
+    "DESCRIPTION": "Centrifugal Process Pump 00525",
+    "ASSETTYPE": "PUMP",
+    "PRIORITY": "4",
+    "CRITICALITY": "4"
+   },
+   {
+    "asset": "ANALYZER-00453",
+    "n": 82.0,
+    "cost": 89276.2,
+    "site": "HOUSTON",
+    "dt": 962.17,
+    "DESCRIPTION": "Inline Process Analyzer 00453",
+    "ASSETTYPE": "ANALYZER",
+    "PRIORITY": "3",
+    "CRITICALITY": "3"
+   },
+   {
+    "asset": "PUMP-00499",
+    "n": 82.0,
+    "cost": 88924.35,
+    "site": "HOUSTON",
+    "dt": 813.61,
+    "DESCRIPTION": "Centrifugal Process Pump 00499",
+    "ASSETTYPE": "PUMP",
+    "PRIORITY": "3",
+    "CRITICALITY": "3"
+   },
+   {
+    "asset": "MIXER-00494",
+    "n": 72.0,
+    "cost": 87196.46,
+    "site": "HOUSTON",
+    "dt": 628.67,
+    "DESCRIPTION": "Agitator Mixer 00494",
+    "ASSETTYPE": "MIXER",
+    "PRIORITY": "2",
+    "CRITICALITY": "2"
+   },
+   {
+    "asset": "PUMP-00595",
+    "n": 74.0,
+    "cost": 85634.93,
+    "site": "HOUSTON",
+    "dt": 758.91,
+    "DESCRIPTION": "Centrifugal Process Pump 00595",
+    "ASSETTYPE": "PUMP",
+    "PRIORITY": "3",
+    "CRITICALITY": "3"
+   }
+  ],
+  "top10_cost_share": 5.8,
+  "top45_cost_share": 20.0,
+  "react_cost_total": 17783146,
+  "fr_cols": [
+   "WONUM",
+   "ASSETNUM",
+   "LOCATION",
+   "SITEID",
+   "ORGID",
+   "FAILURECODE",
+   "PROBLEMCODE",
+   "CAUSECODE",
+   "REMEDYCODE",
+   "TYPE",
+   "REPORTDATE"
+  ],
+  "cost_map": {
+   "ANALYZER-00373": 59419,
+   "ANALYZER-00377": 69760,
+   "ANALYZER-00382": 53703,
+   "ANALYZER-00408": 58187,
+   "ANALYZER-00423": 41476,
+   "ANALYZER-00425": 70698,
+   "ANALYZER-00426": 43298,
+   "ANALYZER-00434": 52915,
+   "ANALYZER-00442": 69078,
+   "ANALYZER-00453": 89276,
+   "ANALYZER-00497": 47914,
+   "ANALYZER-00503": 68522,
+   "ANALYZER-00522": 80226,
+   "ANALYZER-00529": 47897,
+   "ANALYZER-00532": 126847,
+   "ANALYZER-00533": 55228,
+   "ANALYZER-00543": 75914,
+   "ANALYZER-00547": 55291,
+   "ANALYZER-00548": 42998,
+   "ANALYZER-00557": 79075,
+   "ANALYZER-00563": 79572,
+   "ANALYZER-00605": 61471,
+   "ANALYZER-00611": 55526,
+   "ANALYZER-00620": 52597,
+   "BALER-00729": 42016,
+   "BALER-00751": 58972,
+   "BALER-00833": 41996,
+   "BALER-00853": 40506,
+   "BALER-00895": 45512,
+   "BOILER-00344": 56082,
+   "BOILER-00351": 51422,
+   "BOILER-00365": 46381,
+   "BOILER-00409": 100003,
+   "BOILER-00435": 50716,
+   "BOILER-00454": 40913,
+   "BOILER-00490": 45955,
+   "BOILER-00492": 54400,
+   "BOILER-00500": 64225,
+   "BOILER-00618": 56632,
+   "COMPRESSOR-00371": 53739,
+   "COMPRESSOR-00390": 64174,
+   "COMPRESSOR-00415": 77209,
+   "COMPRESSOR-00432": 54812,
+   "COMPRESSOR-00441": 67500,
+   "COMPRESSOR-00460": 56791,
+   "COMPRESSOR-00472": 51393,
+   "COMPRESSOR-00524": 65121,
+   "COMPRESSOR-00528": 60220,
+   "COMPRESSOR-00534": 79834,
+   "COMPRESSOR-00553": 46795,
+   "COMPRESSOR-00558": 66041,
+   "COMPRESSOR-00575": 81657,
+   "COMPRESSOR-00583": 44068,
+   "COMPRESSOR-00585": 58842,
+   "COMPRESSOR-00593": 56407,
+   "COMPRESSOR-00614": 69664,
+   "COMPRESSOR-00615": 42918,
+   "CONVEYOR-00765": 53680,
+   "CONVEYOR-00767": 57226,
+   "DOCKLEVEL-00685": 78548,
+   "DOCKLEVEL-00829": 60625,
+   "FORKLIFT-00008": 40021,
+   "FORKLIFT-00816": 55572,
+   "MIXER-00367": 46882,
+   "MIXER-00392": 111191,
+   "MIXER-00402": 52394,
+   "MIXER-00421": 48937,
+   "MIXER-00478": 42564,
+   "MIXER-00480": 54522,
+   "MIXER-00489": 45562,
+   "MIXER-00494": 87196,
+   "MIXER-00520": 40925,
+   "MIXER-00523": 46813,
+   "MIXER-00561": 42160,
+   "MIXER-00570": 50090,
+   "MIXER-00579": 43465,
+   "MIXER-00582": 46491,
+   "MOTOR-00349": 106474,
+   "MOTOR-00385": 43997,
+   "MOTOR-00444": 41154,
+   "MOTOR-00518": 51191,
+   "MOTOR-00531": 42379,
+   "MOTOR-00586": 40459,
+   "PUMP-00342": 49703,
+   "PUMP-00347": 73828,
+   "PUMP-00389": 76935,
+   "PUMP-00394": 60687,
+   "PUMP-00403": 74451,
+   "PUMP-00412": 74486,
+   "PUMP-00431": 43792,
+   "PUMP-00440": 63320,
+   "PUMP-00450": 46662,
+   "PUMP-00451": 60653,
+   "PUMP-00482": 40924,
+   "PUMP-00493": 48847,
+   "PUMP-00498": 57548,
+   "PUMP-00499": 88924,
+   "PUMP-00505": 44799,
+   "PUMP-00510": 84842,
+   "PUMP-00525": 94777,
+   "PUMP-00526": 48943,
+   "PUMP-00536": 69859,
+   "PUMP-00537": 79565,
+   "PUMP-00539": 47135,
+   "PUMP-00560": 60273,
+   "PUMP-00595": 85635,
+   "PUMP-00596": 83167,
+   "PUMP-00598": 56125,
+   "PUMP-00599": 69236,
+   "PUMP-00610": 58408,
+   "PUMP-00619": 83112,
+   "PUMP-00623": 48903,
+   "PUMP-00632": 55363,
+   "RTU-00893": 41970,
+   "VALVE-00341": 44837,
+   "VALVE-00370": 46474,
+   "VALVE-00379": 54186,
+   "VALVE-00387": 146822,
+   "VALVE-00414": 49776,
+   "VALVE-00430": 55458,
+   "VALVE-00452": 46299,
+   "VALVE-00461": 41747,
+   "VALVE-00466": 50582,
+   "VALVE-00470": 64111,
+   "VALVE-00479": 71439,
+   "VALVE-00486": 69191,
+   "VALVE-00511": 60137,
+   "VALVE-00569": 48908,
+   "VALVE-00604": 51710
+  }
+ }
+}

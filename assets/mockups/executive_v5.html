@@ -1,0 +1,150 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1920px;height:1080px;background:#F4F6F9;font-family:"Segoe UI",system-ui,sans-serif;color:#16283F;overflow:hidden;position:relative}
+.hdr{height:72px;background:#1B3A57;display:flex;align-items:center;padding:0 32px;color:#fff}
+.brand{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:600;width:470px}
+.tabs{display:flex;gap:6px;flex:1;justify-content:center}
+.tab{font-size:15px;color:#8FA3C0;padding:9px 16px;border-radius:8px}
+.tab.on{color:#fff;background:#24476A;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.right{display:flex;align-items:center;gap:16px;width:640px;justify-content:flex-end}
+.seg{display:flex;background:#15304A;border-radius:8px;padding:3px}
+.seg span{font-size:13px;color:#8FA3C0;padding:5px 12px;border-radius:6px}
+.seg span.on{background:#2C5480;color:#fff}
+.dd{font-size:13px;color:#C9D4E3;border:1px solid #3A5A7C;border-radius:6px;padding:5px 10px}
+.info{width:22px;height:22px;border:1.5px solid #8FA3C0;border-radius:50%;color:#8FA3C0;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic}
+.asof{font-size:12px;color:#8FA3C0;line-height:1.25;text-align:right}
+.wrap{padding:20px 32px 0}
+.card{background:#fff;border:1px solid #E3E6EA;border-radius:12px}
+.headline{height:52px;display:flex;align-items:center;padding-left:24px;position:relative;overflow:hidden;font-size:20px;font-weight:600;color:#16283F}
+.headline:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#6B4E9B}
+.kpis{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:16px;margin-top:16px}
+.tile{background:#fff;border:1px solid #E3E6EA;border-radius:12px;padding:18px 20px 16px;height:210px;display:flex;flex-direction:column}
+.tile>*{flex-shrink:0}
+.tlabel{font-size:14px;color:#5B6B80}
+.trow{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px}
+.tnum{font-size:40px;font-weight:600;letter-spacing:-.5px;line-height:1.1}
+.hero .tnum{font-size:72px;font-weight:700;letter-spacing:-1.5px;line-height:1}
+.ttarget{font-size:13px;color:#8A94A3}
+.bullet{position:relative;height:6px;background:#EDF0F4;border-radius:3px;margin-top:14px}
+.bullet.nobar{background:none}
+.bullet .fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.bullet .band{position:absolute;top:0;bottom:0;background:#D5EBDF}
+.bullet .tick{position:absolute;top:-5px;width:2px;height:16px;background:#16283F;border-radius:1px}
+.tfoot{gap:10px;display:flex;justify-content:space-between;align-items:flex-end;margin-top:auto}
+.tdelta{font-size:13px;font-weight:600;white-space:nowrap}
+.hero .tdelta{font-size:16px}
+.bottom{display:grid;grid-template-columns:55fr 45fr;gap:16px;margin-top:16px}
+.panel{height:640px;padding:22px 26px;position:relative}
+.ptitle{font-size:20px;font-weight:600}
+.psub{font-size:13px;color:#8A94A3;margin-top:3px}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+th{text-align:right;font-size:13px;font-weight:600;color:#5B6B80;padding:0 10px 12px;vertical-align:bottom;border-bottom:1px solid #E3E6EA}
+th:first-child{text-align:left;padding-left:16px}
+th small{display:block;font-size:11px;font-weight:400;color:#9AA4B2;margin-top:2px}
+td{padding:27px 10px;border-bottom:1px solid #F0F2F5;font-size:17px}
+td.site{position:relative;padding-left:16px;width:31%}
+.sbar{position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:2px}
+.sname{font-size:15px;font-weight:600;color:#16283F}
+.pill{display:inline-block;font-size:11px;font-weight:600;border:1px solid;border-radius:10px;padding:1px 9px;margin-top:5px}
+td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+td.grey{color:#5B6B80}
+.g{font-size:10px;margin-right:6px;position:relative;top:-2px}
+td.sp{text-align:right;padding-right:4px}
+tr.allrow td{border-top:1.5px solid #CFD5DD;border-bottom:none}
+tr.allrow .sname{color:#5B6B80}
+.link{position:absolute;right:26px;bottom:22px;font-size:14px;font-weight:600;color:#1F4E79}
+.ax{font-size:13px;fill:#8A94A3;font-family:"Segoe UI"}
+.tgt{font-size:12px;fill:#B87514;font-family:"Segoe UI";font-weight:600}
+.endlab{font-size:14px;font-weight:600;font-family:"Segoe UI"}
+.endval{font-weight:700}
+.anno{font-size:13px;fill:#5B6B80;font-family:"Segoe UI"}
+.chart{margin-top:18px}
+.foot{position:absolute;right:32px;bottom:12px;font-size:12px;color:#9AA4B2}
+</style></head><body>
+<div class="hdr">
+  <div class="brand"><svg width="30" height="30" viewBox="0 0 30 30"><polygon points="22.9,12.6 25.8,12.8 25.8,17.2 22.9,17.4" fill="#FFFFFF"/><polygon points="22.3,18.9 24.2,21.1 21.1,24.2 18.9,22.3" fill="#FFFFFF"/><polygon points="17.4,22.9 17.2,25.8 12.8,25.8 12.6,22.9" fill="#FFFFFF"/><polygon points="11.1,22.3 8.9,24.2 5.8,21.1 7.7,18.9" fill="#FFFFFF"/><polygon points="7.1,17.4 4.2,17.2 4.2,12.8 7.1,12.6" fill="#FFFFFF"/><polygon points="7.7,11.1 5.8,8.9 8.9,5.8 11.1,7.7" fill="#FFFFFF"/><polygon points="12.6,7.1 12.8,4.2 17.2,4.2 17.4,7.1" fill="#FFFFFF"/><polygon points="18.9,7.7 21.1,5.8 24.2,8.9 22.3,11.1" fill="#FFFFFF"/><circle cx="15.0" cy="15.0" r="6.5" fill="none" stroke="#FFFFFF" stroke-width="4.2"/><polygon points="4.0,8.1 21.9,26.0 26.0,21.9 8.1,4.0" fill="#1B3A57"/><circle cx="6.1" cy="6.1" r="4.5" fill="#1B3A57"/><circle cx="23.9" cy="23.9" r="4.5" fill="#1B3A57"/><polygon points="4.9,7.2 22.8,25.1 25.1,22.8 7.2,4.9" fill="#FFFFFF"/><circle cx="6.1" cy="6.1" r="3.3" fill="#FFFFFF"/><circle cx="23.9" cy="23.9" r="3.3" fill="#FFFFFF"/><polygon points="0.9,3.3 3.3,0.9 6.0,6.0" fill="#1B3A57"/><polygon points="26.7,29.1 29.1,26.7 24.0,24.0" fill="#1B3A57"/></svg>Maximo Maintenance Analytics</div>
+  <div class="tabs"><span class="tab on">Executive Overview</span><span class="tab">PM &amp; Compliance</span><span class="tab">Reliability</span><span class="tab">Planning</span><span class="tab">Information</span></div>
+  <div class="right">
+    <div class="seg"><span class="on">All</span><span>Bedford</span><span>Aurora</span><span>Houston</span></div>
+    <div class="dd">Year: All &#9662;</div>
+    <div class="info">i</div>
+    <div class="asof">Data as of<br>29 Jul 2026</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="card headline">Houston is running reactive &mdash; Aurora shows the fix.</div>
+  <div class="kpis"><div class="tile hero">
+  <div class="tlabel">Reactive Maintenance %</div>
+  <div class="trow"><div class="tnum">35.0%</div><div class="ttarget">Target &lt; 20%</div></div>
+  <div class="bullet"><div class="fill" style="width:69.97923537315256%;background:#A32D2D"></div><div class="tick" style="left:calc(40.0% - 1px)"></div></div>
+  <div class="tfoot"><div class="tdelta" style="color:#A32D2D">&#9650; +15.0 pts vs target</div><svg width="230" height="54" viewBox="0 0 230 54"><polyline points="2.0,26.0 11.4,25.2 20.8,25.4 30.2,25.6 39.7,25.6 49.1,25.7 58.5,25.7 67.9,25.8 77.3,26.0 86.8,26.2 96.2,26.4 105.6,26.8 115.0,27.2 124.4,27.5 133.8,27.7 143.2,27.9 152.7,28.0 162.1,28.0 171.5,28.0 180.9,28.0 190.3,28.1 199.8,28.4 209.2,28.5 218.6,28.7 228.0,28.8" fill="none" stroke="#A32D2D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="228.0" cy="28.8" r="2.6" fill="#A32D2D"/></svg></div>
+</div><div class="tile">
+  <div class="tlabel">PM Compliance %</div>
+  <div class="trow"><div class="tnum">81.8%</div><div class="ttarget">Target 90%</div></div>
+  <div class="bullet"><div class="fill" style="width:81.84302805280528%;background:#B87514"></div><div class="tick" style="left:calc(90.0% - 1px)"></div></div>
+  <div class="tfoot"><div class="tdelta" style="color:#B87514">&#9679; &minus;8.2 pts vs target</div><svg width="60" height="28" viewBox="0 0 60 28"><polyline points="2.0,16.3 4.3,15.8 6.7,15.7 9.0,15.3 11.3,15.3 13.7,15.2 16.0,14.9 18.3,14.6 20.7,14.3 23.0,14.4 25.3,14.7 27.7,14.6 30.0,14.4 32.3,14.8 34.7,14.7 37.0,14.6 39.3,14.9 41.7,14.4 44.0,14.3 46.3,13.9 48.7,13.9 51.0,13.6 53.3,13.3 55.7,12.6 58.0,11.7" fill="none" stroke="#B87514" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="58.0" cy="11.7" r="2.6" fill="#B87514"/></svg></div>
+</div><div class="tile">
+  <div class="tlabel">Statutory Compliance %</div>
+  <div class="trow"><div class="tnum">79.5%</div><div class="ttarget">Target 100%</div></div>
+  <div class="bullet"><div class="fill" style="width:79.45205479452055%;background:#A32D2D"></div><div class="tick" style="left:calc(100% - 1px)"></div></div>
+  <div class="tfoot"><div class="tdelta" style="color:#A32D2D">&#9650; 480 late of 2,336</div><svg width="60" height="28" viewBox="0 0 60 28"><polyline points="2.0,15.3 4.3,16.0 6.7,17.8 9.0,17.9 11.3,17.9 13.7,18.0 16.0,17.6 18.3,20.0 20.7,19.4 23.0,18.4 25.3,18.0 27.7,17.6 30.0,15.3 32.3,13.8 34.7,12.9 37.0,12.5 39.3,11.8 41.7,9.8 44.0,9.0 46.3,8.4 48.7,9.7 51.0,10.0 53.3,8.0 55.7,8.4 58.0,8.3" fill="none" stroke="#A32D2D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="58.0" cy="8.3" r="2.6" fill="#A32D2D"/></svg></div>
+</div><div class="tile">
+  <div class="tlabel">MTBF (Hours)</div>
+  <div class="trow"><div class="tnum">1,643</div><div class="ttarget">Trend only</div></div>
+  <div class="bullet nobar"></div>
+  <div class="tfoot"><div class="tdelta" style="color:#6B7685">+19% vs prior 12 mo &middot; provisional</div><svg width="60" height="28" viewBox="0 0 60 28"><polyline points="2.0,17.2 4.3,18.9 6.7,19.1 9.0,18.9 11.3,18.9 13.7,18.7 16.0,18.8 18.3,18.8 20.7,18.5 23.0,18.4 25.3,18.3 27.7,18.1 30.0,18.0 32.3,17.7 34.7,17.6 37.0,17.5 39.3,17.4 41.7,17.4 44.0,17.4 46.3,17.3 48.7,17.3 51.0,16.8 53.3,15.6 55.7,13.4 58.0,8.9" fill="none" stroke="#6B7685" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="58.0" cy="8.9" r="2.6" fill="#6B7685"/></svg></div>
+</div><div class="tile">
+  <div class="tlabel">Maint. Cost % of RAV</div>
+  <div class="trow"><div class="tnum">6.0%</div><div class="ttarget">Best-in-class 2&ndash;3%</div></div>
+  <div class="bullet"><div class="band" style="left:20.0%;width:10.0%"></div><div class="fill" style="width:59.821581643223794%;background:#A32D2D"></div><div class="tick" style="left:calc(30.0% - 1px)"></div></div>
+  <div class="tfoot"><div class="tdelta" style="color:#A32D2D">&#9650; +3.0 pts vs best</div><svg width="60" height="28" viewBox="0 0 60 28"><polyline points="2.0,11.7 4.3,10.8 6.7,10.8 9.0,11.0 11.3,11.2 13.7,11.5 16.0,11.6 18.3,11.5 20.7,11.9 23.0,11.6 25.3,11.8 27.7,11.9 30.0,12.3 32.3,12.2 34.7,12.0 37.0,12.0 39.3,12.1 41.7,12.0 44.0,12.0 46.3,12.4 48.7,12.2 51.0,12.6 53.3,13.4 55.7,14.8 58.0,17.2" fill="none" stroke="#A32D2D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="58.0" cy="17.2" r="2.6" fill="#A32D2D"/></svg></div>
+</div></div>
+  <div class="bottom">
+    <div class="card panel">
+      <div class="ptitle">How does each site compare?</div>
+      <div class="psub">Jul 2023 &ndash; Jul 2026 &middot; graded against target</div>
+      <table>
+        <tr><th>Site</th><th>Reactive<small>&lt; 20%</small></th><th>PM Compliance<small>90%</small></th><th>Statutory<small>100%</small></th><th>MTBF (h)<small>trend only</small></th><th>Cost % RAV<small>2&ndash;3%</small></th><th>Reactive trend<small>24 mo</small></th></tr>
+        <tr class=""><td class="site"><div class="sbar" style="background:#1F4E79"></div><div class="sname">Bedford Assembly Plant</div><span class="pill" style="color:#0A7A4B;border-color:#0A7A4B">Benchmark</span></td><td class="num" style="color:#B87514"><span class="g">&#9679;</span>21.0%</td><td class="num" style="color:#0A7A4B"><span class="g">&#10003;</span>93.2%</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>90.7%</td><td class="num grey">4,006</td><td class="num" style="color:#B87514"><span class="g">&#9679;</span>4.0%</td><td class="sp"><svg width="120" height="42" viewBox="0 0 120 42"><polyline points="2.0,35.3 6.8,35.1 11.7,35.2 16.5,35.2 21.3,35.2 26.2,35.3 31.0,35.3 35.8,35.2 40.7,35.3 45.5,35.3 50.3,35.4 55.2,35.4 60.0,35.4 64.8,35.5 69.7,35.6 74.5,35.6 79.3,35.6 84.2,35.6 89.0,35.7 93.8,35.7 98.7,35.7 103.5,35.7 108.3,35.8 113.2,35.8 118.0,35.8" fill="none" stroke="#1F4E79" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="118.0" cy="35.8" r="2.6" fill="#1F4E79"/></svg></td></tr><tr class=""><td class="site"><div class="sbar" style="background:#12807F"></div><div class="sname">Aurora Distribution Center</div><span class="pill" style="color:#12807F;border-color:#12807F">Improving</span></td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>30.9%</td><td class="num" style="color:#B87514"><span class="g">&#9679;</span>85.2%</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>83.7%</td><td class="num grey">1,956</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>6.6%</td><td class="sp"><svg width="120" height="42" viewBox="0 0 120 42"><polyline points="2.0,18.1 6.8,18.4 11.7,18.9 16.5,19.5 21.3,19.8 26.2,20.0 31.0,20.3 35.8,20.6 40.7,20.9 45.5,21.4 50.3,21.9 55.2,22.5 60.0,23.4 64.8,24.0 69.7,24.7 74.5,25.2 79.3,25.5 84.2,25.9 89.0,26.1 93.8,26.3 98.7,26.7 103.5,27.2 108.3,27.7 113.2,28.3 118.0,28.9" fill="none" stroke="#12807F" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="118.0" cy="28.9" r="2.6" fill="#12807F"/></svg></td></tr><tr class=""><td class="site"><div class="sbar" style="background:#6B4E9B"></div><div class="sname">Houston Process Facility</div><span class="pill" style="color:#A32D2D;border-color:#A32D2D">Firefighting</span></td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>44.8%</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>69.3%</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>70.8%</td><td class="num grey">908</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>7.1%</td><td class="sp"><svg width="120" height="42" viewBox="0 0 120 42"><polyline points="2.0,6.7 6.8,6.2 11.7,6.1 16.5,5.9 21.3,5.8 26.2,5.7 31.0,5.6 35.8,5.6 40.7,5.5 45.5,5.3 50.3,5.3 55.2,5.2 60.0,5.1 64.8,4.9 69.7,4.8 74.5,4.7 79.3,4.6 84.2,4.4 89.0,4.3 93.8,4.3 98.7,4.2 103.5,4.2 108.3,4.0 113.2,3.9 118.0,3.7" fill="none" stroke="#6B4E9B" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="118.0" cy="3.7" r="2.6" fill="#6B4E9B"/></svg></td></tr><tr class="allrow"><td class="site all"><div class="sname">All sites</div></td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>35.0%</td><td class="num" style="color:#B87514"><span class="g">&#9679;</span>81.8%</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>79.5%</td><td class="num grey">1,643</td><td class="num" style="color:#A32D2D"><span class="g">&#9650;</span>6.0%</td><td class="sp"><svg width="120" height="42" viewBox="0 0 120 42"><polyline points="2.0,17.2 6.8,16.9 11.7,17.0 16.5,17.1 21.3,17.1 26.2,17.1 31.0,17.1 35.8,17.2 40.7,17.2 45.5,17.3 50.3,17.3 55.2,17.5 60.0,17.6 64.8,17.7 69.7,17.8 74.5,17.8 79.3,17.9 84.2,17.9 89.0,17.9 93.8,17.9 98.7,17.9 103.5,18.0 108.3,18.0 113.2,18.1 118.0,18.1" fill="none" stroke="#9AA4B2" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="118.0" cy="18.1" r="2.6" fill="#9AA4B2"/></svg></td></tr>
+      </table>
+      <div class="link">See late inspections &#8594;</div>
+    </div>
+    <div class="card panel">
+      <div class="ptitle">Is reactive work falling?</div>
+      <div class="psub">12-month rolling share of unplanned work</div>
+      <div class="chart"><svg width="770" height="530" viewBox="0 0 770 530">
+<line x1="52" x2="620" y1="490.0" y2="490.0" stroke="#EDF0F4" stroke-width="1"/>
+<text x="40" y="495.0" text-anchor="end" class="ax">10%</text>
+<line x1="52" x2="620" y1="372.0" y2="372.0" stroke="#EDF0F4" stroke-width="1"/>
+<text x="40" y="377.0" text-anchor="end" class="ax">20%</text>
+<line x1="52" x2="620" y1="254.0" y2="254.0" stroke="#EDF0F4" stroke-width="1"/>
+<text x="40" y="259.0" text-anchor="end" class="ax">30%</text>
+<line x1="52" x2="620" y1="136.0" y2="136.0" stroke="#EDF0F4" stroke-width="1"/>
+<text x="40" y="141.0" text-anchor="end" class="ax">40%</text>
+<line x1="52" x2="620" y1="18.0" y2="18.0" stroke="#EDF0F4" stroke-width="1"/>
+<text x="40" y="23.0" text-anchor="end" class="ax">50%</text>
+<text x="52.0" y="518" text-anchor="middle" class="ax">Jul 24</text>
+<text x="194.0" y="518" text-anchor="middle" class="ax">Jan 25</text>
+<text x="336.0" y="518" text-anchor="middle" class="ax">Jul 25</text>
+<text x="478.0" y="518" text-anchor="middle" class="ax">Jan 26</text>
+<text x="620.0" y="518" text-anchor="middle" class="ax">Jul 26</text>
+<line x1="52" x2="620" y1="372.0" y2="372.0" stroke="#B87514" stroke-width="1.6" stroke-dasharray="6 5"/>
+<text x="616" y="391.0" text-anchor="end" class="tgt">SMRP best-in-class 20%</text>
+<polyline points="52.0,85.1 75.7,81.0 99.3,79.5 123.0,78.0 146.7,76.9 170.3,76.4 194.0,75.5 217.7,74.8 241.3,73.9 265.0,72.8 288.7,72.0 312.3,71.6 336.0,70.2 359.7,68.9 383.3,67.3 407.0,66.4 430.7,65.4 454.3,64.4 478.0,63.4 501.7,62.7 525.3,62.1 549.0,61.7 572.7,60.5 596.3,59.2 620.0,57.7" fill="none" stroke="#6B4E9B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="620.0" cy="57.7" r="5" fill="#6B4E9B" stroke="#fff" stroke-width="2"/>
+<text x="632.0" y="63.7" class="endlab" fill="#6B4E9B">Houston <tspan class="endval">46.6%</tspan></text>
+<polyline points="52.0,192.0 75.7,194.5 99.3,199.5 123.0,204.9 146.7,207.1 170.3,209.6 194.0,212.1 217.7,215.0 241.3,217.6 265.0,222.2 288.7,226.6 312.3,232.5 336.0,240.5 359.7,246.9 383.3,253.4 407.0,257.8 430.7,260.8 454.3,264.0 478.0,266.0 501.7,268.4 525.3,271.8 549.0,276.3 572.7,280.7 596.3,286.6 620.0,292.6" fill="none" stroke="#12807F" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="620.0" cy="292.6" r="5" fill="#12807F" stroke="#fff" stroke-width="2"/>
+<text x="632.0" y="298.6" class="endlab" fill="#12807F">Aurora <tspan class="endval">26.7%</tspan></text>
+<polyline points="52.0,351.8 75.7,350.4 99.3,350.5 123.0,350.6 146.7,351.0 170.3,351.4 194.0,351.4 217.7,351.3 241.3,352.0 265.0,352.2 288.7,352.4 312.3,352.7 336.0,353.1 359.7,353.7 383.3,354.4 407.0,354.6 430.7,354.8 454.3,355.0 478.0,355.3 501.7,355.6 525.3,356.0 549.0,356.0 572.7,356.3 596.3,356.8 620.0,356.6" fill="none" stroke="#1F4E79" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="620.0" cy="356.6" r="5" fill="#1F4E79" stroke="#fff" stroke-width="2"/>
+<text x="632.0" y="362.6" class="endlab" fill="#1F4E79">Bedford <tspan class="endval">21.3%</tspan></text>
+<line x1="336.0" y1="234.5" x2="362.0" y2="149.9" stroke="#8A94A3" stroke-width="1"/>
+<circle cx="336.0" cy="240.5" r="3.5" fill="#fff" stroke="#12807F" stroke-width="2"/>
+<text x="366.0" y="141.9" class="anno">PM compliance 81.7% &#8594; 88.8%</text>
+</svg></div>
+    </div>
+  </div>
+</div>
+<div class="foot">Synthetic data &middot; 40,935 work orders &middot; 3 sites</div>
+</body></html>

@@ -4,7 +4,9 @@ A five-page Power BI report on maintenance performance across three plants, buil
 free, fully **synthetic** IBM Maximo–shaped dataset. Every number in it traces back to
 the CSVs in this repo, and every KPI has a test case.
 
-![Overview page](docs/images/overview.png)
+**[▶ Open the live report](https://app.powerbi.com/view?r=eyJrIjoiODViMThkYmUtMTM3ZS00YjViLWI4YmYtMjllY2FlMzIzZDIzIiwidCI6ImI4NTEzNDlkLWNiNDctNGE2My04N2FiLTJmMTJjZTk0YWRiYiJ9)** (interactive, in the browser, no sign-in needed)
+
+[![Overview page](docs/images/overview.png)](https://app.powerbi.com/view?r=eyJrIjoiODViMThkYmUtMTM3ZS00YjViLWI4YmYtMjllY2FlMzIzZDIzIiwidCI6ImI4NTEzNDlkLWNiNDctNGE2My04N2FiLTJmMTJjZTk0YWRiYiJ9)
 
 **Power BI project (PBIP)** · **5 report pages** · **17-table star schema** · **102 DAX measures**
 · **40,935 work orders, 3 sites, Jul 2023 – Jul 2026** · **no real data of any kind**
@@ -166,6 +168,11 @@ comparisons are date-only (see [the date-truncation trap](#the-date-truncation-t
 ---
 
 ## Open it yourself
+
+**In the browser:** the [live report](https://app.powerbi.com/view?r=eyJrIjoiODViMThkYmUtMTM3ZS00YjViLWI4YmYtMjllY2FlMzIzZDIzIiwidCI6ImI4NTEzNDlkLWNiNDctNGE2My04N2FiLTJmMTJjZTk0YWRiYiJ9) is the same five pages with working
+slicers and page buttons, published to the web from a personal Power BI account.
+
+**In Power BI Desktop:**
 
 **You need:** Power BI Desktop (built and tested on 2.159, November 2026) with PBIP
 support, and internet access the first time you open it. The report uses the free

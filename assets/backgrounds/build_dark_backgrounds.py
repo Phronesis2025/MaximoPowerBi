@@ -2,8 +2,7 @@
 """
 build_dark_backgrounds.py - page backgrounds for the dark redesign (Figma + Power BI).
 
-Separate from build_backgrounds.py on purpose: that script draws the original light, header-band
-layout; this one draws the dark sidebar layout from assets/mockups. Same conventions:
+Draws the dark sidebar layout from assets/mockups. Conventions:
     dark/<page>.svg   editable master in 1920 x 1080 canvas units; imports into Figma as named layers
     dark/<page>.png   raster at 2x (3840 x 2160) for the Power BI page background
 

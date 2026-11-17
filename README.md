@@ -507,13 +507,13 @@ The generator enforces twelve integrity checks:
 | `scripts/add_measures.py` | Copies measures drafted in a `.dax` file into the model |
 | `scripts/build_report_pages.py` | Builds the five report pages |
 | `scripts/mockups/` | Mockup generators, the figures behind them, and the renderer |
-| `assets/mockups/` | Design mockups (HTML + PNG), every version |
+| `assets/mockups/` | Design mockups (HTML + PNG), the current version of each page |
 | `assets/backgrounds/` | Page-background builders; `dark/` holds the current SVG masters and PNGs |
 | `assets/theme/maximo_dark.json` | Power BI report theme |
 | `docs/images/` | The page images in this README |
 | `check_model.py` | Validates the model's structure |
 | `verify_measures.py` | Re-derives the KPIs from the CSVs and checks the baselines |
-| `build_relationships.py`, `tidy_model_layout.py` | Generate relationships and the model-diagram layout |
+| `tidy_model_layout.py` | Lays out the model diagram |
 | `generate_maximo_dataset.py` | Builds the synthetic dataset |
 | `maximo-sample-data-csv.zip` | The 23 CSVs (unzip to `data/`) |
 | `DATA_DICTIONARY.md`, `VALIDATION.txt` | Column-level dictionary and the generator's integrity report |

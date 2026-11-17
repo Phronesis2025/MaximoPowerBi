@@ -22,3 +22,12 @@ __pycache__/
 # extracted sample data - the CSVs are distributed as the tracked
 # maximo-sample-data-csv.zip and extracted locally into data/
 /data/
+
+# mockup generators also write earlier design versions as intermediates;
+# only the current page of each design is kept
+/assets/mockups/*
+!/assets/mockups/executive_v10.*
+!/assets/mockups/pm_compliance_v8.*
+!/assets/mockups/reliability_v9.*
+!/assets/mockups/planning_v7.*
+!/assets/mockups/information_v6.*
